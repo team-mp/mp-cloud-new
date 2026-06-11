@@ -1,0 +1,177 @@
+{
+  "Name": "計上未確定発注書待ち件数更新処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.InvokeTriggerSaveData, ServerDesignerCommon",
+      "Parameters": [
+        {
+          "Name": "P_申込ID",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "V_計上未確定件数",
+      "TableValue": {
+        "TableName": "t_object_product",
+        "TableValueType": 3,
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_product",
+                "ColumnName": "object_order_id",
+                "GUID": "8b53b721-3df1-4438-ba2d-d754689e7fb7"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_申込ID"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_product",
+                "ColumnName": "account_complete_flg",
+                "GUID": "48109469-b777-46c9-b2bc-477c7a1e4117"
+              },
+              "Value": "0"
+            }
+          ]
+        }
+      },
+      "ID": "82efc37202414ddca8d9ff3e3d4f850b"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "V_発注書待ち件数",
+      "TableValue": {
+        "TableName": "t_object_product",
+        "TableValueType": 3,
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_product",
+                "ColumnName": "object_order_id",
+                "GUID": "01900995-0921-4dde-8bca-40f1802e2c5e"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_申込ID"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_product",
+                "ColumnName": "purchase_required_flg",
+                "GUID": "7e941f17-cf3c-4801-b973-2593d902b376"
+              },
+              "Value": "1"
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_product",
+                "ColumnName": "purchase_receipt_date",
+                "GUID": "4db3f216-52c5-4314-9aee-bf87583fb1d7"
+              },
+              "Value": "%Null%"
+            }
+          ]
+        }
+      },
+      "ID": "16b69a5b10cd46aca318710cac55cb1e"
+    },
+    {
+      "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+      "TableName": "t_object_order_sub",
+      "ShowConfirm": false,
+      "RowsToUpdate": 1,
+      "RowsToUpdateCondition": {
+        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+        "SubConditions": [
+          {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object_order_sub",
+              "ColumnName": "object_order_id",
+              "GUID": "39ea6578-8314-4c91-8b37-822016d3dcde"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_申込ID"
+            }
+          },
+          {
+            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+            "SubConditions": [
+              {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "CompareType": 1,
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_order_sub",
+                  "ColumnName": "account_not_confirmed_count",
+                  "GUID": "e9de72f4-9a27-4357-bb46-41ad67b02e32"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=V_発注書待ち件数"
+                },
+                "LeftBracket": 1
+              },
+              {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "CompareType": 1,
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_order_sub",
+                  "ColumnName": "purchase_not_arraived_count",
+                  "GUID": "988a2e47-c879-4ba6-92ec-850b0f030ddc"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=V_発注書待ち件数"
+                },
+                "RightBracket": 1
+              }
+            ],
+            "RelationType": 1
+          }
+        ]
+      },
+      "UpdateBindingValues": [
+        {
+          "BindingInfo": {
+            "TableName": "t_object_order_sub",
+            "ColumnName": "account_not_confirmed_count",
+            "GUID": "92dd7d53-fd58-45b8-858d-12e4ee1d75b4"
+          },
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=V_計上未確定件数"
+          }
+        },
+        {
+          "BindingInfo": {
+            "TableName": "t_object_order_sub",
+            "ColumnName": "purchase_not_arraived_count",
+            "GUID": "913630a3-a61b-4856-a05e-5e2b6b8b5c57"
+          },
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=V_発注書待ち件数"
+          }
+        }
+      ]
+    }
+  ]
+}

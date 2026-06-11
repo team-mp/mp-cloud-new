@@ -1,0 +1,175 @@
+{
+  "Name": "見積書レポートTemp出力",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.InvokeTriggerSaveData, ServerDesignerCommon",
+      "Parameters": [
+        {
+          "Name": "P_見積書NO",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_出力ファイル名",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "環境設定",
+      "TableValue": {
+        "TableName": "m_environment",
+        "TableValueType": 1,
+        "BindingInfos": [
+          {
+            "GUID": "c8d32da4-3f99-4e0f-8652-726142d6f0c8",
+            "BindingInfo": {
+              "TableName": "m_environment",
+              "ColumnName": "app_name",
+              "GUID": "9114df7a-e874-448e-99ec-cccbf66ca8cb"
+            },
+            "ColumnName": "アプリ名"
+          },
+          {
+            "GUID": "bf9f805d-126c-4eae-ba08-7da3d481ddfa",
+            "BindingInfo": {
+              "TableName": "m_environment",
+              "ColumnName": "file_temp_path",
+              "GUID": "f5f472d6-c29d-445e-a89d-b5bb2657955a"
+            },
+            "ColumnName": "ファイルTempパス"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "m_environment",
+            "ColumnName": "environment_id",
+            "GUID": "26662df9-eec3-42f6-934d-3d736dd53177"
+          },
+          "Value": "1"
+        }
+      },
+      "ID": "6b11e7ae4b964a4db49c4088df713e02"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "保存先Tempパス名",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=環境設定.ファイルTempパス&環境設定.アプリ名&\"\\Temp\\\""
+      },
+      "ID": "af10761327ce4d4c87dbc48622325b18"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "ファイル名",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=P_出力ファイル名"
+      },
+      "ID": "925d2816be2a406b89f60236e733e8c9"
+    },
+    {
+      "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+      "ServerCommandName": "ファイル名文字列変換",
+      "Parameters": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_変換元文字列",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=ファイル名"
+          }
+        }
+      ],
+      "ReturnPropertiesTo": [
+        {
+          "ResultPropertyName": "R_変換後文字列",
+          "ResultTo": {
+            "SerializeProperty": "ファイル名"
+          }
+        }
+      ],
+      "RefreshAfterFinish": true,
+      "CheckDataValidation": true
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "ファイル接頭乱数",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=TEXT(RANDBETWEEN(0,99999999),\"00000000\")&\"-\"&TEXT(RANDBETWEEN(0,9999),\"0000\")&\"-\"&TEXT(RANDBETWEEN(0,9999),\"0000\")&\"-\"&TEXT(RANDBETWEEN(0,9999),\"0000\")&\"-\"&TEXT(RANDBETWEEN(0,999999999999),\"000000000000\")"
+      },
+      "ID": "4d57e82b5528435593b039cd92185cb7"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "PDFファイル名",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=ファイル接頭乱数&\"_\"&ファイル名"
+      },
+      "ID": "b526e5babab347d2a87ae462f6a39da5"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "出力ファイルフルパス名",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=保存先Tempパス名&PDFファイル名"
+      },
+      "ID": "b417a00eb0804818b2271b0e5743a994"
+    },
+    {
+      "$type": "Forguncy.Model.ExportActiveReportCommand, ServerDesignerCommon",
+      "ExportReportNameList": [
+        "見積書"
+      ],
+      "CustomName": "保証書MP20",
+      "ServerExportFileName": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=出力ファイルフルパス名"
+      },
+      "ExportSettings": {
+        "MultiSheet": true
+      },
+      "PassParameters": [
+        {
+          "TargetParameter": "P_見積書NO",
+          "SourceValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_見積書NO"
+          }
+        }
+      ],
+      "IsPageBreakBefores": [
+        false
+      ],
+      "ReportGaps": [
+        "0cm"
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+      "ErrorCode": "0",
+      "CustomReturns": [
+        {
+          "ReturnPropertyName": "R_添付ファイル名",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=PDFファイル名&\"|\""
+          }
+        }
+      ]
+    }
+  ],
+  "ReturnProperties": [
+    {
+      "Name": "R_添付ファイル名"
+    }
+  ]
+}

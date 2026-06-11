@@ -1,0 +1,91 @@
+{
+  "Name": "v_customer_ground_pressure",
+  "Columns": [
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "顧客ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "設計接地圧ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "建物構造ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "基礎形状ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "double precision",
+      "MaxLength": -1,
+      "Name": "設計接地圧",
+      "ColumnType": "System.Double, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "既定フラグ",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    }
+  ],
+  "ExternalDatabaseInfo": {
+    "DataBaseType": "6db454c0-531c-4395-9122-921a18942902",
+    "AllowModifySchema": true,
+    "ConnectionId": "PostgreSQL1",
+    "SourceTableName": "v_customer_ground_pressure",
+    "SourceTableSchema": "public",
+    "CreateViewSql": " SELECT main.customer_id AS \"顧客ID\",\n    main.ground_pressure_id AS \"設計接地圧ID\",\n    main.sutructure_id AS \"建物構造ID\",\n    main.foundastion_id AS \"基礎形状ID\",\n        CASE\n            WHEN (sub.ground_pressure IS NOT NULL) THEN sub.ground_pressure\n            ELSE main.ground_pressure\n        END AS \"設計接地圧\",\n    main.default_flg AS \"既定フラグ\"\n   FROM (( SELECT a.customer_id,\n            b.ground_pressure_id,\n            b.sutructure_id,\n            b.foundastion_id,\n            b.ground_pressure,\n            b.default_flg\n           FROM (m_customer a\n             JOIN m_ground_pressure b ON (true))) main\n     LEFT JOIN m_customer_ground_pressure sub ON (((sub.customer_id = main.customer_id) AND (sub.ground_pressure_id = main.ground_pressure_id))));",
+    "UserSetQueryColumns": [
+      "顧客ID",
+      "建物構造ID",
+      "基礎形状ID"
+    ],
+    "ViewInfo": {
+      "ViewName": "v_customer_ground_pressure",
+      "IsUpdatable": true,
+      "QueryColumns": [
+        "顧客ID",
+        "建物構造ID",
+        "基礎形状ID"
+      ]
+    }
+  },
+  "Relations": [
+    {
+      "PrimaryTable": "m_object_structure",
+      "PrimaryColumn": "sutructure_id",
+      "ForeignTable": "v_customer_ground_pressure",
+      "ForeignColumn": "建物構造ID"
+    },
+    {
+      "PrimaryTable": "m_object_foundation",
+      "PrimaryColumn": "foundastion_id",
+      "ForeignTable": "v_customer_ground_pressure",
+      "ForeignColumn": "基礎形状ID"
+    },
+    {
+      "PrimaryTable": "m_ground_pressure",
+      "PrimaryColumn": "ground_pressure_id",
+      "ForeignTable": "v_customer_ground_pressure",
+      "ForeignColumn": "設計接地圧ID",
+      "IsDetailTableRelation": false
+    }
+  ],
+  "Indexes": []
+}

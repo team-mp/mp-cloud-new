@@ -1,0 +1,107 @@
+{
+  "Name": "v_mass_notification",
+  "Columns": [
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "一斉通知ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "character varying",
+      "MaxLength": -1,
+      "Name": "メールアドレス",
+      "ColumnType": "System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "差出人既定値フラグ",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "住宅事業者フラグ",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "integer",
+      "MaxLength": -1,
+      "Name": "代理店フラグ",
+      "ColumnType": "System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "integer",
+      "MaxLength": -1,
+      "Name": "取次店フラグ",
+      "ColumnType": "System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "integer",
+      "MaxLength": -1,
+      "Name": "外注先フラグ",
+      "ColumnType": "System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "integer",
+      "MaxLength": -1,
+      "Name": "調査会社フラグ",
+      "ColumnType": "System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "integer",
+      "MaxLength": -1,
+      "Name": "工事会社フラグ",
+      "ColumnType": "System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "integer",
+      "MaxLength": -1,
+      "Name": "その他取引先フラグ",
+      "ColumnType": "System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "integer",
+      "MaxLength": -1,
+      "Name": "通知済みフラグ",
+      "ColumnType": "System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    }
+  ],
+  "ExternalDatabaseInfo": {
+    "DataBaseType": "6db454c0-531c-4395-9122-921a18942902",
+    "AllowModifySchema": true,
+    "ConnectionId": "PostgreSQL1",
+    "SourceTableName": "v_mass_notification",
+    "SourceTableSchema": "public",
+    "CreateViewSql": " SELECT main.mass_notification_id AS \"一斉通知ID\",\n    sub.mail_address AS \"メールアドレス\",\n    sub.sender_defalut_flg AS \"差出人既定値フラグ\",\n    sub.builder_flg AS \"住宅事業者フラグ\",\n    sub.agency_flg AS \"代理店フラグ\",\n    sub.brokerage_flg AS \"取次店フラグ\",\n    sub.subcontractor_flg AS \"外注先フラグ\",\n    sub.survey_flg AS \"調査会社フラグ\",\n    sub.construction_flg AS \"工事会社フラグ\",\n    sub.other_partners_flg AS \"その他取引先フラグ\",\n        CASE\n            WHEN (EXISTS ( SELECT 1\n               FROM t_notification_history subb\n              WHERE ((subb.mass_notification_id = main.mass_notification_id) AND ((subb.mail_address)::text = (sub.mail_address)::text)))) THEN 1\n            ELSE 0\n        END AS \"通知済みフラグ\"\n   FROM (m_mass_notification main\n     JOIN ( SELECT a.mail_address,\n            max(c.sender_defalut_flg) AS sender_defalut_flg,\n            max(b.builder_flg) AS builder_flg,\n            max(\n                CASE\n                    WHEN (b.agency_flg = 1) THEN 1\n                    ELSE 0\n                END) AS agency_flg,\n            max(\n                CASE\n                    WHEN (b.brokerage_flg = 1) THEN 1\n                    ELSE 0\n                END) AS brokerage_flg,\n            max(\n                CASE\n                    WHEN ((b.survey_flg = 1) OR (b.surveying_flg = 1) OR (b.compaction_flg = 1) OR (b.construction_flg = 1)) THEN 1\n                    ELSE 0\n                END) AS subcontractor_flg,\n            max(\n                CASE\n                    WHEN (b.survey_flg = 1) THEN 1\n                    ELSE 0\n                END) AS survey_flg,\n            max(\n                CASE\n                    WHEN (b.construction_flg = 1) THEN 1\n                    ELSE 0\n                END) AS construction_flg,\n            max(\n                CASE\n                    WHEN ((b.builder_flg <> 1) AND (b.agency_flg <> 1) AND (b.brokerage_flg <> 1) AND (b.survey_flg <> 1) AND (b.surveying_flg <> 1) AND (b.compaction_flg <> 1) AND (b.construction_flg <> 1)) THEN 1\n                    ELSE 0\n                END) AS other_partners_flg\n           FROM ((m_user a\n             JOIN m_customer b ON ((a.customer_id = b.customer_id)))\n             JOIN m_customer_settings c ON ((b.customer_id = c.customer_id)))\n          WHERE ((a.active_flg = 1) AND (b.active_flg = 1) AND (a.mail_address IS NOT NULL))\n          GROUP BY a.mail_address) sub ON (true));",
+    "ViewInfo": {
+      "ViewName": "v_mass_notification",
+      "QueryColumns": [
+        "一斉通知ID",
+        "メールアドレス"
+      ]
+    }
+  },
+  "Relations": [
+    {
+      "PrimaryTable": "m_mass_notification",
+      "PrimaryColumn": "mass_notification_id",
+      "ForeignTable": "v_mass_notification",
+      "ForeignColumn": "一斉通知ID",
+      "IsDetailTableRelation": false
+    }
+  ],
+  "Indexes": []
+}

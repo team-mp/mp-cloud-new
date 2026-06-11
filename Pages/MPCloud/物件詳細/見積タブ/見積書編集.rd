@@ -1,0 +1,16 @@
+{
+  "PageType": 0,
+  "ColumnCount": 63,
+  "RowCount": 27,
+  "Formulas": {
+    "16,42": "TEXTJOIN(\",\",FALSE,AI18)",
+    "12,42": "TEXTJOIN(\",\",FALSE,BF9)",
+    "12,34": "ODATA(\"m_user_group?$select=user_group_key&$filter=sales_user_flg eq 1\")"
+  },
+  "CustomNames": [
+    {
+      "Name": "見積No",
+      "Formula": "見積書編集!$AI$5"
+    }
+  ]
+}

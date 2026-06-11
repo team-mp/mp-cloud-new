@@ -1,0 +1,50 @@
+{
+  "Name": "v_object_file_class_app",
+  "Columns": [
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "物件ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "親物件ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "ファイル分類ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "text",
+      "MaxLength": -1,
+      "Name": "ファイル分類キー",
+      "ColumnType": "System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    }
+  ],
+  "ExternalDatabaseInfo": {
+    "DataBaseType": "6db454c0-531c-4395-9122-921a18942902",
+    "AllowModifySchema": true,
+    "ConnectionId": "PostgreSQL1",
+    "SourceTableName": "v_object_file_class_app",
+    "SourceTableSchema": "public",
+    "CreateViewSql": " SELECT a.object_id AS \"物件ID\",\n    a.parent_object_id AS \"親物件ID\",\n    c.file_class_id AS \"ファイル分類ID\",\n    ((a.object_id || '_'::text) || c.file_class_id) AS \"ファイル分類キー\"\n   FROM ((t_object_attachment_relation a\n     JOIN t_object_attachment b ON (((a.attachment_id = b.attachment_id) AND (b.active_flg = 1) AND (b.publish_flg = 1) AND (b.hidden_flg = 0))))\n     JOIN m_file_attribute c ON (((b.file_attribute_id = c.file_attribute_id) AND (c.applicant_company_authority > 0))))\n  GROUP BY a.object_id, a.parent_object_id, c.file_class_id\n  ORDER BY a.object_id, c.file_class_id;",
+    "ViewInfo": {
+      "ViewName": "v_object_file_class_app",
+      "QueryColumns": [
+        "物件ID",
+        "ファイル分類ID"
+      ]
+    }
+  },
+  "Relations": [],
+  "Indexes": []
+}

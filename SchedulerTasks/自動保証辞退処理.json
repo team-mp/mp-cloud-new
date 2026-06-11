@@ -1,0 +1,186 @@
+{
+  "Name": "自動保証辞退処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.DailyScheduleTriggerSaveData, ServerDesignerCommon",
+      "StartDateTime": 46160.916666666664,
+      "ScheduleRunInDebugServer": false
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "V_2年前日付",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=EDATE(TODAY(),-24)"
+      },
+      "ID": "97a833e29c5b441f8777865f8d21ccef"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "申込情報",
+      "TableValue": {
+        "TableName": "t_object_order",
+        "BindingInfos": [
+          {
+            "GUID": "d35e6f8d-f700-4995-bf1d-91d8ea06860f",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "object_order_id",
+              "GUID": "7cf0fabc-93de-4b7c-9a12-1b609bb9e542"
+            },
+            "ColumnName": "申込ID"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_order",
+                "ColumnName": "latest_warranty_id",
+                "GUID": "c60541b7-78e8-4a08-a0fc-56b3a306351a",
+                "RelationBinding": {
+                  "RelatedTable": "t_object_warranty",
+                  "RelatedColumn": "warranty_id",
+                  "DisplayColumn": "warranty_status_id",
+                  "NextRelationBinding": {
+                    "RelatedTable": "m_warranty_status",
+                    "RelatedColumn": "warranty_status_id",
+                    "DisplayColumn": "warranty_check_flg"
+                  }
+                }
+              },
+              "Value": "1"
+            },
+            {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "SubConditions": [
+                {
+                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                  "SubConditions": [
+                    {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 5,
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_order",
+                        "ColumnName": "latest_analysis_id",
+                        "GUID": "18f42628-3d6e-4efc-a7f0-8abde5a5004d",
+                        "RelationBinding": {
+                          "RelatedTable": "t_object_analysis",
+                          "RelatedColumn": "analysis_id",
+                          "DisplayColumn": "analysis_complete_date"
+                        }
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=V_2年前日付"
+                      },
+                      "LeftBracket": 2
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 1,
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_order",
+                        "ColumnName": "latest_analysis_id",
+                        "GUID": "11d1b1cc-8784-46b9-bf9e-bddbfee39e36"
+                      },
+                      "Value": "%Null%",
+                      "RightBracket": 1
+                    }
+                  ]
+                },
+                {
+                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                  "SubConditions": [
+                    {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 5,
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_order",
+                        "ColumnName": "latest_construction_id",
+                        "GUID": "7c49b45e-5ee0-43d9-8bc5-9f71be357f90",
+                        "RelationBinding": {
+                          "RelatedTable": "t_object_construction",
+                          "RelatedColumn": "construction_id",
+                          "DisplayColumn": "design_approval_date"
+                        }
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=V_2年前日付"
+                      },
+                      "LeftBracket": 1
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 1,
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_order",
+                        "ColumnName": "latest_construction_id",
+                        "GUID": "7b17b2ff-ac39-490f-842c-e303faf9a744"
+                      },
+                      "Value": "%Null%",
+                      "RightBracket": 2
+                    }
+                  ]
+                }
+              ],
+              "RelationType": 1
+            }
+          ]
+        }
+      },
+      "ID": "0cea68947e4141bd8ae51477a191fb01"
+    },
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=申込情報"
+        },
+        "LoopItemParamName": "Item"
+      },
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "保証辞退登録",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_申込IDs",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=Item.申込ID"
+              }
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_保証辞退理由",
+              "Value": "保証規定による自動辞退"
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_外部ユーザーフラグ",
+              "Value": "1"
+            }
+          ],
+          "ResultErrorCodeTo": {
+            "SerializeProperty": "リターンコード"
+          },
+          "ResultMessageTo": {
+            "SerializeProperty": "リターンメッセージ"
+          },
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        }
+      ]
+    }
+  ]
+}

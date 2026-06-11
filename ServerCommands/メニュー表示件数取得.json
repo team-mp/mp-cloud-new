@@ -1,0 +1,276 @@
+{
+  "Name": "メニュー表示件数取得",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "申込_資料待ち件数",
+      "TableValue": {
+        "TableName": "t_object_wait_documents",
+        "TableValueType": 3,
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_wait_documents",
+                "ColumnName": "object_order_id",
+                "GUID": "348d4ddf-584f-44d4-b56e-71bcb4cdef68",
+                "RelationBinding": {
+                  "RelatedTable": "t_object_order",
+                  "RelatedColumn": "object_order_id",
+                  "DisplayColumn": "active_flg"
+                }
+              },
+              "Value": "1"
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_wait_documents",
+                "ColumnName": "receipt_flg",
+                "GUID": "b7dbb1b1-5931-4a81-9088-a9897abf82eb"
+              },
+              "Value": "0"
+            },
+            {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "SubConditions": [
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "CompareType": 4,
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_wait_documents",
+                    "ColumnName": "scheduled_sending_date",
+                    "GUID": "54840871-89b5-481c-a2de-fcee6b6728cf"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=TODAY()"
+                  },
+                  "LeftBracket": 1
+                },
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "CompareType": 4,
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_wait_documents",
+                    "ColumnName": "send_limite_date",
+                    "GUID": "ec5ceb35-b43c-43a6-a5ae-c581c7a40335"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=TODAY()"
+                  },
+                  "RightBracket": 1
+                }
+              ],
+              "RelationType": 1
+            }
+          ]
+        },
+        "NullFormulaValueQueryPolicy": 0
+      },
+      "ID": "0f211360c5ea4c67b7fde2b3aa56808a"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "申込_タスク期限切れ件数",
+      "TableValue": {
+        "TableName": "t_task",
+        "TableValueType": 3,
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_task",
+                "ColumnName": "processed_flg",
+                "GUID": "69b90ad5-ab9f-45d9-8d41-68326120f63d"
+              },
+              "Value": "0"
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "CompareType": 4,
+              "ColumnBindingInfo": {
+                "TableName": "t_task",
+                "ColumnName": "deadline",
+                "GUID": "a799359a-4e95-4254-acf4-43d7a21b0b8c"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=TODAY()"
+              }
+            }
+          ]
+        },
+        "NullFormulaValueQueryPolicy": 0
+      },
+      "ID": "087bc6136d054a4c89ccd3b19197efd7"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "申込_住あん申請待ち件数",
+      "TableValue": {
+        "TableName": "v_jyuan_apply_list",
+        "TableValueType": 3,
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "v_jyuan_apply_list",
+                "ColumnName": "申込ID",
+                "GUID": "6a6027d0-db5e-4511-b0cf-c3c1d652c5d3",
+                "RelationBinding": {
+                  "RelatedTable": "t_object_order",
+                  "RelatedColumn": "object_order_id",
+                  "DisplayColumn": "active_flg"
+                }
+              },
+              "Value": "1"
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "v_jyuan_apply_list",
+                "ColumnName": "申込ID",
+                "GUID": "b650f6ef-42d3-44a9-93ec-a6758605def6",
+                "RelationBinding": {
+                  "RelatedTable": "t_object_order",
+                  "RelatedColumn": "object_order_id",
+                  "DisplayColumn": "object_order_id",
+                  "NextRelationBinding": {
+                    "RelatedTable": "t_object_order_sub",
+                    "RelatedColumn": "object_order_id",
+                    "DisplayColumn": "jyuan_apply_flg"
+                  }
+                }
+              },
+              "Value": "0"
+            }
+          ]
+        },
+        "NullFormulaValueQueryPolicy": 0
+      },
+      "ID": "9a7d3190343f4d2497c21a04349d2851"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "申込_問合せ対応待ち件数",
+      "TableValue": {
+        "TableName": "t_inquiry",
+        "TableValueType": 3,
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_inquiry",
+                "ColumnName": "inquiry_status_id",
+                "GUID": "67714029-84f3-4247-81d5-46443bedd517",
+                "RelationBinding": {
+                  "RelatedTable": "m_inquiry_status",
+                  "RelatedColumn": "inquiry_status_id",
+                  "DisplayColumn": "inquiry_flg"
+                }
+              },
+              "Value": "1"
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_inquiry",
+                "ColumnName": "inquiry_status_id",
+                "GUID": "c746f361-b59e-4857-84bf-b7fae5ec321e",
+                "RelationBinding": {
+                  "RelatedTable": "m_inquiry_status",
+                  "RelatedColumn": "inquiry_status_id",
+                  "DisplayColumn": "in_progress_flg"
+                }
+              },
+              "Value": "1"
+            }
+          ],
+          "RelationType": 1
+        },
+        "NullFormulaValueQueryPolicy": 0
+      },
+      "ID": "1914123c67214f7b9784c1381f876a95"
+    },
+    {
+      "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+      "ErrorCode": "0",
+      "CustomReturns": [
+        {
+          "ReturnPropertyName": "R_申込_資料待ち件数",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=申込_資料待ち件数"
+          }
+        },
+        {
+          "ReturnPropertyName": "R_申込_タスク期限切れ件数",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=申込_タスク期限切れ件数"
+          }
+        },
+        {
+          "ReturnPropertyName": "R_申込_住あん申請待ち件数",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=申込_住あん申請待ち件数"
+          }
+        },
+        {
+          "ReturnPropertyName": "R_申込_問合せ対応待ち件数",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=申込_問合せ対応待ち件数"
+          }
+        }
+      ]
+    }
+  ],
+  "ReturnProperties": [
+    {
+      "Name": "R_申込_資料待ち件数"
+    },
+    {
+      "Name": "R_申込_タスク期限切れ件数"
+    },
+    {
+      "Name": "R_申込_住あん申請待ち件数"
+    },
+    {
+      "Name": "R_申込_問合せ対応待ち件数"
+    }
+  ]
+}

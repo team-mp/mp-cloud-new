@@ -1,0 +1,316 @@
+{
+  "Name": "工事見積受注確定待ち一括更新処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_工事見積IDs",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "工事見積",
+          "TableValue": {
+            "TableName": "t_object_construction_estimate",
+            "BindingInfos": [
+              {
+                "GUID": "0e18be2a-3a78-4e6b-9559-bf7046fee6f4",
+                "BindingInfo": {
+                  "TableName": "t_object_construction_estimate",
+                  "ColumnName": "construction_estimate_id",
+                  "GUID": "e77373db-9469-44c2-8abc-f97372b4ec0c"
+                },
+                "ColumnName": "工事見積ID"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+              "CompareType": 8,
+              "ColumnBindingInfo": {
+                "TableName": "t_object_construction_estimate",
+                "ColumnName": "construction_estimate_id",
+                "GUID": "618df02e-c7a9-44eb-a78e-2e99a1d6302e"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_工事見積IDs"
+              }
+            },
+            "NullFormulaValueQueryPolicy": 0
+          },
+          "ID": "cedf9b65217147b89028f35013b05ee7"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "受注確定待ちST",
+          "TableValue": {
+            "TableName": "m_construction_estimate_status",
+            "TableValueType": 1,
+            "BindingInfos": [
+              {
+                "GUID": "81a64f88-09b3-45ac-bb56-a235df23c6d9",
+                "BindingInfo": {
+                  "TableName": "m_construction_estimate_status",
+                  "ColumnName": "construction_estimate_status_id",
+                  "GUID": "78f0ddf1-e581-4c45-a3ef-d069bdd875d7"
+                },
+                "ColumnName": "工事見積ステータスID"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_construction_estimate_status",
+                "ColumnName": "order_wait_flg",
+                "GUID": "80e8a7e4-9e95-492b-b480-db4f84a7c301"
+              },
+              "Value": "1"
+            },
+            "NullFormulaValueQueryPolicy": 0
+          },
+          "ID": "2f07559735074d7091e40fc63b022f6a"
+        },
+        {
+          "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+          "LoopInfo": {
+            "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+            "LoopCount": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=工事見積"
+            },
+            "LoopItemParamName": "Item"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+              "ServerCommandName": "工事見積ステータス更新処理",
+              "Parameters": [
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_工事見積ID",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.工事見積ID"
+                  }
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_変更後見積ステータスID",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=受注確定待ちST.工事見積ステータスID"
+                  }
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_見積依頼フラグ"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_依頼取り下げフラグ"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_設計審査フラグ"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_審査OKフラグ"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_審査NGフラグ"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_審査保留フラグ"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_審査仮承認フラグ"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_審査承認解除フラグ"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_見積書送信フラグ"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_辞退終了フラグ"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_辞退終了コメント"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_失注終了フラグ"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_キャンセル終了フラグ"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_受注予定フラグ"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_工事見込開始日"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_工事見込終了日"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_受注予定コメント"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_受注確定フラグ"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_工事予定開始日"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_工事予定終了日"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_受注確定解除フラグ"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_排他チェック不要フラグ",
+                  "Value": "1"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_元_工事見積登録日"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_元_工事見積会社ID"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_元_工事見積工法ID"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_元_見積依頼日"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_元_見積至急フラグ"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_元_見積期限日"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_元_見積リマインドフラグ"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_元_見積リマインド日"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_元_見積依頼コメント"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_元_見積書受領日"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_元_設計審査依頼日"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_元_設計審査予定日"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_元_設計審査者ID"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_元_設計審査結果"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_元_仮承認フラグ"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_元_設計審査コメント"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_元_設計承認フラグ"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_元_見積送付日"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_元_見積送付コメント"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_元_社内備考"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_元_工事見積ステータスID"
+                }
+              ],
+              "ReturnPropertiesTo": [
+                {
+                  "ResultPropertyName": "R_設計審査予定日"
+                }
+              ],
+              "RefreshAfterFinish": true,
+              "CheckDataValidation": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

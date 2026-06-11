@@ -1,0 +1,73 @@
+{
+  "Name": "v_compaction_file_attribute",
+  "Columns": [
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "転圧ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "ファイル分類ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "ファイル属性ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "text",
+      "MaxLength": -1,
+      "Name": "ファイル属性名",
+      "ColumnType": "System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    }
+  ],
+  "ExternalDatabaseInfo": {
+    "DataBaseType": "6db454c0-531c-4395-9122-921a18942902",
+    "AllowModifySchema": true,
+    "ConnectionId": "PostgreSQL1",
+    "SourceTableName": "v_compaction_file_attribute",
+    "SourceTableSchema": "public",
+    "CreateViewSql": " SELECT c.compaction_id AS \"転圧ID\",\n    f.file_class_id AS \"ファイル分類ID\",\n    f.file_attribute_id AS \"ファイル属性ID\",\n    ((((f.file_attribute_name)::text || '…('::text) || COALESCE(count(t.attachment_id), (0)::bigint)) || ')'::text) AS \"ファイル属性名\"\n   FROM (((t_object_compaction c\n     JOIN m_file_attribute f ON (true))\n     JOIN m_file_class fc ON (((f.file_class_id = fc.file_class_id) AND (fc.compaction_flg = 1))))\n     LEFT JOIN t_object_attachment t ON (((c.compaction_id = t.compaction_id) AND (f.file_attribute_id = t.file_attribute_id) AND (t.active_flg = 1) AND (t.compaction_id IS NOT NULL))))\n  GROUP BY c.compaction_id, f.file_class_id, f.file_attribute_id, f.file_attribute_name;",
+    "ViewInfo": {
+      "ViewName": "v_compaction_file_attribute",
+      "QueryColumns": [
+        "転圧ID",
+        "ファイル分類ID",
+        "ファイル属性ID"
+      ]
+    }
+  },
+  "Relations": [
+    {
+      "PrimaryTable": "t_object_compaction",
+      "PrimaryColumn": "compaction_id",
+      "ForeignTable": "v_compaction_file_attribute",
+      "ForeignColumn": "転圧ID",
+      "IsDetailTableRelation": false
+    },
+    {
+      "PrimaryTable": "m_file_class",
+      "PrimaryColumn": "file_class_id",
+      "ForeignTable": "v_compaction_file_attribute",
+      "ForeignColumn": "ファイル分類ID",
+      "IsDetailTableRelation": false
+    },
+    {
+      "PrimaryTable": "m_file_attribute",
+      "PrimaryColumn": "file_attribute_id",
+      "ForeignTable": "v_compaction_file_attribute",
+      "ForeignColumn": "ファイル属性ID",
+      "IsDetailTableRelation": false
+    }
+  ],
+  "Indexes": []
+}

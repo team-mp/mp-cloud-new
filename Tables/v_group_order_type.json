@@ -1,0 +1,82 @@
+{
+  "Name": "v_group_order_type",
+  "Columns": [
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "グループID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "申込タイプID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "初期セットフラグ",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "申込タイプ公開フラグ",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "character varying",
+      "MaxLength": -1,
+      "Name": "特記事項",
+      "ColumnType": "System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "有効フラグ",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    }
+  ],
+  "ExternalDatabaseInfo": {
+    "AllowModifySchema": true,
+    "ConnectionId": "PostgreSQL1",
+    "SourceTableName": "v_group_order_type",
+    "SourceTableSchema": "public",
+    "CreateViewSql": " SELECT main.group_id AS \"グループID\",\n    main.order_type_id AS \"申込タイプID\",\n    main.default_set_flg AS \"初期セットフラグ\",\n    main.order_type_public_flg AS \"申込タイプ公開フラグ\",\n        CASE\n            WHEN (main.special_note IS NOT NULL) THEN main.special_note\n            ELSE sub.special_note\n        END AS \"特記事項\",\n    sub.active_flg AS \"有効フラグ\"\n   FROM (m_group_order_type main\n     JOIN m_order_type sub ON ((main.order_type_id = sub.order_type_id)));",
+    "UserSetQueryColumns": [
+      "グループID",
+      "申込タイプID"
+    ],
+    "ViewInfo": {
+      "ViewName": "v_group_order_type",
+      "QueryColumns": [
+        "グループID",
+        "申込タイプID"
+      ]
+    }
+  },
+  "Relations": [
+    {
+      "PrimaryTable": "m_group",
+      "PrimaryColumn": "group_id",
+      "ForeignTable": "v_group_order_type",
+      "ForeignColumn": "グループID",
+      "IsDetailTableRelation": false
+    },
+    {
+      "PrimaryTable": "m_order_type",
+      "PrimaryColumn": "order_type_id",
+      "ForeignTable": "v_group_order_type",
+      "ForeignColumn": "申込タイプID",
+      "IsDetailTableRelation": false
+    }
+  ],
+  "Indexes": []
+}

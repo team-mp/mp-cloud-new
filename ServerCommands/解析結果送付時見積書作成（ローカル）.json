@@ -1,0 +1,166 @@
+{
+  "Name": "解析結果送付時見積書作成（ローカル）",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_解析ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_更新フラグ",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_見積書NO",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+      "ServerCommandName": "解析結果送付時見積書作成",
+      "Parameters": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_解析ID",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_解析ID"
+          }
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_更新フラグ",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_更新フラグ"
+          }
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_見積書NO",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_見積書NO"
+          }
+        }
+      ],
+      "ResultErrorCodeTo": {
+        "SerializeProperty": "リターンコード"
+      },
+      "ResultMessageTo": {
+        "SerializeProperty": "リターンメッセージ"
+      },
+      "ReturnPropertiesTo": [
+        {
+          "ResultPropertyName": "R_見積書NO",
+          "ResultTo": {
+            "SerializeProperty": "R_見積書NO"
+          }
+        },
+        {
+          "ResultPropertyName": "R_物件IDs",
+          "ResultTo": {
+            "SerializeProperty": "R_物件IDs"
+          }
+        }
+      ],
+      "RefreshAfterFinish": true,
+      "CheckDataValidation": true
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=リターンコード"
+              }
+            },
+            "value": "0"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": "0",
+              "CustomReturns": [
+                {
+                  "ReturnPropertyName": "R_見積書NO",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=R_見積書NO"
+                  }
+                },
+                {
+                  "ReturnPropertyName": "R_物件IDs",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=R_物件IDs"
+                  }
+                }
+              ]
+            }
+          ],
+          "ID": "384bc19c-3d63-43cd-a955-4423182a46e1"
+        },
+        {
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=リターンコード"
+              },
+              "Message": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=リターンメッセージ"
+              },
+              "CustomReturns": [
+                {
+                  "ReturnPropertyName": "R_見積書NO"
+                },
+                {
+                  "ReturnPropertyName": "R_物件IDs"
+                }
+              ]
+            }
+          ],
+          "ID": "c9dde8ce-fd54-48d9-9d29-b629dc1d0715"
+        }
+      ]
+    }
+  ],
+  "ReturnProperties": [
+    {
+      "Name": "R_見積書NO"
+    },
+    {
+      "Name": "R_物件IDs"
+    }
+  ]
+}

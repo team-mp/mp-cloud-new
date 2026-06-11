@@ -1,0 +1,385 @@
+{
+  "Name": "商品選択チェック処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Type": 1,
+          "ArrayParamItems": [
+            {
+              "Name": "P_選択フラグ",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_商品名",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_単位",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_数量必要フラグ",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_入力数量",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_最小数量",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_以上OR超",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_最小未満基礎単価フラグ",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_数量上限値",
+              "DataValidationInfo": {}
+            }
+          ],
+          "Name": "P_商品リスト",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=P_商品リスト"
+        },
+        "LoopItemParamName": "Item"
+      },
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                "SubConditions": [
+                  {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=Item.P_選択フラグ"
+                      }
+                    },
+                    "value": "1"
+                  },
+                  {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=Item.P_数量必要フラグ"
+                      }
+                    },
+                    "value": "1"
+                  }
+                ]
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "SubConditions": [
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item.P_入力数量"
+                              }
+                            },
+                            "value": "%Null%"
+                          },
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item.P_入力数量"
+                              }
+                            },
+                            "value": "0"
+                          }
+                        ],
+                        "RelationType": 1
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                          "ParameterName": "エラーメッセージ",
+                          "ParameterValue": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=\"商品名：\"&Item.P_商品名&CHAR(10)&\"必要な数量を入力してください\""
+                          },
+                          "ID": "becd2dbd49b74bcaa8439cd3f39ce435"
+                        },
+                        {
+                          "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                          "ErrorCode": "100",
+                          "Message": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=エラーメッセージ"
+                          }
+                        }
+                      ],
+                      "ID": "bf1b22c2-ef16-4b37-ac46-43a1581679a9"
+                    }
+                  ]
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "SubConditions": [
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item.P_入力数量"
+                              }
+                            },
+                            "value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=Item.P_最小数量"
+                            },
+                            "compareType": 4
+                          },
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item.P_以上OR超"
+                              }
+                            },
+                            "value": "1"
+                          },
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item.P_最小未満基礎単価フラグ"
+                              }
+                            },
+                            "value": "0"
+                          }
+                        ]
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                          "ParameterName": "エラーメッセージ",
+                          "ParameterValue": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=\"商品名：\"&Item.P_商品名&CHAR(10)&\"この商品は、\"&Item.P_最小数量&Item.P_単位&\"以上の数量を設定する必要があります\"&CHAR(10)&\"入力された値に間違いがないかご確認下さい\""
+                          },
+                          "ID": "3729354ae30343c0ac3c7427d2e95812"
+                        },
+                        {
+                          "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                          "ErrorCode": "100",
+                          "Message": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=エラーメッセージ"
+                          }
+                        }
+                      ],
+                      "ID": "7ee99851-e305-4b88-a0ab-c1f829e0988d"
+                    }
+                  ]
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "SubConditions": [
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item.P_入力数量"
+                              }
+                            },
+                            "value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=Item.P_最小数量"
+                            },
+                            "compareType": 5
+                          },
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item.P_以上OR超"
+                              }
+                            },
+                            "value": "2"
+                          },
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item.P_最小未満基礎単価フラグ"
+                              }
+                            },
+                            "value": "0"
+                          }
+                        ]
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                          "ParameterName": "エラーメッセージ",
+                          "ParameterValue": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=\"商品名：\"&Item.P_商品名&CHAR(10)&\"この商品は、\"&Item.P_最小数量&Item.P_単位&\"を超える数量を設定する必要があります\"&CHAR(10)&\"入力された値に間違いがないかご確認下さい\""
+                          },
+                          "ID": "5e1e269dc1244b078eb9dd8d2581070e"
+                        },
+                        {
+                          "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                          "ErrorCode": "100",
+                          "Message": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=エラーメッセージ"
+                          }
+                        }
+                      ],
+                      "ID": "14924ec4-b78e-41aa-bf65-9890734c6035"
+                    }
+                  ]
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "SubConditions": [
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item.P_数量必要フラグ"
+                              }
+                            },
+                            "value": "1"
+                          },
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item.P_数量上限値"
+                              }
+                            },
+                            "value": "0",
+                            "compareType": 2
+                          },
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item.P_入力数量"
+                              }
+                            },
+                            "value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=Item.P_数量上限値"
+                            },
+                            "compareType": 2
+                          }
+                        ]
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                          "ParameterName": "エラーメッセージ",
+                          "ParameterValue": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=\"商品名：\"&Item.P_商品名&CHAR(10)&\"この商品は、\"&Item.P_数量上限値&Item.P_単位&\"以下の数量を設定する必要があります\"&CHAR(10)&\"入力された値に間違いがないかご確認下さい\""
+                          },
+                          "ID": "b01f0c685e9a49c1933cd1116c0a8550"
+                        },
+                        {
+                          "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                          "ErrorCode": "100",
+                          "Message": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=エラーメッセージ"
+                          }
+                        }
+                      ],
+                      "ID": "7920a320-d938-48a6-8aee-189d6c40d748"
+                    }
+                  ]
+                }
+              ],
+              "ID": "644ec8ba-16f2-4c4b-93b7-dd8e2f449f5a"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

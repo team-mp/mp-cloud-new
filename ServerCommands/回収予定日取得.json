@@ -1,0 +1,342 @@
+{
+  "Name": "回収予定日取得",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.InvokeTriggerSaveData, ServerDesignerCommon",
+      "Parameters": [
+        {
+          "Name": "P_請求先ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_請求日",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "請求先マスタ",
+      "TableValue": {
+        "TableName": "m_customer_billing",
+        "TableValueType": 1,
+        "BindingInfos": [
+          {
+            "GUID": "7176928d-337b-4c15-bc98-8652b030bd01",
+            "BindingInfo": {
+              "TableName": "m_customer_billing",
+              "ColumnName": "deposit_month",
+              "GUID": "df347121-44bd-4ed5-b33f-acb0878a4850"
+            },
+            "ColumnName": "入金月"
+          },
+          {
+            "GUID": "fcf9752c-ecdd-4beb-9a8e-2e203cbc4a2c",
+            "BindingInfo": {
+              "TableName": "m_customer_billing",
+              "ColumnName": "deposit_day",
+              "GUID": "483e217a-f449-49bc-bd45-14320a939140"
+            },
+            "ColumnName": "入金日"
+          },
+          {
+            "GUID": "e1cbadcb-a174-4d9d-93c3-3d13cd39e95e",
+            "BindingInfo": {
+              "TableName": "m_customer_billing",
+              "ColumnName": "deposit_business_day",
+              "GUID": "7851a406-5e7d-423d-8714-3da1917c0a4b"
+            },
+            "ColumnName": "入金営業日"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "m_customer_billing",
+            "ColumnName": "customer_id",
+            "GUID": "2d131419-5285-48f6-a32e-4730a3e4ee7a"
+          },
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_請求先ID"
+          }
+        }
+      },
+      "ID": "7d3354e60be245b5a380cbd288ea25c4"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "回収予定日",
+      "ID": "5c7d4e745b034972a86742107141deff"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=請求先マスタ.入金日"
+              }
+            },
+            "value": "29,30,31",
+            "compareType": 12
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "基準回収予定日",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=EOMONTH(EDATE(P_請求日,請求先マスタ.入金月),0)"
+              },
+              "ID": "6f1370c282704bac87b8e9a228a5b0b4"
+            }
+          ],
+          "ID": "94bcabc1-4026-4b0f-8552-29f4d774c868"
+        },
+        {
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "基準回収予定日",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=DATE(YEAR(EDATE(P_請求日,請求先マスタ.入金月)),MONTH(EDATE(P_請求日,請求先マスタ.入金月)),請求先マスタ.入金日)"
+              },
+              "ID": "59f6752394f94391bc529f2bead33a27"
+            }
+          ],
+          "ID": "ccbafd87-032a-412a-9d68-9eae83c673c3"
+        }
+      ],
+      "Comments": "回収予定日取得"
+    },
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": "99",
+        "LoopItemParamName": "Item"
+      },
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "回収予定日曜日",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=WEEKDAY(基準回収予定日)"
+          },
+          "ID": "9edba4d602b0475d8506db106025279f"
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=回収予定日曜日"
+                  }
+                },
+                "value": "1,7",
+                "compareType": 12
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=請求先マスタ.入金営業日"
+                          }
+                        },
+                        "value": "1"
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                          "ParameterName": "基準回収予定日",
+                          "ParameterValue": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=基準回収予定日-1"
+                          },
+                          "ID": "cc02a973282446e6ae022db18799417a",
+                          "Comments": "前営業日"
+                        }
+                      ],
+                      "ID": "3e7255d2-9f92-436d-bb16-e4a4d74db14a"
+                    },
+                    {
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                          "ParameterName": "基準回収予定日",
+                          "ParameterValue": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=基準回収予定日+1"
+                          },
+                          "ID": "d18751ce1aaf45488552964e24c7143d",
+                          "Comments": "後営業日"
+                        }
+                      ],
+                      "ID": "88213512-d3bc-4303-b80a-ace5e2ec2650"
+                    }
+                  ]
+                }
+              ],
+              "Comments": "土、日以外",
+              "ID": "81a190e0-a689-4a13-8689-9cd645bb6914"
+            },
+            {
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "銀行休業日件数",
+                  "TableValue": {
+                    "TableName": "m_bank_holiday",
+                    "TableValueType": 3,
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_bank_holiday",
+                        "ColumnName": "holiday",
+                        "GUID": "4b57abd2-d898-4b65-afa5-6b46cfdf37ed"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=基準回収予定日"
+                      }
+                    }
+                  },
+                  "ID": "5e52a8df29a6470d9b38bc3142b0cc00"
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=銀行休業日件数"
+                          }
+                        },
+                        "value": "0",
+                        "compareType": 2
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                          "ConditionAndCommandPairList": [
+                            {
+                              "Condition": {
+                                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                "param": {
+                                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                                  "ParamObject": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=請求先マスタ.入金営業日"
+                                  }
+                                },
+                                "value": "1"
+                              },
+                              "CommandList": [
+                                {
+                                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                                  "ParameterName": "基準回収予定日",
+                                  "ParameterValue": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=基準回収予定日-1"
+                                  },
+                                  "ID": "4e8a1c6066cc4959b9b57e1d272ff35a",
+                                  "Comments": "前営業日"
+                                }
+                              ],
+                              "ID": "60fa38b9-a105-4f9a-b547-09a4ed4af403"
+                            },
+                            {
+                              "CommandList": [
+                                {
+                                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                                  "ParameterName": "基準回収予定日",
+                                  "ParameterValue": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=基準回収予定日+1"
+                                  },
+                                  "ID": "154778b6ed7041de93084d4342fcef07",
+                                  "Comments": "後営業日"
+                                }
+                              ],
+                              "ID": "b2c86cb0-f1a7-499f-a21b-22d266877a81"
+                            }
+                          ]
+                        }
+                      ],
+                      "ID": "ef7df556-2655-4047-95ca-8180773c9057"
+                    },
+                    {
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                          "ParameterName": "回収予定日",
+                          "ParameterValue": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=基準回収予定日"
+                          },
+                          "ID": "8ee14a7771994c51a0350de1c6552850",
+                          "Comments": "回収予定日をセットして繰り返しを終了"
+                        },
+                        {
+                          "$type": "Forguncy.Model.EndLoopCommand, ServerDesignerCommon",
+                          "WithinLoop": true
+                        }
+                      ],
+                      "ID": "d3ab56df-55a6-46f6-8b4e-a9b056cd2005"
+                    }
+                  ]
+                }
+              ],
+              "ID": "86e33715-fcaf-49f0-978e-d701473c3462"
+            }
+          ]
+        }
+      ],
+      "Comments": "回収予定日取得"
+    },
+    {
+      "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+      "ErrorCode": "0",
+      "CustomReturns": [
+        {
+          "ReturnPropertyName": "R_回収予定日",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=回収予定日"
+          }
+        }
+      ]
+    }
+  ],
+  "ReturnProperties": [
+    {
+      "Name": "R_回収予定日"
+    }
+  ]
+}

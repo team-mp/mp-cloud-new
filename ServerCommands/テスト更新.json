@@ -1,0 +1,81 @@
+{
+  "Name": "テスト更新",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.InvokeTriggerSaveData, ServerDesignerCommon",
+      "InvokeTriggerTestData": {
+        "UserName": "Administrator",
+        "RequestTimeout": 0
+      }
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "申込情報",
+      "TableValue": {
+        "TableName": "t_object_order",
+        "BindingInfos": [
+          {
+            "GUID": "cf9aa11f-f238-4f52-832f-9debcfae7d3d",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "object_order_id",
+              "GUID": "adf1467d-40ce-4d37-8f01-8246ebd1d10c"
+            },
+            "ColumnName": "申込ID"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "CompareType": 3,
+          "ColumnBindingInfo": {
+            "TableName": "t_object_order",
+            "ColumnName": "object_order_id",
+            "GUID": "21c8ef53-d2ff-4559-9e34-b27869702130"
+          },
+          "Value": "219500"
+        }
+      },
+      "ID": "90a9c66e482e4c79a99e1490b921dcef"
+    },
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=申込情報"
+        },
+        "LoopItemParamName": "Item"
+      },
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "最新申込ステータス更新処理",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_申込ID",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=Item.申込ID"
+              }
+            }
+          ],
+          "ReturnPropertiesTo": [
+            {
+              "ResultPropertyName": "R_申込ステータス更新フラグ"
+            },
+            {
+              "ResultPropertyName": "R_更新済み申込ステータスID"
+            }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "ID": "f2e2e5aa-158b-471e-b427-8310350a9b95",
+  "Name": "工事見積依頼詳細ページへ遷移",
+  "Params": [
+    {
+      "ID": "d674f3ff-0930-470f-9693-e050d91f8eb9",
+      "Name": "P_工事見積ID"
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "ランダムID",
+      "TableValue": {
+        "TableName": "t_object_construction_estimate_ext",
+        "OnlyGetValue": true,
+        "TableValueType": 0,
+        "BindingInfos": [
+          {
+            "GUID": "f06616e8-7e32-4400-8ba9-d6e35f827c4a",
+            "BindingInfo": {
+              "TableName": "t_object_construction_estimate_ext",
+              "ColumnName": "random_id",
+              "GUID": "829f5e83-1d4a-4ee9-a5da-b18e0bbfd648"
+            },
+            "ColumnName": "random_id"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "t_object_construction_estimate_ext",
+            "ColumnName": "construction_estimate_id",
+            "GUID": "967c740b-6559-4cfa-b023-74e92bf2d8b3"
+          },
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_工事見積ID"
+          }
+        }
+      },
+      "ID": "3b633af4662248f8a35cfa498bacd834",
+      "Comments": "ランダムID取得"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "URL",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=ロケーションURL"
+      },
+      "ID": "8037a39084ca418fb8b679ede3dbb7cc",
+      "Comments": "※メインフォームでセル定義されている値を参照"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "削除文字列",
+      "ParameterValue": "%E3%83%A1%E3%82%A4%E3%83%B3%E3%83%95%E3%82%A9%E3%83%BC%E3%83%A0",
+      "ID": "25571745669d48c1b02d2ac48e64a99b",
+      "Comments": "メインフォームという文字列"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "URL",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=SUBSTITUTE(URL,削除文字列,\"\")"
+      },
+      "ID": "3d0223c9fec24d2ab63703abe879ac61",
+      "Comments": "補正する"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "URL",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=URL&IF(RIGHT(URL,1)=\"/\",\"\",\"/\")"
+      },
+      "ID": "056504a085fc4f3fbc1016cda4a05694",
+      "Comments": "最後の文字に「/」が無ければ付加する"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "URL",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=URL&\"property-info\""
+      },
+      "ID": "672ac2f1263742e5b7714d0573b56cc8",
+      "Comments": "ページ名をセット"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "URL",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=URL&\"?construction_estimate_id=\"&ランダムID"
+      },
+      "ID": "aa7ec0681cf44723a45c6726c1ff8e81",
+      "Comments": "ランダムIDをセット（引数をセット）"
+    },
+    {
+      "$type": "Forguncy.Model.NavigateCommand, ServerDesignerCommon",
+      "ValueFormula": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=URL"
+      },
+      "IsOpenInNewTab": true,
+      "LoadBindingDataOption": 1
+    },
+    {
+      "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+      "ErrorCode": "0"
+    }
+  ]
+}

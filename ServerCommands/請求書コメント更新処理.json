@@ -1,0 +1,486 @@
+{
+  "Name": "請求書コメント更新処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_請求番号",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_請求コメント",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "請求番号採番登録済み件数",
+          "TableValue": {
+            "TableName": "m_billing_numbering",
+            "TableValueType": 3,
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_billing_numbering",
+                "ColumnName": "billing_no",
+                "GUID": "cada8b8d-6431-4e0b-8350-79c2ac05a78d"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_請求番号"
+              }
+            },
+            "NullFormulaValueQueryPolicy": 0
+          },
+          "ID": "474259ac62254fcd996aa721c255f691"
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=請求番号採番登録済み件数"
+                  }
+                },
+                "value": "0"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "売上情報",
+                  "TableValue": {
+                    "TableName": "t_sales",
+                    "TableValueType": 1,
+                    "BindingInfos": [
+                      {
+                        "GUID": "73d14cb0-875a-492f-9c1a-1d0b90aaab64",
+                        "BindingInfo": {
+                          "TableName": "t_sales",
+                          "ColumnName": "billing_date",
+                          "GUID": "c8bf2924-dea1-4e59-a049-c9c393676713"
+                        },
+                        "ColumnName": "請求日"
+                      },
+                      {
+                        "GUID": "b372de1f-aec6-4d97-be38-d5d3a3a11e88",
+                        "BindingInfo": {
+                          "TableName": "t_sales",
+                          "ColumnName": "billing_yyyymm",
+                          "GUID": "c6bfef74-fe29-4bce-9e6a-31d3517988be"
+                        },
+                        "ColumnName": "請求年月"
+                      },
+                      {
+                        "GUID": "dcb7e1c2-934e-434b-923f-72f0c3ba9a87",
+                        "BindingInfo": {
+                          "TableName": "t_sales",
+                          "ColumnName": "billing_comp_id",
+                          "GUID": "0ebc4f34-f8c4-4d3d-9c3b-ad0f5d00907e"
+                        },
+                        "ColumnName": "請求先ID"
+                      },
+                      {
+                        "GUID": "9334e35b-f793-43c9-8460-3fb4d00b135f",
+                        "BindingInfo": {
+                          "TableName": "t_sales",
+                          "ColumnName": "invoice_issue_unit_id",
+                          "GUID": "102645b5-14f4-4ba1-9324-2481588e0215"
+                        },
+                        "ColumnName": "請求書発行単位ID"
+                      },
+                      {
+                        "GUID": "25f235d2-c319-4037-90cc-1c0e8821b775",
+                        "BindingInfo": {
+                          "TableName": "t_sales",
+                          "ColumnName": "object_order_id",
+                          "GUID": "62bfd440-3984-4df1-a42e-59ad6c50b2ef",
+                          "RelationBinding": {
+                            "RelatedTable": "t_object_order",
+                            "RelatedColumn": "object_order_id",
+                            "DisplayColumn": "object_id"
+                          }
+                        },
+                        "ColumnName": "物件ID"
+                      },
+                      {
+                        "GUID": "d4a96302-1d20-4ccf-8f7e-cb6b9d2c0b6b",
+                        "BindingInfo": {
+                          "TableName": "t_sales",
+                          "ColumnName": "object_order_id",
+                          "GUID": "e2a7f24c-fb96-4524-8bc6-4be5061ee044",
+                          "RelationBinding": {
+                            "RelatedTable": "t_object_order",
+                            "RelatedColumn": "object_order_id",
+                            "DisplayColumn": "object_user_id"
+                          }
+                        },
+                        "ColumnName": "物件担当者ID"
+                      }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "t_sales",
+                        "ColumnName": "billing_no",
+                        "GUID": "25bf9c09-103f-4bd7-8c48-72b012467ffb"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_請求番号"
+                      }
+                    },
+                    "TopCount": "1",
+                    "OrderBySqlCondition": {
+                      "OrderByColumns": [
+                        {
+                          "ColumnBindingInfo": {
+                            "TableName": "t_sales",
+                            "ColumnName": "sales_id",
+                            "GUID": "2f22d842-8af3-4c86-9450-24be0f23771d"
+                          },
+                          "Order": 0
+                        }
+                      ]
+                    }
+                  },
+                  "ID": "f0a447ba72524b668571058d476914a9"
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=売上情報.請求書発行単位ID"
+                          }
+                        },
+                        "value": "1"
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                          "TableName": "m_billing_numbering",
+                          "UpdateType": "add",
+                          "ShowConfirm": false,
+                          "UpdateBindingValues": [
+                            {
+                              "BindingInfo": {
+                                "TableName": "m_billing_numbering",
+                                "ColumnName": "billing_no",
+                                "GUID": "d552164e-f6c2-4a52-bf54-681bc5cd7320"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_請求番号"
+                              }
+                            },
+                            {
+                              "BindingInfo": {
+                                "TableName": "m_billing_numbering",
+                                "ColumnName": "billing_date",
+                                "GUID": "a2c3db3c-cdd3-4bde-b818-6a4dd5ff5f28"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=売上情報.請求日"
+                              }
+                            },
+                            {
+                              "BindingInfo": {
+                                "TableName": "m_billing_numbering",
+                                "ColumnName": "billing_yyyymm",
+                                "GUID": "6c63ccb4-02b2-4568-a0eb-7eb9393d9692"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=売上情報.請求年月"
+                              }
+                            },
+                            {
+                              "BindingInfo": {
+                                "TableName": "m_billing_numbering",
+                                "ColumnName": "billing_comp_id",
+                                "GUID": "302f0265-1cf8-4c4d-a912-0ad123a79b02"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=売上情報.請求先ID"
+                              }
+                            },
+                            {
+                              "BindingInfo": {
+                                "TableName": "m_billing_numbering",
+                                "ColumnName": "invoice_comment",
+                                "GUID": "6e9c8644-b5ee-4e18-8fa9-1ce7b22a2d6a"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_請求コメント"
+                              }
+                            }
+                          ]
+                        }
+                      ],
+                      "Comments": "月次単位",
+                      "ID": "6e0b3902-bb63-42ea-a187-0422130cf49c"
+                    },
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=売上情報.請求書発行単位ID"
+                          }
+                        },
+                        "value": "2"
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                          "TableName": "m_billing_numbering",
+                          "UpdateType": "add",
+                          "ShowConfirm": false,
+                          "UpdateBindingValues": [
+                            {
+                              "BindingInfo": {
+                                "TableName": "m_billing_numbering",
+                                "ColumnName": "billing_no",
+                                "GUID": "2d0c7c14-6ad4-48c6-b82b-2f0055f52dcf"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_請求番号"
+                              }
+                            },
+                            {
+                              "BindingInfo": {
+                                "TableName": "m_billing_numbering",
+                                "ColumnName": "billing_date",
+                                "GUID": "54489da3-7717-4370-b93a-e4ef21cc8e96"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=売上情報.請求日"
+                              }
+                            },
+                            {
+                              "BindingInfo": {
+                                "TableName": "m_billing_numbering",
+                                "ColumnName": "billing_yyyymm",
+                                "GUID": "124dd1a0-d6b8-422c-ace8-b26807b2a4c9"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=売上情報.請求年月"
+                              }
+                            },
+                            {
+                              "BindingInfo": {
+                                "TableName": "m_billing_numbering",
+                                "ColumnName": "billing_comp_id",
+                                "GUID": "b935b4b4-53dd-428a-9979-b710dbfccb6b"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=売上情報.請求先ID"
+                              }
+                            },
+                            {
+                              "BindingInfo": {
+                                "TableName": "m_billing_numbering",
+                                "ColumnName": "object_id",
+                                "GUID": "28fe9fde-63d2-48c2-ad0d-45df5c3ae2f1"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=売上情報.物件ID"
+                              }
+                            },
+                            {
+                              "BindingInfo": {
+                                "TableName": "m_billing_numbering",
+                                "ColumnName": "invoice_comment",
+                                "GUID": "e3c50268-b463-412a-a92a-94512d92bd51"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_請求コメント"
+                              }
+                            }
+                          ]
+                        }
+                      ],
+                      "ID": "a5b96d79-eb9d-429c-b947-4bfd3751bd45"
+                    },
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=売上情報.請求書発行単位ID"
+                          }
+                        },
+                        "value": "3"
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                          "TableName": "m_billing_numbering",
+                          "UpdateType": "add",
+                          "ShowConfirm": false,
+                          "UpdateBindingValues": [
+                            {
+                              "BindingInfo": {
+                                "TableName": "m_billing_numbering",
+                                "ColumnName": "billing_no",
+                                "GUID": "5f2dc0e5-ade2-4082-9a96-80146b2f8824"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_請求番号"
+                              }
+                            },
+                            {
+                              "BindingInfo": {
+                                "TableName": "m_billing_numbering",
+                                "ColumnName": "billing_date",
+                                "GUID": "373d7e45-0eba-456e-b423-5ca7ebba50dd"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=売上情報.請求日"
+                              }
+                            },
+                            {
+                              "BindingInfo": {
+                                "TableName": "m_billing_numbering",
+                                "ColumnName": "billing_yyyymm",
+                                "GUID": "0fdb2fff-89a6-4553-9133-4cf5a521da2b"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=売上情報.請求年月"
+                              }
+                            },
+                            {
+                              "BindingInfo": {
+                                "TableName": "m_billing_numbering",
+                                "ColumnName": "billing_comp_id",
+                                "GUID": "fc56cf1b-7d6b-4219-a8dc-61dbbbeba87a"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=売上情報.請求先ID"
+                              }
+                            },
+                            {
+                              "BindingInfo": {
+                                "TableName": "m_billing_numbering",
+                                "ColumnName": "object_user_id",
+                                "GUID": "faa11b01-c6c4-413a-bf1f-45e92564b5c3"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=売上情報.物件担当者ID"
+                              }
+                            },
+                            {
+                              "BindingInfo": {
+                                "TableName": "m_billing_numbering",
+                                "ColumnName": "invoice_comment",
+                                "GUID": "432831d2-9c1c-496c-b3a3-9d049741edf4"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_請求コメント"
+                              }
+                            }
+                          ]
+                        }
+                      ],
+                      "ID": "06e8a8df-fdd9-40e0-9886-7a04277a9d88"
+                    }
+                  ]
+                }
+              ],
+              "ID": "d15c6686-96c0-43d5-a27c-17e0c417a065"
+            },
+            {
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "m_billing_numbering",
+                  "ShowConfirm": false,
+                  "RowsToUpdate": 1,
+                  "RowsToUpdateCondition": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "m_billing_numbering",
+                      "ColumnName": "billing_no",
+                      "GUID": "6fffb254-f2c2-4c03-9de3-9182b76e91ac"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_請求番号"
+                    }
+                  },
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_billing_numbering",
+                        "ColumnName": "invoice_comment",
+                        "GUID": "ab9eb034-7a29-43b4-8099-c17bb066b9c2"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_請求コメント"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "ID": "d02b1fe6-f8b5-4bb6-a88f-4163fcfba0a6"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,299 @@
+{
+  "Name": "支払データ更新処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_仕入ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_仕入日",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_買掛区分",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_仕入区分",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_外注先ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_支払先ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_支払商品ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_支払商品名",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_支払備考",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_税抜金額",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_消費税額",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_支払金額",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_消費税率",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_支払日",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_支払予定日",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "支払月",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=TEXT(P_支払日,\"yyyymm\")"
+          },
+          "ID": "18820d7f85634e7ebafe69c4bcf395de"
+        },
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_purchase",
+          "ShowConfirm": false,
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_purchase",
+              "ColumnName": "purchase_id",
+              "GUID": "6f24bd9e-1ba5-4600-a53d-b19d3b147f87"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_仕入ID"
+            }
+          },
+          "UpdateBindingValues": [
+            {
+              "BindingInfo": {
+                "TableName": "t_purchase",
+                "ColumnName": "purchase_date",
+                "GUID": "7c072fdc-8abd-44be-b4c1-796595818e5b"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_仕入日"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_purchase",
+                "ColumnName": "payables_type",
+                "GUID": "5e16e27a-e927-470a-8dcd-dbc838d19dae"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_買掛区分"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_purchase",
+                "ColumnName": "purchase_type",
+                "GUID": "7f05e3a6-a91c-4564-a5f4-cd52c546dcd4"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_仕入区分"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_purchase",
+                "ColumnName": "outsourcing_id",
+                "GUID": "78cf1105-6bbe-42e4-98f2-0c4d12536377"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_外注先ID"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_purchase",
+                "ColumnName": "payment_comp_id",
+                "GUID": "4d3e0e75-80c4-474e-b57d-788e01de75e0"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_支払先ID"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_purchase",
+                "ColumnName": "payment_date",
+                "GUID": "dd9ff7f7-00b1-4d60-9767-34d638b62b0e"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_支払日"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_purchase",
+                "ColumnName": "payment_yyyymm",
+                "GUID": "d560a5a9-7068-42de-be47-dd323d7bac71"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=支払月"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_purchase",
+                "ColumnName": "payment_product_id",
+                "GUID": "87079f98-ab6b-4e6e-8c7f-ce908a908b8f"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_支払商品ID"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_purchase",
+                "ColumnName": "payment_product_name",
+                "GUID": "0ad5ef57-0933-49d4-90f4-06c7b952ee9d"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_支払商品名"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_purchase",
+                "ColumnName": "payment_remarks",
+                "GUID": "315c868c-ca07-47bd-8a0c-d7cb2a7d4ed0"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_支払備考"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_purchase",
+                "ColumnName": "excluding_tax_amount",
+                "GUID": "23128865-902f-4892-9d1d-506df5e9aa5a"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_税抜金額"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_purchase",
+                "ColumnName": "tax_amount",
+                "GUID": "996ca7f3-22d3-41e7-951f-dc6498afedc3"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_消費税額"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_purchase",
+                "ColumnName": "payment_amount",
+                "GUID": "bd0621db-31ea-4078-b2eb-e5fd5c2c8337"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_支払金額"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_purchase",
+                "ColumnName": "tax_rate",
+                "GUID": "a5306150-1d2b-4ca2-99f1-5fd55c8db39d"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_消費税率"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_purchase",
+                "ColumnName": "payment_scheduled_date",
+                "GUID": "d8d1e74c-cfd8-4d0d-9301-7c468bedaefc"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_支払予定日"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_purchase",
+                "ColumnName": "payment_flg",
+                "GUID": "b687078a-ccc2-4915-823a-79de1aa8f5f6"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=IF(P_支払日<>\"\",1,0)"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

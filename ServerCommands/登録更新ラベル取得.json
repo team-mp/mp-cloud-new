@@ -1,0 +1,213 @@
+{
+  "Name": "登録更新ラベル取得",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.InvokeTriggerSaveData, ServerDesignerCommon",
+      "Parameters": [
+        {
+          "Name": "P_ユーザーID",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_ユーザーID"
+              }
+            },
+            "value": "%Null%",
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "ユーザーID",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_ユーザーID"
+              },
+              "ID": "32d526b4f8724e9abd6a005b9e4da726"
+            }
+          ],
+          "ID": "438e7c96-1114-42d3-a1d4-2c1249f69dee"
+        },
+        {
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "ユーザーID",
+              "ParameterValue": "%CurrentUser.user_id%",
+              "ID": "11157bd7d1f34a869da5c6a6d7fd9a3e"
+            }
+          ],
+          "ID": "d14fbec9-f1bc-4de1-b636-a0103a67cab9"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "ユーザー情報",
+      "TableValue": {
+        "TableName": "m_user",
+        "TableValueType": 1,
+        "BindingInfos": [
+          {
+            "GUID": "618ab455-04e1-4992-9f50-6bfda2a815b3",
+            "BindingInfo": {
+              "TableName": "m_user",
+              "ColumnName": "user_name",
+              "GUID": "aa1c3ffc-fe7a-403d-b3a7-08d9cc094107"
+            },
+            "ColumnName": "氏名"
+          },
+          {
+            "GUID": "2dab7275-c149-4943-8601-34ae37c56a27",
+            "BindingInfo": {
+              "TableName": "m_user",
+              "ColumnName": "customer_id",
+              "GUID": "e276c798-8d94-4f54-be0e-aef54ab1ad45",
+              "RelationBinding": {
+                "RelatedTable": "m_customer",
+                "RelatedColumn": "customer_id",
+                "DisplayColumn": "customer_abbr"
+              }
+            },
+            "ColumnName": "顧客名略称"
+          },
+          {
+            "GUID": "5f00cb85-ef6d-4d31-bdb9-e4a29546c75c",
+            "BindingInfo": {
+              "TableName": "m_user",
+              "ColumnName": "customer_id",
+              "GUID": "a01a61ca-9cd5-47ab-b5b3-292b9d2d10a0",
+              "RelationBinding": {
+                "RelatedTable": "m_customer",
+                "RelatedColumn": "customer_id",
+                "DisplayColumn": "main_office_flg"
+              }
+            },
+            "ColumnName": "本社フラグ"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "m_user",
+            "ColumnName": "user_id",
+            "GUID": "c3ae8c84-90d5-4560-9bb0-59b16d5c0f08"
+          },
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=ユーザーID"
+          }
+        },
+        "NullFormulaValueQueryPolicy": 0
+      },
+      "ID": "e8c2a85ed7e048d5a9999fc3698c6a99"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=ユーザー情報"
+              }
+            },
+            "value": "%Null%",
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "ラベル名",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=TEXT(NOW(),\"yyyy/mm/dd hh:mm\")&\"　\"&ユーザー情報.顧客名略称&\" \"&ユーザー情報.氏名"
+              },
+              "ID": "dc300a1095524d1cb8ebc20cfaf240a9"
+            }
+          ],
+          "ID": "e3672a3e-2498-4f95-b54a-99c727a51c5e"
+        },
+        {
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "ラベル名",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=TEXT(NOW(),\"yyyy/mm/dd hh:mm\")&\"　㈱MP システム管理者\""
+              },
+              "ID": "e4655039f9664175aadf2fbd7e11c65a"
+            }
+          ],
+          "ID": "666c8e66-cda7-47f6-8932-cb1efef6128a"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+      "ErrorCode": "0",
+      "CustomReturns": [
+        {
+          "ReturnPropertyName": "R_ラベル名",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=ラベル名"
+          }
+        },
+        {
+          "ReturnPropertyName": "R_外部ユーザーフラグ",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=IF(ユーザー情報.本社フラグ<>1,1,0)"
+          }
+        },
+        {
+          "ReturnPropertyName": "R_ユーザー名",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=ユーザー情報.氏名"
+          }
+        },
+        {
+          "ReturnPropertyName": "R_所属会社名",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=ユーザー情報.顧客名略称"
+          }
+        }
+      ]
+    }
+  ],
+  "ReturnProperties": [
+    {
+      "Name": "R_ラベル名"
+    },
+    {
+      "Name": "R_外部ユーザーフラグ"
+    },
+    {
+      "Name": "R_ユーザー名"
+    },
+    {
+      "Name": "R_所属会社名"
+    }
+  ]
+}

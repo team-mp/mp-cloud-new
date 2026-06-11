@@ -1,0 +1,202 @@
+{
+  "Name": "請求修正可能日取得",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_請求日",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "請求締日数",
+      "TableValue": {
+        "TableName": "m_environment",
+        "OnlyGetValue": true,
+        "TableValueType": 0,
+        "BindingInfos": [
+          {
+            "GUID": "a80dc910-6eb7-48ce-8dfb-86004545891b",
+            "BindingInfo": {
+              "TableName": "m_environment",
+              "ColumnName": "billing_closing_days",
+              "GUID": "19c06d69-9773-459c-9603-b6b2a3bc3ea3"
+            },
+            "ColumnName": "billing_closing_days"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "m_environment",
+            "ColumnName": "environment_id",
+            "GUID": "9d0ec664-a22b-4977-aed9-891759607946"
+          },
+          "Value": "1"
+        }
+      },
+      "ID": "b8baa6ab4bda4634a62c10a4506ee2a7"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "請求修正可能日",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=P_請求日+請求締日数"
+      },
+      "ID": "6dd40b06c3684be1860833213b459da9"
+    },
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": "99",
+        "LoopIndexParamName": "カウンター",
+        "LoopItemParamName": "Item"
+      },
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "休業日登録件数",
+          "TableValue": {
+            "TableName": "m_company_holiday",
+            "TableValueType": 3,
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_company_holiday",
+                "ColumnName": "holiday",
+                "GUID": "06e9a78e-6d0e-468b-964a-0879adf3a1ca"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=請求修正可能日"
+              }
+            }
+          },
+          "ID": "8f8b4763bf9a47cf991b80ed4ea7673e"
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=休業日登録件数"
+                  }
+                },
+                "value": "0"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "曜日",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=WEEKDAY(請求修正可能日)"
+                  },
+                  "ID": "8db402d17765486b841233aee83b5292"
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=曜日"
+                          }
+                        },
+                        "value": "1,7",
+                        "compareType": 12
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                          "ParameterName": "請求修正可能日",
+                          "ParameterValue": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=請求修正可能日+1"
+                          },
+                          "ID": "5a2ba75d8c944d129427cb7786efaeec"
+                        }
+                      ],
+                      "ID": "bcb02c0a-6871-48c1-a192-7e8458bea8c5"
+                    },
+                    {
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                          "ErrorCode": "0",
+                          "CustomReturns": [
+                            {
+                              "ReturnPropertyName": "R_請求修正可能日",
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=請求修正可能日"
+                              }
+                            }
+                          ]
+                        }
+                      ],
+                      "ID": "cf003988-735f-483c-8931-1bdb228cb8e0"
+                    }
+                  ]
+                }
+              ],
+              "ID": "cc252ebf-2d85-402e-b940-0588a1d1b28f"
+            },
+            {
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "請求修正可能日",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=請求修正可能日+1"
+                  },
+                  "ID": "966c693d0ee4408ebde0d7c91b2588c3"
+                }
+              ],
+              "ID": "669a4843-a1f3-4a41-97d0-aa82abba956d"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ReturnProperties": [
+    {
+      "Name": "R_請求修正可能日"
+    }
+  ]
+}

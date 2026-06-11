@@ -1,0 +1,279 @@
+{
+  "Name": "営業日取得",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.InvokeTriggerSaveData, ServerDesignerCommon",
+      "Parameters": [
+        {
+          "Name": "P_指定日",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_日数",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "V_営業日",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=P_指定日"
+      },
+      "ID": "e8ab86af60db4e02af150958a9c87050"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "V_加算日数",
+      "ParameterValue": "0",
+      "ID": "144dd0692d3a4d718420b7b547cb2489"
+    },
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": "99",
+        "LoopIndexParamName": "カウンター",
+        "LoopItemParamName": "Item"
+      },
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "休業日登録件数",
+          "TableValue": {
+            "TableName": "m_company_holiday",
+            "TableValueType": 3,
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_company_holiday",
+                "ColumnName": "holiday",
+                "GUID": "d640a88d-ab5d-4980-bba7-4d1a66e97de9"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=V_営業日"
+              }
+            }
+          },
+          "ID": "79bd73ce665c4f0d8dd2936d3b5a3848"
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=休業日登録件数"
+                  }
+                },
+                "value": "0"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "曜日",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=WEEKDAY(V_営業日)"
+                  },
+                  "ID": "a672d3abee144d38b056aee18718d284"
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "SubConditions": [
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=曜日"
+                              }
+                            },
+                            "value": "1,7",
+                            "compareType": 13
+                          },
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_指定日"
+                              }
+                            },
+                            "value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=V_営業日"
+                            },
+                            "compareType": 1
+                          }
+                        ]
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                          "ConditionAndCommandPairList": [
+                            {
+                              "Condition": {
+                                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                "param": {
+                                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                                  "ParamObject": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=P_日数"
+                                  }
+                                },
+                                "value": "0",
+                                "compareType": 3
+                              },
+                              "CommandList": [
+                                {
+                                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                                  "ParameterName": "V_加算日数",
+                                  "ParameterValue": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=V_加算日数+1"
+                                  },
+                                  "ID": "5617a5629b33481a93673a40e344ecdf"
+                                }
+                              ],
+                              "ID": "f1e92e8e-8bad-43dd-b83a-b1aacf0f337d"
+                            },
+                            {
+                              "CommandList": [
+                                {
+                                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                                  "ParameterName": "V_加算日数",
+                                  "ParameterValue": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=V_加算日数-1"
+                                  },
+                                  "ID": "89dac229197d4f94af58c48344a9cec9"
+                                }
+                              ],
+                              "ID": "7bf6fe51-f159-4b31-9c2b-5d120fdff65c"
+                            }
+                          ]
+                        }
+                      ],
+                      "ID": "d9d2b514-20d4-4b1c-b7fd-b5e2339ee01e"
+                    }
+                  ]
+                }
+              ],
+              "ID": "2168e5e3-722e-4429-b066-64e313771fd0"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_日数"
+                  }
+                },
+                "value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=V_加算日数"
+                }
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                  "ErrorCode": "0",
+                  "CustomReturns": [
+                    {
+                      "ReturnPropertyName": "R_営業日",
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=V_営業日"
+                      },
+                      "Remark": "営業日計算後の日付が返却される"
+                    }
+                  ]
+                }
+              ],
+              "ID": "7b99516b-9a1d-4490-9f2c-9195d14961dc"
+            },
+            {
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_日数"
+                          }
+                        },
+                        "value": "0",
+                        "compareType": 3
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                          "ParameterName": "V_営業日",
+                          "ParameterValue": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=V_営業日+1"
+                          },
+                          "ID": "962823f66542444b8cbe0cfd15a84b24"
+                        }
+                      ],
+                      "ID": "aa586c91-bc67-42bc-b3a8-bd4472bcd3f2"
+                    },
+                    {
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                          "ParameterName": "V_営業日",
+                          "ParameterValue": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=V_営業日-1"
+                          },
+                          "ID": "a95d85f89290460bb961c69a292975c6"
+                        }
+                      ],
+                      "ID": "4848ea0b-ce7c-4c70-a42d-7567dad9a4b0"
+                    }
+                  ]
+                }
+              ],
+              "ID": "5dc0036b-5e5e-4c94-8cdc-dfbb19ee173d"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ReturnProperties": [
+    {
+      "Name": "R_営業日",
+      "Remark": "営業日計算後の日付が返却される"
+    }
+  ]
+}

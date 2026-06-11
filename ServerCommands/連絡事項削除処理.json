@@ -1,0 +1,176 @@
+{
+  "Name": "連絡事項削除処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.InvokeTriggerSaveData, ServerDesignerCommon",
+      "Parameters": [
+        {
+          "Name": "P_連絡ID",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "タスク情報",
+          "TableValue": {
+            "TableName": "t_object_notice",
+            "TableValueType": 1,
+            "BindingInfos": [
+              {
+                "GUID": "715df592-5cb6-423b-bed4-30e9e7712fc1",
+                "BindingInfo": {
+                  "TableName": "t_object_notice",
+                  "ColumnName": "task_id",
+                  "GUID": "b3810785-24c5-468c-9100-48fb9c6e06fb"
+                },
+                "ColumnName": "タスクID"
+              },
+              {
+                "GUID": "d42a60c4-d419-499d-b649-64b7f56d68da",
+                "BindingInfo": {
+                  "TableName": "t_object_notice",
+                  "ColumnName": "task_id",
+                  "GUID": "84319302-c2de-4a55-a031-12b5938945fe",
+                  "RelationBinding": {
+                    "RelatedTable": "t_task",
+                    "RelatedColumn": "task_id",
+                    "DisplayColumn": "schedule_mail_id"
+                  }
+                },
+                "ColumnName": "スケジュールメールID"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_notice",
+                "ColumnName": "notice_id",
+                "GUID": "5295fd79-c274-4b39-bb6c-e56a051af88b"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_連絡ID"
+              }
+            }
+          },
+          "ID": "4f8b6122df794e86b5735756e72c2ee9"
+        },
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_object_notice",
+          "UpdateType": "delete",
+          "ShowConfirm": true,
+          "ConfirmText": "本当に削除してもよろしいですか？",
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object_notice",
+              "ColumnName": "notice_id",
+              "GUID": "4ec9be62-410f-4d48-8521-0369f54fddcf"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_連絡ID"
+            }
+          }
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=タスク情報.タスクID"
+                  }
+                },
+                "value": "%Null%",
+                "compareType": 1
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "t_task",
+                  "UpdateType": "delete",
+                  "ShowConfirm": true,
+                  "ConfirmText": "本当に削除してもよろしいですか？",
+                  "RowsToUpdate": 1,
+                  "RowsToUpdateCondition": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_task",
+                      "ColumnName": "task_id",
+                      "GUID": "b29f3771-98bb-4fd2-a617-f4750e8e95bf"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=タスク情報.タスクID"
+                    }
+                  }
+                }
+              ],
+              "ID": "743f05d8-06c8-4f4c-a8a9-d126e0929760"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=タスク情報.スケジュールメールID"
+                  }
+                },
+                "value": "%Null%",
+                "compareType": 1
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "t_schedule_mail",
+                  "UpdateType": "delete",
+                  "ShowConfirm": true,
+                  "ConfirmText": "本当に削除してもよろしいですか？",
+                  "RowsToUpdate": 1,
+                  "RowsToUpdateCondition": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_schedule_mail",
+                      "ColumnName": "schedule_mail_id",
+                      "GUID": "89fa4bb5-38b0-4e06-af26-6addd01f774d"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=タスク情報.スケジュールメールID"
+                    }
+                  }
+                }
+              ],
+              "ID": "ed923105-8b75-46ba-b1bd-e89db6c6a381"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+          "ErrorCode": "0"
+        }
+      ]
+    }
+  ]
+}

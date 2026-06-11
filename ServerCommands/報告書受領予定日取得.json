@@ -1,0 +1,746 @@
+{
+  "Name": "報告書受領予定日取得",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_顧客ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_予定終了日",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_調査報告フラグ",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_測量報告フラグ",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_転圧報告フラグ",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_工事報告フラグ",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_調査報告フラグ"
+              }
+            },
+            "value": "1"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "V_報告書納品日数",
+              "TableValue": {
+                "TableName": "m_environment",
+                "OnlyGetValue": true,
+                "TableValueType": 0,
+                "BindingInfos": [
+                  {
+                    "GUID": "4e3a3301-6f24-436b-b266-4923d8600b81",
+                    "BindingInfo": {
+                      "TableName": "m_environment",
+                      "ColumnName": "survey_report_delivery_days",
+                      "GUID": "81d32328-8159-42ad-abbb-02a1b6441d56"
+                    },
+                    "ColumnName": "survey_report_delivery_days"
+                  }
+                ],
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "m_environment",
+                    "ColumnName": "environment_id",
+                    "GUID": "d0f3c8f7-c2ff-4119-a2d2-7bcd71e5caf5"
+                  },
+                  "Value": "1"
+                }
+              },
+              "ID": "ed66952870134560abb470e65e220735"
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_顧客ID"
+                      }
+                    },
+                    "value": "%Null%",
+                    "compareType": 1
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "V_調査会社の納品日数",
+                      "TableValue": {
+                        "TableName": "m_customer_outrule",
+                        "OnlyGetValue": true,
+                        "TableValueType": 0,
+                        "BindingInfos": [
+                          {
+                            "GUID": "b0f32dfa-39bd-45fc-a008-d0ba67679c7e",
+                            "BindingInfo": {
+                              "TableName": "m_customer_outrule",
+                              "ColumnName": "survey_report_delivery_days",
+                              "GUID": "4630d417-76e0-4673-97d9-02f56d65b281"
+                            },
+                            "ColumnName": "survey_report_delivery_days"
+                          }
+                        ],
+                        "SqlCondition": {
+                          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                          "ColumnBindingInfo": {
+                            "TableName": "m_customer_outrule",
+                            "ColumnName": "customer_id",
+                            "GUID": "d4a7a3cc-7121-41e9-8875-59dec6eb6c8c"
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_顧客ID"
+                          }
+                        }
+                      },
+                      "ID": "9a42faaef0804dc4a1d9868f8904e7f3"
+                    }
+                  ],
+                  "ID": "89656211-00ff-4081-9862-bb55da73d8e8"
+                },
+                {
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "V_調査会社の納品日数",
+                      "ID": "7a90901476324cc6a338aeeec3092101"
+                    }
+                  ],
+                  "ID": "c9537a32-521f-4f21-8fab-5fb47e55eaa0"
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=V_調査会社の納品日数"
+                      }
+                    },
+                    "value": "%Null%",
+                    "compareType": 1
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "V_報告書納品日数",
+                      "ParameterValue": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=V_調査会社の納品日数"
+                      },
+                      "ID": "d248c945f10249f48e92a417827ad4bb"
+                    }
+                  ],
+                  "ID": "b6020fc8-c0ad-4378-9d93-445ccd28382d"
+                }
+              ]
+            }
+          ],
+          "ID": "4500af70-fe97-49d0-95cd-62db57a74d0f"
+        },
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_測量報告フラグ"
+              }
+            },
+            "value": "1"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "V_報告書納品日数",
+              "TableValue": {
+                "TableName": "m_environment",
+                "OnlyGetValue": true,
+                "TableValueType": 0,
+                "BindingInfos": [
+                  {
+                    "GUID": "44d02649-50b7-4a09-84f0-9a6147baa238",
+                    "BindingInfo": {
+                      "TableName": "m_environment",
+                      "ColumnName": "surveying_report_delivery_days",
+                      "GUID": "73f3f367-94c3-4bd7-be8a-6bf9c5bcecf5"
+                    },
+                    "ColumnName": "surveying_report_delivery_days"
+                  }
+                ],
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "m_environment",
+                    "ColumnName": "environment_id",
+                    "GUID": "cf6cc3f3-3119-4a6b-a1ac-d80305182514"
+                  },
+                  "Value": "1"
+                }
+              },
+              "ID": "f4c9a6b4e046447c9d63381585e5290a"
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_顧客ID"
+                      }
+                    },
+                    "value": "%Null%",
+                    "compareType": 1
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "V_測量会社の納品日数",
+                      "TableValue": {
+                        "TableName": "m_customer_outrule",
+                        "OnlyGetValue": true,
+                        "TableValueType": 0,
+                        "BindingInfos": [
+                          {
+                            "GUID": "7c314951-d419-4efb-b663-45a946390387",
+                            "BindingInfo": {
+                              "TableName": "m_customer_outrule",
+                              "ColumnName": "surveying_report_delivery_days",
+                              "GUID": "ca34b23b-2e99-4e5c-bc47-2ad17d44dcba"
+                            },
+                            "ColumnName": "surveying_report_delivery_days"
+                          }
+                        ],
+                        "SqlCondition": {
+                          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                          "ColumnBindingInfo": {
+                            "TableName": "m_customer_outrule",
+                            "ColumnName": "customer_id",
+                            "GUID": "1ab5a1e6-73d5-4467-b9fc-3d5b05e7d941"
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_顧客ID"
+                          }
+                        }
+                      },
+                      "ID": "a64abe66e5e045f5afbf6b7057391a77"
+                    }
+                  ],
+                  "ID": "c176cd26-ad52-45b4-8dd0-13ee431ee98a"
+                },
+                {
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "V_測量会社の納品日数",
+                      "ID": "4846178d1758423d89c7bb7eef4a8202"
+                    }
+                  ],
+                  "ID": "2af96e6e-ec26-4f2e-a00b-7f64b5dbb960"
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=V_測量会社の納品日数"
+                      }
+                    },
+                    "value": "%Null%",
+                    "compareType": 1
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "V_報告書納品日数",
+                      "ParameterValue": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=V_測量会社の納品日数"
+                      },
+                      "ID": "d726e816a39e46c5baa41e0af4f0adee"
+                    }
+                  ],
+                  "ID": "c41aeaa9-f534-4fc6-b384-c6a80d8e6f6a"
+                }
+              ]
+            }
+          ],
+          "ID": "eeb8aa44-5e0a-4ff3-b895-fa42e1610413"
+        },
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_転圧報告フラグ"
+              }
+            },
+            "value": "1"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "V_報告書納品日数",
+              "TableValue": {
+                "TableName": "m_environment",
+                "OnlyGetValue": true,
+                "TableValueType": 0,
+                "BindingInfos": [
+                  {
+                    "GUID": "19b05928-1898-4ac8-bc1e-c208e65e92f4",
+                    "BindingInfo": {
+                      "TableName": "m_environment",
+                      "ColumnName": "compaction_report_delivery_days",
+                      "GUID": "da11e89d-6603-40d5-924b-30e46121ead5"
+                    },
+                    "ColumnName": "compaction_report_delivery_days"
+                  }
+                ],
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "m_environment",
+                    "ColumnName": "environment_id",
+                    "GUID": "ec1a4b18-5307-4e19-a8dd-ba1840b9b32b"
+                  },
+                  "Value": "1"
+                }
+              },
+              "ID": "baad5bbefbd942f9bcc8629b41801e7b"
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_顧客ID"
+                      }
+                    },
+                    "value": "%Null%",
+                    "compareType": 1
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "V_転圧会社の納品日数",
+                      "TableValue": {
+                        "TableName": "m_customer_outrule",
+                        "OnlyGetValue": true,
+                        "TableValueType": 0,
+                        "BindingInfos": [
+                          {
+                            "GUID": "40b5bdaa-00fd-45f1-8f7d-d61d16bdcc9b",
+                            "BindingInfo": {
+                              "TableName": "m_customer_outrule",
+                              "ColumnName": "compaction_report_delivery_days",
+                              "GUID": "dfa52aa8-1c07-4977-801a-660a1eb04fa8"
+                            },
+                            "ColumnName": "compaction_report_delivery_days"
+                          }
+                        ],
+                        "SqlCondition": {
+                          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                          "ColumnBindingInfo": {
+                            "TableName": "m_customer_outrule",
+                            "ColumnName": "customer_id",
+                            "GUID": "b813a6ff-685b-4a5c-8566-48d0f5bfb312"
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_顧客ID"
+                          }
+                        }
+                      },
+                      "ID": "0cf683502f294d35b4715423993a72bc"
+                    }
+                  ],
+                  "ID": "0bbb162c-ba8f-4e68-8c76-4c324e656c1f"
+                },
+                {
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "V_転圧会社の納品日数",
+                      "ID": "996f7b95bcfd46fbbfcba1ac0146bce3"
+                    }
+                  ],
+                  "ID": "1343cf86-bf36-4dba-8c46-9c226b21f59d"
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=V_転圧会社の納品日数"
+                      }
+                    },
+                    "value": "%Null%",
+                    "compareType": 1
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "V_報告書納品日数",
+                      "ParameterValue": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=V_転圧会社の納品日数"
+                      },
+                      "ID": "6d788361618647d9b07ab19ed8b44413"
+                    }
+                  ],
+                  "ID": "2a691172-632a-4c68-9224-7b7706f28554"
+                }
+              ]
+            }
+          ],
+          "ID": "151ef729-cc42-44ab-bf90-91fcb1cc2784"
+        },
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_工事報告フラグ"
+              }
+            },
+            "value": "1"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "V_報告書納品日数",
+              "TableValue": {
+                "TableName": "m_environment",
+                "OnlyGetValue": true,
+                "TableValueType": 0,
+                "BindingInfos": [
+                  {
+                    "GUID": "9c95118d-8fd4-4fbe-bf38-7d4638dd7fd5",
+                    "BindingInfo": {
+                      "TableName": "m_environment",
+                      "ColumnName": "construction_report_delivery_days",
+                      "GUID": "1f35defc-5304-48e6-b3d4-a0c76ab9342d"
+                    },
+                    "ColumnName": "construction_report_delivery_days"
+                  }
+                ],
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "m_environment",
+                    "ColumnName": "environment_id",
+                    "GUID": "7f9a0ff0-804f-44f9-b7fc-490e8217146a"
+                  },
+                  "Value": "1"
+                }
+              },
+              "ID": "9733b61303ac4ada9d990844e18ee5bc"
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_顧客ID"
+                      }
+                    },
+                    "value": "%Null%",
+                    "compareType": 1
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "V_工事会社の納品日数",
+                      "TableValue": {
+                        "TableName": "m_customer_outrule",
+                        "OnlyGetValue": true,
+                        "TableValueType": 0,
+                        "BindingInfos": [
+                          {
+                            "GUID": "2f24545b-a55b-482d-acb4-440ab25a07c6",
+                            "BindingInfo": {
+                              "TableName": "m_customer_outrule",
+                              "ColumnName": "construction_report_delivery_days",
+                              "GUID": "699637e1-b064-4a21-816a-68c3a4a0dd1e"
+                            },
+                            "ColumnName": "construction_report_delivery_days"
+                          }
+                        ],
+                        "SqlCondition": {
+                          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                          "ColumnBindingInfo": {
+                            "TableName": "m_customer_outrule",
+                            "ColumnName": "customer_id",
+                            "GUID": "41c7ab86-3363-4e47-bc63-35406c3a6a67"
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_顧客ID"
+                          }
+                        }
+                      },
+                      "ID": "a6ab24e7c42b4a959ba2e6b3a12e9b79"
+                    }
+                  ],
+                  "ID": "46d4a643-6c40-48d4-9cbb-79bd38e73139"
+                },
+                {
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "V_工事会社の納品日数",
+                      "ID": "5493bc2d9a5c473f9349c21912a6757f"
+                    }
+                  ],
+                  "ID": "1dfb9cbe-75c6-46e6-88cb-2ad8b635d6e1"
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=V_工事会社の納品日数"
+                      }
+                    },
+                    "value": "%Null%",
+                    "compareType": 1
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "V_報告書納品日数",
+                      "ParameterValue": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=V_工事会社の納品日数"
+                      },
+                      "ID": "27749ae396e3405aae819f8052b409e7"
+                    }
+                  ],
+                  "ID": "bb87c706-df53-4d87-b493-a1c450c306f2"
+                }
+              ]
+            }
+          ],
+          "ID": "13840e06-2966-4178-b05b-38b5a7aa2540"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "V_受領予定日",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=P_予定終了日+V_報告書納品日数"
+      },
+      "ID": "9bc5e6d4e7b645f8a167d5067451828a"
+    },
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": "99",
+        "LoopIndexParamName": "カウンター",
+        "LoopItemParamName": "Item"
+      },
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "休業日登録件数",
+          "TableValue": {
+            "TableName": "m_company_holiday",
+            "TableValueType": 3,
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_company_holiday",
+                "ColumnName": "holiday",
+                "GUID": "2707ed03-fa3b-4cc3-b240-aa8832ab04a9"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=V_受領予定日"
+              }
+            }
+          },
+          "ID": "58604f6ffd044056a9ee6a483bb483f7"
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=休業日登録件数"
+                  }
+                },
+                "value": "0"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "曜日",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=WEEKDAY(V_受領予定日)"
+                  },
+                  "ID": "7af99764932c4361be1d10f56773e957"
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=曜日"
+                          }
+                        },
+                        "value": "1,7",
+                        "compareType": 13
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                          "ErrorCode": "0",
+                          "CustomReturns": [
+                            {
+                              "ReturnPropertyName": "R_受領予定日",
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=V_受領予定日"
+                              }
+                            }
+                          ]
+                        }
+                      ],
+                      "ID": "fbc237d1-1dae-4272-980b-d6f02171b751"
+                    }
+                  ]
+                }
+              ],
+              "ID": "8302a56c-043a-4f4a-91ee-5af1cedabcd2"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "V_受領予定日",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=V_受領予定日+1"
+          },
+          "ID": "07239c5a43d4407aa31c9b60aef02506"
+        }
+      ]
+    }
+  ],
+  "ReturnProperties": [
+    {
+      "Name": "R_受領予定日"
+    }
+  ]
+}

@@ -1,0 +1,620 @@
+{
+  "Name": "見積書PDF添付処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.InvokeTriggerSaveData, ServerDesignerCommon",
+      "Parameters": [
+        {
+          "Name": "P_申込ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_物件IDs",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_見積書NO",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_添付取得フラグ",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+      "ServerCommandName": "ファイル名取得処理",
+      "Parameters": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_申込ID",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_申込ID"
+          }
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_保証ID",
+          "Remark": "保証書の場合に使用する"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_物件IDs",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_物件IDs"
+          }
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_見積書フラグ",
+          "Value": "1"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_保証書フラグ",
+          "Value": "0"
+        }
+      ],
+      "ReturnPropertiesTo": [
+        {
+          "ResultPropertyName": "R_ファイル名",
+          "ResultTo": {
+            "SerializeProperty": "V_ファイル名"
+          }
+        }
+      ],
+      "RefreshAfterFinish": true,
+      "CheckDataValidation": true
+    },
+    {
+      "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+      "ServerCommandName": "見積書レポートTemp出力",
+      "Parameters": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_見積書NO",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_見積書NO"
+          }
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_出力ファイル名",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=V_ファイル名"
+          }
+        }
+      ],
+      "ResultErrorCodeTo": {
+        "SerializeProperty": "リターンコード"
+      },
+      "ResultMessageTo": {
+        "SerializeProperty": "リターンメッセージ"
+      },
+      "ReturnPropertiesTo": [
+        {
+          "ResultPropertyName": "R_添付ファイル名",
+          "ResultTo": {
+            "SerializeProperty": "添付ファイル名"
+          }
+        }
+      ],
+      "RefreshAfterFinish": true,
+      "CheckDataValidation": true
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "V_添付ファイル文字列",
+      "ID": "38bf016e9c0c407e8682ee48ee5ed9cd"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=リターンコード"
+              }
+            },
+            "value": "0",
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=リターンコード"
+              },
+              "Message": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=リターンメッセージ"
+              },
+              "CustomReturns": [
+                {
+                  "ReturnPropertyName": "R_添付ID"
+                },
+                {
+                  "ReturnPropertyName": "R_添付ファイル文字列"
+                }
+              ]
+            }
+          ],
+          "ID": "826155f6-2331-41bd-8eee-3f0dac304059"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+      "ServerCommandName": "ファイルアップロード処理",
+      "Parameters": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_申込ID",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_申込ID"
+          }
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_物件IDs",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_物件IDs"
+          }
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_ファイル属性ID",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=見積書ファイル属性ID"
+          }
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_コメント"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_添付ファイル",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=添付ファイル名"
+          }
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_変換ファイル",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=添付ファイル名"
+          },
+          "Remark": "NFKC正規化用のファイル名 "
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_調査ID"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_測量ID"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_解析ID"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_転圧ID"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_工事見積ID"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_工事ID"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_保証ID"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_付保ID"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_外販ID"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_物件商品ID"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_連絡ID"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_調査実施日"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_敷測実施日"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_役調実施日"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_転圧設計図区分"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_転圧実施開始日"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_転圧実施終了日"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_工事会社ID"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_工事工法ID"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_工事報告者区分"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_工事実施開始日"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_工事実施終了日"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_工事見積工法ID"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_追加工法提案フラグ"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_添付変更理由ID"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_見積書添付フラグ"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_見積金額"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_施工可能開始日"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_施工可能終了日"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_資料待ちIDs",
+          "Remark": "受療済みに更新する"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_公開フラグ"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_差し替え元添付ID"
+        }
+      ],
+      "ResultErrorCodeTo": {
+        "SerializeProperty": "リターンコード"
+      },
+      "ResultMessageTo": {
+        "SerializeProperty": "リターンメッセージ"
+      },
+      "ReturnPropertiesTo": [
+        {
+          "ResultPropertyName": "R_最終添付ID",
+          "ResultTo": {
+            "SerializeProperty": "最終添付ID"
+          }
+        },
+        {
+          "ResultPropertyName": "R_ファイル名文字列"
+        },
+        {
+          "ResultPropertyName": "R_工事見積ID"
+        },
+        {
+          "ResultPropertyName": "R_設計審査予定日"
+        },
+        {
+          "ResultPropertyName": "R_施工審査予定日"
+        }
+      ],
+      "RefreshAfterFinish": true,
+      "CheckDataValidation": true
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=リターンコード"
+              }
+            },
+            "value": "0",
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=リターンコード"
+              },
+              "Message": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=リターンメッセージ"
+              },
+              "CustomReturns": [
+                {
+                  "ReturnPropertyName": "R_添付ID"
+                },
+                {
+                  "ReturnPropertyName": "R_添付ファイル文字列"
+                }
+              ]
+            }
+          ],
+          "ID": "176ad394-4e48-4aa9-b9e6-5a87085f2a52"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+      "TableName": "t_object_estimate",
+      "ShowConfirm": false,
+      "RowsToUpdate": 1,
+      "RowsToUpdateCondition": {
+        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+        "ColumnBindingInfo": {
+          "TableName": "t_object_estimate",
+          "ColumnName": "estimate_no",
+          "GUID": "30cd53ed-47b0-4a2d-8e72-7dcbfb18085e"
+        },
+        "Value": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=P_見積書NO"
+        }
+      },
+      "UpdateBindingValues": [
+        {
+          "BindingInfo": {
+            "TableName": "t_object_estimate",
+            "ColumnName": "attachment_id",
+            "GUID": "1edadd66-3f48-4b4f-b30f-e818094abe91"
+          },
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=最終添付ID"
+          }
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_添付取得フラグ"
+              }
+            },
+            "value": "1"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+              "ServerCommandName": "添付ファイル取得処理",
+              "Parameters": [
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_ファイル属性IDs"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_追加ファイル属性IDs"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_業者公開添付フラグ"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_添付ID",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=最終添付ID"
+                  }
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_申込ID",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_申込ID"
+                  }
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_調査ID"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_測量ID"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_解析ID"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_転圧ID"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_工事見積ID"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_工事ID"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_保証ID"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_付保ID"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_外販ID"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_物件IDs"
+                }
+              ],
+              "ResultErrorCodeTo": {
+                "SerializeProperty": "リターンコード"
+              },
+              "ResultMessageTo": {
+                "SerializeProperty": "リターンメッセージ"
+              },
+              "ReturnPropertiesTo": [
+                {
+                  "ResultPropertyName": "R_添付ファイル文字列",
+                  "ResultTo": {
+                    "SerializeProperty": "V_添付ファイル文字列"
+                  }
+                }
+              ],
+              "RefreshAfterFinish": true,
+              "CheckDataValidation": true
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=リターンコード"
+                      }
+                    },
+                    "value": "0",
+                    "compareType": 1
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                      "ErrorCode": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=リターンコード"
+                      },
+                      "Message": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=リターンメッセージ"
+                      },
+                      "CustomReturns": [
+                        {
+                          "ReturnPropertyName": "R_添付ID"
+                        },
+                        {
+                          "ReturnPropertyName": "R_添付ファイル文字列"
+                        }
+                      ]
+                    }
+                  ],
+                  "ID": "ed3ff5eb-4ca0-4387-94ba-7b4e884b8533"
+                }
+              ]
+            }
+          ],
+          "ID": "76c6d646-8f4f-46ff-b4e4-b91e27d5b985"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+      "ErrorCode": "0",
+      "CustomReturns": [
+        {
+          "ReturnPropertyName": "R_添付ID",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=最終添付ID"
+          }
+        },
+        {
+          "ReturnPropertyName": "R_添付ファイル文字列",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=V_添付ファイル文字列"
+          }
+        }
+      ]
+    }
+  ],
+  "ReturnProperties": [
+    {
+      "Name": "R_添付ID"
+    },
+    {
+      "Name": "R_添付ファイル文字列"
+    }
+  ]
+}

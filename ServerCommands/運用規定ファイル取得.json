@@ -1,0 +1,202 @@
+{
+  "Name": "運用規定ファイル取得",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_運用規定ID",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "運用規定",
+      "TableValue": {
+        "TableName": "t_policy",
+        "TableValueType": 1,
+        "BindingInfos": [
+          {
+            "GUID": "6796aa0c-8b42-4401-bc71-1c45b7e2be9c",
+            "BindingInfo": {
+              "TableName": "t_policy",
+              "ColumnName": "運用規定ファイルフルパス名",
+              "GUID": "2c5cfc1d-2a38-48a4-bb86-5fc5e751b51a"
+            },
+            "ColumnName": "運用規定ファイルフルパス名"
+          },
+          {
+            "GUID": "98703326-fd67-4cbe-a52a-5367953daeb9",
+            "BindingInfo": {
+              "TableName": "t_policy",
+              "ColumnName": "policy_display_file_name",
+              "GUID": "6df2fde8-aa26-4450-8d3f-dd0f1726c099"
+            },
+            "ColumnName": "運用規定表示ファイル名"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "t_policy",
+            "ColumnName": "policy_id",
+            "GUID": "0e0a5fdf-86a3-45d9-bebc-4acd0cf8b8c1"
+          },
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_運用規定ID"
+          }
+        },
+        "NullFormulaValueQueryPolicy": 0
+      },
+      "ID": "71fd8eecebc6451f81174f7a104be3be"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "環境変数",
+      "TableValue": {
+        "TableName": "m_environment",
+        "TableValueType": 1,
+        "BindingInfos": [
+          {
+            "GUID": "01d1429b-8d24-4498-b2b5-76123fabfaeb",
+            "BindingInfo": {
+              "TableName": "m_environment",
+              "ColumnName": "app_name",
+              "GUID": "aae87e72-0a14-4bea-a087-8df1453c6b91"
+            },
+            "ColumnName": "アプリ名"
+          },
+          {
+            "GUID": "ef278598-dc73-480a-b72d-ecce443b3974",
+            "BindingInfo": {
+              "TableName": "m_environment",
+              "ColumnName": "file_temp_path",
+              "GUID": "52a0d3ee-08bf-455f-af4d-a95c26009e42"
+            },
+            "ColumnName": "ファイルTempパス"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "m_environment",
+            "ColumnName": "environment_id",
+            "GUID": "699f8dd0-d61f-4ba1-8907-e726c5e6d895"
+          },
+          "Value": "1"
+        }
+      },
+      "ID": "51b0329ea1cf4adc84506cb3a428271f"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "保存先Tempフォルダパス名",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=環境変数.ファイルTempパス&環境変数.アプリ名&\"\\Temp\\\""
+      },
+      "ID": "d59f814f1a8c4edaa29585c244581847"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "ファイル接頭乱数",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=TEXT(RANDBETWEEN(0,99999999),\"00000000\")&\"-\"&TEXT(RANDBETWEEN(0,9999),\"0000\")&\"-\"&TEXT(RANDBETWEEN(0,9999),\"0000\")&\"-\"&TEXT(RANDBETWEEN(0,9999),\"0000\")&\"-\"&TEXT(RANDBETWEEN(0,999999999999),\"000000000000\")"
+      },
+      "ID": "f3eef94e7e8f493db8d6b45c44934991"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "Tempファイル名",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=ファイル接頭乱数&\"_\"&運用規定.運用規定表示ファイル名"
+      },
+      "ID": "11daafd95da04c03ab33bdc33a7a2478"
+    },
+    {
+      "$type": "OperateFilesCommand.GetFileInformation, OperateFilesCommand",
+      "FilePath": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=運用規定.運用規定ファイルフルパス名"
+      },
+      "FileInfomationType": 5,
+      "ToParameterName": "ファイル有無"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=ファイル有無"
+              }
+            },
+            "value": "True"
+          },
+          "CommandList": [
+            {
+              "$type": "OperateFilesCommand.CopyFileCommand, OperateFilesCommand",
+              "FilePath": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=運用規定.運用規定ファイルフルパス名"
+              },
+              "TargetFolderPath": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=保存先Tempフォルダパス名"
+              },
+              "CopyFileName": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=Tempファイル名"
+              }
+            },
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "CustomReturns": [
+                {
+                  "ReturnPropertyName": "R_添付ファイル文字列",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Tempファイル名&\"|\""
+                  }
+                }
+              ]
+            }
+          ],
+          "ID": "d4205b7a-be86-4614-af88-2a6b166e07b8"
+        }
+      ]
+    }
+  ],
+  "ReturnProperties": [
+    {
+      "Name": "R_添付ファイル文字列"
+    }
+  ]
+}

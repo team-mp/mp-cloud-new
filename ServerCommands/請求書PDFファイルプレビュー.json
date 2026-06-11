@@ -1,0 +1,168 @@
+{
+  "Name": "請求書PDFファイルプレビュー",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_請求番号",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "ドメインURL",
+      "TableValue": {
+        "TableName": "m_environment",
+        "OnlyGetValue": true,
+        "TableValueType": 0,
+        "BindingInfos": [
+          {
+            "GUID": "d1b3019c-74c3-4e03-910e-4da671bf2bd4",
+            "BindingInfo": {
+              "TableName": "m_environment",
+              "ColumnName": "host_name",
+              "GUID": "b4cfc82b-1295-4e73-a139-28a391e6451c"
+            },
+            "ColumnName": "host_name"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "m_environment",
+            "ColumnName": "environment_id",
+            "GUID": "420e90f9-7aab-439c-9604-e9ef15259840"
+          },
+          "Value": "1"
+        }
+      },
+      "ID": "9746299c075744ee9b4c340e5b67dbac"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "ホスト名",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=ドメインURL&\"/private/\""
+      },
+      "ID": "9e6378583ea94d588601613ca0abd9da"
+    },
+    {
+      "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+      "ServerCommandName": "個人フォルダパス取得",
+      "ReturnPropertiesTo": [
+        {
+          "ResultPropertyName": "R_個人フォルダパス名",
+          "ResultTo": {
+            "SerializeProperty": "個人フォルダフルパス名"
+          },
+          "Remark": "サーバーのフォルダパスを返却"
+        },
+        {
+          "ResultPropertyName": "P_個人フォルダ名",
+          "ResultTo": {
+            "SerializeProperty": "個人フォルダ名"
+          },
+          "Remark": "ユーザーIDを返却"
+        }
+      ],
+      "RefreshAfterFinish": true,
+      "CheckDataValidation": true
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "出力ファイル名",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=P_請求番号&\".pdf\""
+      },
+      "ID": "f587d5e67b7147e8949e28030de69802"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "出力ファイルパス名",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=個人フォルダフルパス名&出力ファイル名"
+      },
+      "ID": "24b912ebae8e4c16b0e0bbab2282e768"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "参照URL",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=ホスト名&個人フォルダ名&\"/\"&出力ファイル名"
+      },
+      "ID": "30297c4bbfb04fe4bec0b2bf030519ca"
+    },
+    {
+      "$type": "Forguncy.Model.ExportActiveReportCommand, ServerDesignerCommon",
+      "ExportReportNameList": [
+        "請求書"
+      ],
+      "CustomName": "請求書",
+      "ServerExportFileName": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=出力ファイルパス名"
+      },
+      "ExportSettings": {
+        "MultiSheet": true
+      },
+      "PassParameters": [
+        {
+          "TargetParameter": "P_請求番号",
+          "SourceValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_請求番号"
+          }
+        }
+      ],
+      "IsPageBreakBefores": [
+        false
+      ],
+      "ReportGaps": [
+        "0cm"
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+      "ErrorCode": "0",
+      "CustomReturns": [
+        {
+          "ReturnPropertyName": "R_表示用URL",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=参照URL"
+          }
+        }
+      ]
+    }
+  ],
+  "ReturnProperties": [
+    {
+      "Name": "R_表示用URL"
+    }
+  ]
+}

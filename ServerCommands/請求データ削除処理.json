@@ -1,0 +1,228 @@
+{
+  "Name": "請求データ削除処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_売上ID",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "物件商品件数",
+          "TableValue": {
+            "TableName": "t_sales",
+            "TableValueType": 3,
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "SubConditions": [
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_sales",
+                    "ColumnName": "sales_id",
+                    "GUID": "50721fb7-d4af-4f29-8ea4-c768c21a9679"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_売上ID"
+                  }
+                },
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "CompareType": 1,
+                  "ColumnBindingInfo": {
+                    "TableName": "t_sales",
+                    "ColumnName": "object_product_id",
+                    "GUID": "17c2fbce-b559-4d84-b24b-fec9b5b2e112"
+                  },
+                  "Value": "%Null%"
+                },
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_sales",
+                    "ColumnName": "delete_flg",
+                    "GUID": "c7a3ae32-5051-4d5b-9c85-6c4e7ae01d70"
+                  },
+                  "Value": "0"
+                }
+              ]
+            }
+          },
+          "ID": "9535492301d742e196c259934ad2616c"
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=物件商品件数"
+                  }
+                },
+                "value": "0",
+                "compareType": 2
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "物件商品ID",
+                  "TableValue": {
+                    "TableName": "t_sales",
+                    "OnlyGetValue": true,
+                    "TableValueType": 0,
+                    "BindingInfos": [
+                      {
+                        "GUID": "2bbeba36-9031-482b-9d76-eca54057bb1b",
+                        "BindingInfo": {
+                          "TableName": "t_sales",
+                          "ColumnName": "object_product_id",
+                          "GUID": "949d1a9a-eeff-4cbf-971c-55e7ca6b9db0"
+                        },
+                        "ColumnName": "object_product_id"
+                      }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                      "SubConditions": [
+                        {
+                          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                          "ColumnBindingInfo": {
+                            "TableName": "t_sales",
+                            "ColumnName": "sales_id",
+                            "GUID": "1a2f418a-ab06-44e0-95c6-9daeffa5109f"
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_売上ID"
+                          }
+                        },
+                        {
+                          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                          "CompareType": 1,
+                          "ColumnBindingInfo": {
+                            "TableName": "t_sales",
+                            "ColumnName": "object_product_id",
+                            "GUID": "a9565079-5bf7-4c1f-bb8a-20af59fc8f24"
+                          },
+                          "Value": "%Null%"
+                        },
+                        {
+                          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                          "ColumnBindingInfo": {
+                            "TableName": "t_sales",
+                            "ColumnName": "delete_flg",
+                            "GUID": "58c549df-470a-42e8-85d4-aff952fd18e2"
+                          },
+                          "Value": "0"
+                        }
+                      ]
+                    }
+                  },
+                  "ID": "399fdd71cd2b4c588db7a9c4315054d3"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+                  "ServerCommandName": "売上計上データ解除処理",
+                  "Parameters": [
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_物件商品ID",
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=物件商品ID"
+                      }
+                    }
+                  ],
+                  "ResultErrorCodeTo": {
+                    "SerializeProperty": "リターンコード"
+                  },
+                  "ResultMessageTo": {
+                    "SerializeProperty": "リターンメッセージ"
+                  },
+                  "RefreshAfterFinish": true,
+                  "CheckDataValidation": true
+                },
+                {
+                  "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                  "ErrorCode": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=リターンコード"
+                  },
+                  "Message": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=リターンメッセージ"
+                  }
+                }
+              ],
+              "ID": "e0b62f34-4ec0-4f5f-a613-d6c31c165beb"
+            },
+            {
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "t_sales",
+                  "ShowConfirm": false,
+                  "RowsToUpdate": 1,
+                  "RowsToUpdateCondition": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_sales",
+                      "ColumnName": "sales_id",
+                      "GUID": "8a35f48f-6f5d-49ae-b10a-d80f39921857"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_売上ID"
+                    }
+                  },
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_sales",
+                        "ColumnName": "delete_flg",
+                        "GUID": "cd0b57fa-cb77-4e02-b031-623efa6d0a26"
+                      },
+                      "Value": "1"
+                    }
+                  ]
+                }
+              ],
+              "ID": "650f9e78-85d5-4945-8cfc-46ea6556bcef"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

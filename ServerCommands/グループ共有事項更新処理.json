@@ -1,0 +1,289 @@
+{
+  "Name": "グループ共有事項更新処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_グループ連絡ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_グループID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_タブID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_内容",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "登録更新ラベル取得",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_ユーザーID"
+            }
+          ],
+          "ReturnPropertiesTo": [
+            {
+              "ResultPropertyName": "R_ラベル名",
+              "ResultTo": {
+                "SerializeProperty": "最終更新ラベル名"
+              }
+            },
+            {
+              "ResultPropertyName": "R_外部ユーザーフラグ"
+            },
+            {
+              "ResultPropertyName": "R_ユーザー名"
+            },
+            {
+              "ResultPropertyName": "R_所属会社名"
+            }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_グループ連絡ID"
+                  }
+                },
+                "value": "%Null%"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "m_group_notice",
+                  "UpdateType": "add",
+                  "ShowConfirm": false,
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_notice",
+                        "ColumnName": "group_id",
+                        "GUID": "e27525b5-e732-41a6-a5e5-822ffab5fd35"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_グループID"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_notice",
+                        "ColumnName": "tab_id",
+                        "GUID": "9b4a7408-2046-4917-b1b5-eff5b6be9903"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_タブID"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_notice",
+                        "ColumnName": "content",
+                        "GUID": "0fb0ccb5-12c7-42fd-9787-467e34c9f43b"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_内容"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_notice",
+                        "ColumnName": "register_user_id",
+                        "GUID": "03033f9b-48d9-41de-a514-b0c5f1acdb51"
+                      },
+                      "Value": "%CurrentUser.user_id%"
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_notice",
+                        "ColumnName": "register_datetime",
+                        "GUID": "5089cf13-c45f-4e5d-838f-3ad9a73b10da"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=NOW()"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_notice",
+                        "ColumnName": "register_label",
+                        "GUID": "eab03f69-ec76-414b-807e-cc1fb6f46dd4"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=最終更新ラベル名"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_notice",
+                        "ColumnName": "update_user_id",
+                        "GUID": "825bafe3-74be-4b37-925c-ce642a725cd8"
+                      },
+                      "Value": "%CurrentUser.user_id%"
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_notice",
+                        "ColumnName": "update_datetime",
+                        "GUID": "2f95cdb3-cba5-4548-8f8e-783fee600470"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=NOW()"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_notice",
+                        "ColumnName": "update_label",
+                        "GUID": "b26510b0-fa24-4060-a181-d73393ffd07a"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=最終更新ラベル名"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "ID": "68e555eb-c727-4dbf-a141-a2008fa7a08c"
+            },
+            {
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "m_group_notice",
+                  "ShowConfirm": false,
+                  "RowsToUpdate": 1,
+                  "RowsToUpdateCondition": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "m_group_notice",
+                      "ColumnName": "group_notice_id",
+                      "GUID": "da908384-6ecd-4eb0-ad5c-c57ee649c902"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_グループ連絡ID"
+                    }
+                  },
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_notice",
+                        "ColumnName": "group_id",
+                        "GUID": "23847c98-d677-436d-9194-bd963d40443e"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_グループID"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_notice",
+                        "ColumnName": "tab_id",
+                        "GUID": "5a26655f-ed9f-4d08-881a-94fa19f6f73a"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_タブID"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_notice",
+                        "ColumnName": "content",
+                        "GUID": "790ca8ab-42fc-46cc-abb3-9e0ac4ecc690"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_内容"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_notice",
+                        "ColumnName": "update_user_id",
+                        "GUID": "e6cc517c-c732-4028-9fb7-8e01a027f838"
+                      },
+                      "Value": "%CurrentUser.user_id%"
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_notice",
+                        "ColumnName": "update_datetime",
+                        "GUID": "e5afb204-8cf8-4e44-b8eb-d496e2c87841"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=NOW()"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_notice",
+                        "ColumnName": "update_label",
+                        "GUID": "25119b2e-2f15-4c22-a461-c9c1ff936726"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=最終更新ラベル名"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "ID": "44d6d03e-edc9-422d-a4b4-ea16e7c6f93a"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

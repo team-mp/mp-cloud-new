@@ -1,0 +1,2162 @@
+{
+  "Name": "SetAnalysis",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_Anonymous"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Type": 1,
+          "ArrayParamItems": [
+            {
+              "Name": "P_物件番号",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_仮判定フラグ",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_保証不可フラグ",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_解析確定日",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_解析担当者ID",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_解析結果ID",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_解析結果内容",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_許容応力度ID",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_許容応力度内容",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_沈下変状ID",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_沈下変状内容",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_その他留意ID",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_その他留意内容",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_建物構造ID",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_建物構造",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_基礎形状ID",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_基礎形状",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_設計接地圧",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_土地履歴ID",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_土地履歴内容",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_造成経過ID",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_造成経過内容",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_地形条件ID",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_地形条件内容",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_考察",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_転圧設計図区分",
+              "DataValidationInfo": {}
+            }
+          ],
+          "Name": "P_AnalysisData",
+          "DataValidationInfo": {}
+        },
+        {
+          "Type": 1,
+          "ArrayParamItems": [
+            {
+              "Name": "P_ファイル名",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_表示ファイル名",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_ファイル属性ID",
+              "DataValidationInfo": {}
+            }
+          ],
+          "Name": "P_UploadFiles",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+          "LoopInfo": {
+            "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+            "LoopCount": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_AnalysisData"
+            },
+            "LoopItemParamName": "Item"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "申込情報",
+              "TableValue": {
+                "TableName": "t_object_order",
+                "TableValueType": 1,
+                "BindingInfos": [
+                  {
+                    "GUID": "52dbd4ce-6a97-4feb-a4d5-5161f495bd78",
+                    "BindingInfo": {
+                      "TableName": "t_object_order",
+                      "ColumnName": "object_id",
+                      "GUID": "7e088fd8-a8bd-4d19-9442-5657ac838d2c",
+                      "RelationBinding": {
+                        "RelatedTable": "t_object",
+                        "RelatedColumn": "object_id",
+                        "DisplayColumn": "物件番号"
+                      }
+                    },
+                    "ColumnName": "物件番号"
+                  },
+                  {
+                    "GUID": "b301398a-478c-4394-a06f-9a224061ac02",
+                    "BindingInfo": {
+                      "TableName": "t_object_order",
+                      "ColumnName": "object_order_id",
+                      "GUID": "29e49d40-0348-409e-b185-8abfb36dd8da"
+                    },
+                    "ColumnName": "申込ID"
+                  },
+                  {
+                    "GUID": "6b87f5d2-9667-4718-ab16-4a6858f7d4e2",
+                    "BindingInfo": {
+                      "TableName": "t_object_order",
+                      "ColumnName": "object_id",
+                      "GUID": "8c304399-0352-4c1d-a92d-93d55e89ca3a"
+                    },
+                    "ColumnName": "物件ID"
+                  },
+                  {
+                    "GUID": "9e7b2319-cc1d-4c32-9938-a5d4aeb9da07",
+                    "BindingInfo": {
+                      "TableName": "t_object_order",
+                      "ColumnName": "object_id",
+                      "GUID": "b6d927c6-d75e-4b91-8311-d7d3d66257ce",
+                      "RelationBinding": {
+                        "RelatedTable": "t_object",
+                        "RelatedColumn": "object_id",
+                        "DisplayColumn": "parent_object_id"
+                      }
+                    },
+                    "ColumnName": "親物件ID"
+                  },
+                  {
+                    "GUID": "e9167a50-4082-4123-a270-715486ee6e72",
+                    "BindingInfo": {
+                      "TableName": "t_object_order",
+                      "ColumnName": "order_date",
+                      "GUID": "4f7bcb3a-5708-4d7d-8866-de1dc29d7348"
+                    },
+                    "ColumnName": "申込日"
+                  },
+                  {
+                    "GUID": "4d2531d5-34a0-47dd-9788-a32b370da7a9",
+                    "BindingInfo": {
+                      "TableName": "t_object_order",
+                      "ColumnName": "group_id",
+                      "GUID": "d7b21aaf-c1b7-4d64-b911-6d90b928fb25"
+                    },
+                    "ColumnName": "申込グループID"
+                  },
+                  {
+                    "GUID": "8ff179fd-4610-4875-82c3-d8262268f2b8",
+                    "BindingInfo": {
+                      "TableName": "t_object_order",
+                      "ColumnName": "builder_id",
+                      "GUID": "4e6e2e39-ee44-4069-833c-33abd54b5f63"
+                    },
+                    "ColumnName": "住宅事業者ID"
+                  },
+                  {
+                    "GUID": "0ee492e0-1b08-4aa0-86fd-a1fee03cfb59",
+                    "BindingInfo": {
+                      "TableName": "t_object_order",
+                      "ColumnName": "latest_analysis_id",
+                      "GUID": "4a09bc9b-be20-4ce0-98c2-3661870f2cbf"
+                    },
+                    "ColumnName": "最新解析ID"
+                  },
+                  {
+                    "GUID": "a87ef414-0e74-45dc-8ff8-11430ea22a36",
+                    "BindingInfo": {
+                      "TableName": "t_object_order",
+                      "ColumnName": "latest_compaction_id",
+                      "GUID": "c3b69e85-91bc-4f3d-846f-acdacea312f2"
+                    },
+                    "ColumnName": "最新転圧ID"
+                  },
+                  {
+                    "GUID": "742a05cd-02ef-49cf-af43-38b2c456798f",
+                    "BindingInfo": {
+                      "TableName": "t_object_order",
+                      "ColumnName": "latest_compaction_id",
+                      "GUID": "2a26828f-3945-4211-bea0-ff52eb775e6d",
+                      "RelationBinding": {
+                        "RelatedTable": "t_object_compaction",
+                        "RelatedColumn": "compaction_id",
+                        "DisplayColumn": "compaction_status_id",
+                        "NextRelationBinding": {
+                          "RelatedTable": "m_compaction_status",
+                          "RelatedColumn": "compaction_status_id",
+                          "DisplayColumn": "compaction_complete_flg"
+                        }
+                      }
+                    },
+                    "ColumnName": "転圧完了フラグ"
+                  },
+                  {
+                    "GUID": "ee0cab00-944e-4ad7-9eda-63a753514ad2",
+                    "BindingInfo": {
+                      "TableName": "t_object_order",
+                      "ColumnName": "latest_analysis_id",
+                      "GUID": "c4bb6433-9f9d-4dab-a248-7dd7bd3cba42",
+                      "RelationBinding": {
+                        "RelatedTable": "t_object_analysis",
+                        "RelatedColumn": "analysis_id",
+                        "DisplayColumn": "re_analysis_request_id"
+                      }
+                    },
+                    "ColumnName": "再解析依頼ID"
+                  }
+                ],
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                  "SubConditions": [
+                    {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_order",
+                        "ColumnName": "object_id",
+                        "GUID": "1e113994-30fd-4ade-a1cd-e7e03760d974",
+                        "RelationBinding": {
+                          "RelatedTable": "t_object",
+                          "RelatedColumn": "object_id",
+                          "DisplayColumn": "物件番号"
+                        }
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=Item.P_物件番号"
+                      }
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 1,
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_order",
+                        "ColumnName": "latest_analysis_id",
+                        "GUID": "d8abf510-8a3e-4780-98eb-44c1b619adb0"
+                      },
+                      "Value": "%Null%"
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_order",
+                        "ColumnName": "latest_analysis_id",
+                        "GUID": "670c156a-0a77-42ae-b386-8486f48ea369",
+                        "RelationBinding": {
+                          "RelatedTable": "t_object_analysis",
+                          "RelatedColumn": "analysis_id",
+                          "DisplayColumn": "analysis_status_id",
+                          "NextRelationBinding": {
+                            "RelatedTable": "m_analysis_status",
+                            "RelatedColumn": "analysis_status_id",
+                            "DisplayColumn": "confirm_flg"
+                          }
+                        }
+                      },
+                      "Value": "0"
+                    }
+                  ]
+                },
+                "TopCount": "1",
+                "OrderBySqlCondition": {
+                  "OrderByColumns": [
+                    {
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_order",
+                        "ColumnName": "object_order_id",
+                        "GUID": "5a7a45f6-3983-457d-891b-bbefb578a611"
+                      },
+                      "Order": 1
+                    }
+                  ]
+                }
+              },
+              "ID": "bcacb358c157454385f63b6386f94713"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "顧客既定値",
+              "TableValue": {
+                "TableName": "v_group_customer_default",
+                "TableValueType": 1,
+                "BindingInfos": [
+                  {
+                    "GUID": "8145ad42-dc43-47e2-944b-e9b78af30ee4",
+                    "BindingInfo": {
+                      "TableName": "v_group_customer_default",
+                      "ColumnName": "転圧見積不要フラグ",
+                      "GUID": "fe8cb6a5-cb93-4747-b371-92da976f8c8b"
+                    },
+                    "ColumnName": "転圧見積不要フラグ"
+                  },
+                  {
+                    "GUID": "7f49f003-0bc0-4105-be15-6212d7e59dc9",
+                    "BindingInfo": {
+                      "TableName": "v_group_customer_default",
+                      "ColumnName": "転圧他社施工フラグ",
+                      "GUID": "884f1c6e-5739-4805-94fd-e10de4df8253"
+                    },
+                    "ColumnName": "転圧他社施工フラグ"
+                  },
+                  {
+                    "GUID": "fbad8715-0975-4683-8496-332699419d63",
+                    "BindingInfo": {
+                      "TableName": "v_group_customer_default",
+                      "ColumnName": "転圧再調査フラグ",
+                      "GUID": "a7302574-38d0-4029-868b-3407a5cd3354"
+                    },
+                    "ColumnName": "転圧再調査フラグ"
+                  }
+                ],
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                  "SubConditions": [
+                    {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "v_group_customer_default",
+                        "ColumnName": "グループID",
+                        "GUID": "68b65156-d4fa-41a9-9b3e-994ad3e65cfc"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=申込情報.申込グループID"
+                      }
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "v_group_customer_default",
+                        "ColumnName": "顧客ID",
+                        "GUID": "01e2935e-25bf-49e9-a49c-612b0a6aa3ac"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=申込情報.住宅事業者ID"
+                      }
+                    }
+                  ]
+                }
+              },
+              "ID": "427acd1296e94ea5a91abd206abc3e93"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "解析結果",
+              "TableValue": {
+                "TableName": "m_analysis_result",
+                "TableValueType": 1,
+                "BindingInfos": [
+                  {
+                    "GUID": "12457a2f-9922-4f5c-b200-f8cc8cb23cdb",
+                    "BindingInfo": {
+                      "TableName": "m_analysis_result",
+                      "ColumnName": "compaction_judge_flg",
+                      "GUID": "7bf5be90-8b2a-4fd6-8fa9-e5565ea73bcf"
+                    },
+                    "ColumnName": "地業転圧判定フラグ"
+                  }
+                ],
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "m_analysis_result",
+                    "ColumnName": "analysis_result_id",
+                    "GUID": "fc4d90f4-bd13-4421-956e-f1126b48965a"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_解析結果ID"
+                  }
+                }
+              },
+              "ID": "97c8912bdc8645d0b9b037a45117fa17"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "V_転圧ID",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=申込情報.最新転圧ID"
+              },
+              "ID": "4c000ad92ac94ecaa343402633840b87"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "V_解析担当者ID",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=Item.P_解析担当者ID"
+              },
+              "ID": "66e1ee47b239432a9827a42465fc6ee4"
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+              "ServerCommandName": "登録更新ラベル取得",
+              "Parameters": [
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_ユーザーID",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_解析担当者ID"
+                  }
+                }
+              ],
+              "ReturnPropertiesTo": [
+                {
+                  "ResultPropertyName": "R_ラベル名",
+                  "ResultTo": {
+                    "SerializeProperty": "最終更新ラベル"
+                  }
+                },
+                {
+                  "ResultPropertyName": "R_外部ユーザーフラグ"
+                },
+                {
+                  "ResultPropertyName": "R_ユーザー名"
+                },
+                {
+                  "ResultPropertyName": "R_所属会社名"
+                }
+              ],
+              "RefreshAfterFinish": true,
+              "CheckDataValidation": true
+            },
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object_analysis",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_analysis",
+                  "ColumnName": "analysis_id",
+                  "GUID": "2a6b6664-bf2b-4422-93ec-a050790c73bd"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=申込情報.最新解析ID"
+                }
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "analysis_complete_date",
+                    "GUID": "e61b5be2-15fa-47ab-9e2a-d82851b0a391"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_解析確定日"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "provisional_judge_flg",
+                    "GUID": "a4f17767-54c9-44c7-bd27-fce2e8d7465c"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_仮判定フラグ"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "warranty_impossible_flg",
+                    "GUID": "0c2316a6-f2de-48ce-9c41-f4af3877acd2"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_保証不可フラグ"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "analysis_user_id",
+                    "GUID": "0f6c3cb8-9464-4100-b7a3-152d7b0b2ac7"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_解析担当者ID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "analysis_result_id",
+                    "GUID": "d897d53f-6927-4d93-8b74-4fef2ada520c"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_解析結果ID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "analysis_result_content",
+                    "GUID": "ddc1e3ee-99d9-4271-be03-aeeec84ef508"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_解析結果内容"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "allowable_stress_id",
+                    "GUID": "362a691f-d75b-4b68-bcd9-9d2a36272eae"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_許容応力度ID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "allowable_stress_content",
+                    "GUID": "a7bacbcf-901a-4ff1-b020-021586b450f2"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_許容応力度内容"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "subsidence_deformation_id",
+                    "GUID": "cd2fbe5f-53eb-4f1c-98f7-f3d792c776a4"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_沈下変状ID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "subsidence_deformation_content",
+                    "GUID": "925ba8ff-47b9-48cd-affc-d39f8926c69f"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_沈下変状内容"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "analysis_consider_id",
+                    "GUID": "6376744f-3131-4c2c-96c5-01aa55099909"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_その他留意ID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "analysis_consider_content",
+                    "GUID": "678927f8-991d-42a0-9443-cc18d437da15"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_その他留意内容"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "structure_id",
+                    "GUID": "8fd0f8a1-e03b-4ab6-a16f-159860964bae"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_建物構造ID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "structure_name",
+                    "GUID": "0734aaff-a2e1-4649-8701-35043cd56edf"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_建物構造"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "foundastion_id",
+                    "GUID": "647a598b-74f8-471b-a487-a1e967a124ab"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_基礎形状ID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "foundation_name",
+                    "GUID": "68c5bfde-953a-42af-b8ba-b804d3901f52"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_基礎形状"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "ground_pressure",
+                    "GUID": "e5b2fd2f-563b-4cef-9bcb-cdd1e952eebb"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_設計接地圧"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "land_history_id",
+                    "GUID": "41710ab0-d0b6-43cd-b39d-b08fc02543be"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_土地履歴ID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "land_history_content",
+                    "GUID": "a04d27df-fa98-43bf-9b93-9543756ce1ec"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_土地履歴内容"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "development_process_id",
+                    "GUID": "8e31c8c9-1cec-48ab-bb95-d4520a0d913a"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_造成経過ID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "development_process_content",
+                    "GUID": "5bbe3082-fa4c-4f8e-becc-8ce398bcb318"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_造成経過内容"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "terrian_condition_id",
+                    "GUID": "52efb6a0-d2d6-40fe-b163-7f66b631c139"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_地形条件ID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "terrian_condition_content",
+                    "GUID": "cab2e0df-40b3-401e-ad23-b9de22440fb5"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_地形条件内容"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "consideration",
+                    "GUID": "934bef33-2157-4642-8c78-0907be4698f5"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_考察"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "last_updated_label",
+                    "GUID": "ddd77fb2-bcd6-4f41-bb21-7de8017b13f9"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=最終更新ラベル"
+                  }
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "SubConditions": [
+                      {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=解析結果.地業転圧判定フラグ"
+                          }
+                        },
+                        "value": "1"
+                      },
+                      {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=申込情報.最新転圧ID"
+                          }
+                        },
+                        "value": "%Null%"
+                      }
+                    ]
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                      "ConditionAndCommandPairList": [
+                        {
+                          "Condition": {
+                            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                            "SubConditions": [
+                              {
+                                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                "param": {
+                                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                                  "ParamObject": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=顧客既定値.転圧見積不要フラグ"
+                                  }
+                                },
+                                "value": "1"
+                              },
+                              {
+                                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                "param": {
+                                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                                  "ParamObject": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=顧客既定値.転圧他社施工フラグ"
+                                  }
+                                },
+                                "value": "1"
+                              }
+                            ],
+                            "RelationType": 1
+                          },
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                              "ParameterName": "転圧ステータス",
+                              "TableValue": {
+                                "TableName": "m_compaction_status",
+                                "OnlyGetValue": true,
+                                "TableValueType": 0,
+                                "BindingInfos": [
+                                  {
+                                    "GUID": "16aac8a7-7bf4-4157-89cb-363b5b47c0b9",
+                                    "BindingInfo": {
+                                      "TableName": "m_compaction_status",
+                                      "ColumnName": "compaction_status_id",
+                                      "GUID": "e78903ba-1e11-4eb8-b346-a05079a17c4d"
+                                    },
+                                    "ColumnName": "compaction_status_id"
+                                  }
+                                ],
+                                "SqlCondition": {
+                                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                  "ColumnBindingInfo": {
+                                    "TableName": "m_compaction_status",
+                                    "ColumnName": "compaction_confirm_flg",
+                                    "GUID": "a009ab3d-16cc-4b74-86fc-b5e17320e698"
+                                  },
+                                  "Value": "1"
+                                }
+                              },
+                              "ID": "4a5e87e79ee24b3f823d48e86a8a77c9",
+                              "Comments": "転圧確認中"
+                            }
+                          ],
+                          "ID": "d24028e8-7d33-4247-bc2d-f915a89a05ca"
+                        },
+                        {
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                              "ParameterName": "転圧ステータス",
+                              "TableValue": {
+                                "TableName": "m_compaction_status",
+                                "OnlyGetValue": true,
+                                "TableValueType": 0,
+                                "BindingInfos": [
+                                  {
+                                    "GUID": "2c11ff38-e772-4679-aafc-285e94142fb7",
+                                    "BindingInfo": {
+                                      "TableName": "m_compaction_status",
+                                      "ColumnName": "compaction_status_id",
+                                      "GUID": "88b794d0-e658-4af0-a49a-32204694230f"
+                                    },
+                                    "ColumnName": "compaction_status_id"
+                                  }
+                                ],
+                                "SqlCondition": {
+                                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                  "ColumnBindingInfo": {
+                                    "TableName": "m_compaction_status",
+                                    "ColumnName": "compaction_initial_status_flg",
+                                    "GUID": "c15d6f01-bdf6-49ce-82bd-460b38368fa7"
+                                  },
+                                  "Value": "1"
+                                }
+                              },
+                              "ID": "2448baa41c8a439ba376865ce76260f2",
+                              "Comments": "転圧設計待ち"
+                            }
+                          ],
+                          "ID": "8ae42461-8271-45a2-ae45-7e087bc13ebe"
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                      "TableName": "t_object_compaction",
+                      "UpdateType": "add",
+                      "ShowConfirm": false,
+                      "UpdateBindingValues": [
+                        {
+                          "BindingInfo": {
+                            "TableName": "t_object_compaction",
+                            "ColumnName": "object_order_id",
+                            "GUID": "8743eafd-75ca-40ab-8c5c-483c4a0ef55e"
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=申込情報.申込ID"
+                          }
+                        },
+                        {
+                          "BindingInfo": {
+                            "TableName": "t_object_compaction",
+                            "ColumnName": "compaction_register_date",
+                            "GUID": "8e4b0718-7abf-44fe-8646-b93f20d45ddb"
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=TODAY()"
+                          }
+                        },
+                        {
+                          "BindingInfo": {
+                            "TableName": "t_object_compaction",
+                            "ColumnName": "compaction_status_id",
+                            "GUID": "303f4bb7-37d2-4bd0-8bf2-9b4aa742b08f"
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=転圧ステータス"
+                          }
+                        },
+                        {
+                          "BindingInfo": {
+                            "TableName": "t_object_compaction",
+                            "ColumnName": "compaction_type",
+                            "GUID": "8ebeef77-231d-4a0a-8cc6-ad729594de07"
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=IF(顧客既定値.転圧他社施工フラグ=1,2,1)"
+                          }
+                        },
+                        {
+                          "BindingInfo": {
+                            "TableName": "t_object_compaction",
+                            "ColumnName": "blueprint_type",
+                            "GUID": "fa6ca776-75aa-469f-8c1e-d5adbdc669bd"
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=IF(Item.P_転圧設計図区分=\"基礎図\",1,IF(Item.P_転圧設計図区分=\"平面図\",2,\"\"))"
+                          }
+                        },
+                        {
+                          "BindingInfo": {
+                            "TableName": "t_object_compaction",
+                            "ColumnName": "survey_again_flg",
+                            "GUID": "1cd1c8ee-3a0f-4394-998e-370afe5580dd"
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=顧客既定値.転圧再調査フラグ"
+                          }
+                        },
+                        {
+                          "BindingInfo": {
+                            "TableName": "t_object_compaction",
+                            "ColumnName": "last_updated_label",
+                            "GUID": "b1cbdd80-65a4-4c3e-b387-c6e4ba325e4c"
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=最終更新ラベル"
+                          }
+                        }
+                      ],
+                      "ParamNameToSaveNewRowValue": "New転圧情報"
+                    },
+                    {
+                      "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                      "TableName": "t_object_order",
+                      "ShowConfirm": false,
+                      "RowsToUpdate": 1,
+                      "RowsToUpdateCondition": {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_order",
+                          "ColumnName": "object_order_id",
+                          "GUID": "c269f0a9-9876-4c73-a84d-55effdc460cc"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=申込情報.申込ID"
+                        }
+                      },
+                      "UpdateBindingValues": [
+                        {
+                          "BindingInfo": {
+                            "TableName": "t_object_order",
+                            "ColumnName": "latest_compaction_id",
+                            "GUID": "89943cc4-74d5-4ab9-85e2-521eb3b2f836"
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=New転圧情報.転圧ID"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "V_転圧ID",
+                      "ParameterValue": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=New転圧情報.転圧ID"
+                      },
+                      "ID": "0c3707b828dc400fac7b37d7eec35603"
+                    }
+                  ],
+                  "ID": "ed7d227f-d051-4a67-ad21-f9e1f77380fd"
+                },
+                {
+                  "Condition": {
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "SubConditions": [
+                      {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=解析結果.地業転圧判定フラグ"
+                          }
+                        },
+                        "value": "1",
+                        "compareType": 1
+                      },
+                      {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=申込情報.最新転圧ID"
+                          }
+                        },
+                        "value": "%Null%",
+                        "compareType": 1
+                      },
+                      {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=申込情報.転圧完了フラグ"
+                          }
+                        },
+                        "value": "1",
+                        "compareType": 1
+                      }
+                    ]
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "転圧判定件数",
+                      "TableValue": {
+                        "TableName": "t_object_analysis",
+                        "TableValueType": 3,
+                        "SqlCondition": {
+                          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                          "SubConditions": [
+                            {
+                              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                              "ColumnBindingInfo": {
+                                "TableName": "t_object_analysis",
+                                "ColumnName": "object_order_id",
+                                "GUID": "398925f5-de10-49bb-884f-84a822a64406"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=申込情報.申込ID"
+                              }
+                            },
+                            {
+                              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                              "ColumnBindingInfo": {
+                                "TableName": "t_object_analysis",
+                                "ColumnName": "analysis_result_id",
+                                "GUID": "6b323d4b-bda6-4e71-820e-20c931c38744",
+                                "RelationBinding": {
+                                  "RelatedTable": "m_analysis_result",
+                                  "RelatedColumn": "analysis_result_id",
+                                  "DisplayColumn": "compaction_judge_flg"
+                                }
+                              },
+                              "Value": "1"
+                            }
+                          ]
+                        }
+                      },
+                      "ID": "810255b665eb4344bed352b252c236f7"
+                    },
+                    {
+                      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                      "ConditionAndCommandPairList": [
+                        {
+                          "Condition": {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=転圧判定件数"
+                              }
+                            },
+                            "value": "0"
+                          },
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                              "TableName": "t_object_compaction",
+                              "UpdateType": "delete",
+                              "ShowConfirm": true,
+                              "ConfirmText": "本当に削除してもよろしいですか？",
+                              "RowsToUpdate": 1,
+                              "RowsToUpdateCondition": {
+                                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                "ColumnBindingInfo": {
+                                  "TableName": "t_object_compaction",
+                                  "ColumnName": "compaction_id",
+                                  "GUID": "17e72704-a187-49b9-8b3b-6e879647ae68"
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=申込情報.最新転圧ID"
+                                }
+                              },
+                              "ParamNameToSaveNewRowValue": "New転圧情報"
+                            },
+                            {
+                              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                              "TableName": "t_object_order",
+                              "ShowConfirm": false,
+                              "RowsToUpdate": 1,
+                              "RowsToUpdateCondition": {
+                                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                "ColumnBindingInfo": {
+                                  "TableName": "t_object_order",
+                                  "ColumnName": "object_order_id",
+                                  "GUID": "29e04d23-c226-46c4-bab3-a02b84722c56"
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=申込情報.申込ID"
+                                }
+                              },
+                              "UpdateBindingValues": [
+                                {
+                                  "BindingInfo": {
+                                    "TableName": "t_object_order",
+                                    "ColumnName": "latest_compaction_id",
+                                    "GUID": "643cc8e9-9133-4539-b2bc-ecba81991c53"
+                                  }
+                                }
+                              ]
+                            }
+                          ],
+                          "ID": "e66a1d03-d954-4408-9e9d-325bf3dc5e7a"
+                        }
+                      ]
+                    }
+                  ],
+                  "ID": "b51f521b-4109-4c9b-91dd-9b6f3d3b9c79"
+                }
+              ],
+              "Comments": "転圧判定の場合"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "DropBoxフォルダパス",
+              "TableValue": {
+                "TableName": "m_environment",
+                "OnlyGetValue": true,
+                "TableValueType": 0,
+                "BindingInfos": [
+                  {
+                    "GUID": "68894461-8cca-494f-af50-11089c7635da",
+                    "BindingInfo": {
+                      "TableName": "m_environment",
+                      "ColumnName": "dropbox_folder_path",
+                      "GUID": "eb966f41-bd3c-45be-ae73-98a38616110a"
+                    },
+                    "ColumnName": "dropbox_folder_path"
+                  }
+                ],
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "m_environment",
+                    "ColumnName": "environment_id",
+                    "GUID": "0fc8b6b3-3482-4889-a11f-7c4eb67d3546"
+                  },
+                  "Value": "1"
+                }
+              },
+              "ID": "8ba7f164ae534cbaa67b056f26c77edf"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "保存先サーバーパス名",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=DropBoxフォルダパス&\"物件フォルダ\\\""
+              },
+              "ID": "d76afca653e24c4a91458d66e4a1bbb3"
+            },
+            {
+              "$type": "OperateFilesCommand.CreateFolderCommand, OperateFilesCommand",
+              "FolderPath": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=保存先サーバーパス名"
+              },
+              "Comments": "物件フォルダの作成"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "第一階層フォルダ名",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=TEXT(申込情報.申込日,\"yyyy年mm月\")"
+              },
+              "ID": "b975ca67d9b549c4927cc4916f770ab8",
+              "Comments": "年月"
+            },
+            {
+              "$type": "OperateFilesCommand.CreateFolderCommand, OperateFilesCommand",
+              "FolderPath": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=保存先サーバーパス名&第一階層フォルダ名"
+              },
+              "Comments": "第一階層フォルダの作成"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "第二階層フォルダ名",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=第一階層フォルダ名&\"\\\"&申込情報.物件番号"
+              },
+              "ID": "90f7338574c14169975ce4b5681d1dd6",
+              "Comments": "物件番号"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "保存先フォルダパス名",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=保存先サーバーパス名&第二階層フォルダ名&\"\\\""
+              },
+              "ID": "ff8a71a643ee4b83b382293487d0ace2"
+            },
+            {
+              "$type": "OperateFilesCommand.CreateFolderCommand, OperateFilesCommand",
+              "FolderPath": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=保存先フォルダパス名"
+              },
+              "Comments": "第二階層"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "保存元サーバーパス名",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=\"C:\\inetpub\\ftproot\\\""
+              },
+              "ID": "6fd740d0097d4482a79715b583b65f64"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "V_削除対象ファイル属性IDs",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=TEXTJOIN(\",\",TRUE,地盤判定書ファイル属性ID,検討書ファイル属性ID,検討書EXCELファイル属性ID,液状化検討ファイル属性ID,転圧設計図ファイル属性ID)"
+              },
+              "ID": "cfd03dd618c94f7eaa68d323879cf6fa"
+            },
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object_attachment",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                "SubConditions": [
+                  {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_attachment",
+                      "ColumnName": "active_flg",
+                      "GUID": "e34c65bd-b077-47c1-9925-f3dc6436ce4f"
+                    },
+                    "Value": "1"
+                  },
+                  {
+                    "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                    "CompareType": 8,
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_attachment",
+                      "ColumnName": "file_attribute_id",
+                      "GUID": "e24831f6-3187-4c56-9119-71e53e9a134d"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=V_削除対象ファイル属性IDs"
+                    }
+                  },
+                  {
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "SubConditions": [
+                      {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_attachment",
+                          "ColumnName": "analysis_id",
+                          "GUID": "477243d6-8695-49dc-8efd-8fd8c4cddd35"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=申込情報.最新解析ID"
+                        },
+                        "LeftBracket": 1
+                      },
+                      {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_attachment",
+                          "ColumnName": "compaction_id",
+                          "GUID": "9804b967-9e75-46f6-adfb-dc5fcdd4516e"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=V_転圧ID"
+                        },
+                        "RightBracket": 1
+                      }
+                    ],
+                    "RelationType": 1
+                  }
+                ]
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_attachment",
+                    "ColumnName": "active_flg",
+                    "GUID": "a8a6130c-cf0e-42ba-be93-333563a3e9fb"
+                  },
+                  "Value": "0"
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_attachment",
+                    "ColumnName": "deleted_datetime",
+                    "GUID": "4dcf3019-1aab-4606-b664-7818d2c7ca6e"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=NOW()"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_attachment",
+                    "ColumnName": "delete_user_id",
+                    "GUID": "5a6c5ee1-f295-416f-8c76-2f7bd69dd0ab"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_解析担当者ID"
+                  }
+                }
+              ],
+              "ParamNameToSaveNewRowValue": "添付情報",
+              "Comments": "以前のファイルは全て無効とする"
+            },
+            {
+              "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+              "LoopInfo": {
+                "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+                "LoopCount": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_UploadFiles"
+                },
+                "LoopItemParamName": "Item"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "保存元ファイルフルパス名",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=保存元サーバーパス名&Item.P_ファイル名"
+                  },
+                  "ID": "75a0e372f01b42a3b6ca4b9f2bfd9f63"
+                },
+                {
+                  "$type": "OperateFilesCommand.GetFileInformation, OperateFilesCommand",
+                  "FilePath": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=保存元ファイルフルパス名"
+                  },
+                  "FileInfomationType": 5,
+                  "ToParameterName": "ファイル有無"
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=ファイル有無"
+                          }
+                        },
+                        "value": "True"
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                          "ParameterName": "ファイル属性ID",
+                          "ParameterValue": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=Item.P_ファイル属性ID"
+                          },
+                          "ID": "521844268457422d971fa4622865c3f1"
+                        },
+                        {
+                          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                          "ParameterName": "ファイル属性",
+                          "TableValue": {
+                            "TableName": "m_file_attribute",
+                            "TableValueType": 1,
+                            "BindingInfos": [
+                              {
+                                "GUID": "4bd8d420-16cc-4cf3-ab36-8007687297d4",
+                                "BindingInfo": {
+                                  "TableName": "m_file_attribute",
+                                  "ColumnName": "initial_priave_flg",
+                                  "GUID": "e3aa9322-d66b-4862-a304-efb9eb19bbd2"
+                                },
+                                "ColumnName": "初期非公開フラグ"
+                              },
+                              {
+                                "GUID": "21ecca7d-9fe1-4ea2-a8a0-990bdd01eafb",
+                                "BindingInfo": {
+                                  "TableName": "m_file_attribute",
+                                  "ColumnName": "initial_contractor_publish_flg",
+                                  "GUID": "9bd3d5c2-07f2-46c9-b078-82be926d8768"
+                                },
+                                "ColumnName": "初期業者公開フラグ"
+                              },
+                              {
+                                "GUID": "80694974-0475-4564-a3c9-6fa320308214",
+                                "BindingInfo": {
+                                  "TableName": "m_file_attribute",
+                                  "ColumnName": "file_class_id",
+                                  "GUID": "42c14428-e5f7-4a78-b0ac-46307b069e89",
+                                  "RelationBinding": {
+                                    "RelatedTable": "m_file_class",
+                                    "RelatedColumn": "file_class_id",
+                                    "DisplayColumn": "analysis_flg"
+                                  }
+                                },
+                                "ColumnName": "解析フラグ"
+                              },
+                              {
+                                "GUID": "40b2c334-54fd-4a5f-b332-049ce0e8cfdd",
+                                "BindingInfo": {
+                                  "TableName": "m_file_attribute",
+                                  "ColumnName": "file_class_id",
+                                  "GUID": "13d2d940-7276-4f1d-a9ac-055b9a5f89b0",
+                                  "RelationBinding": {
+                                    "RelatedTable": "m_file_class",
+                                    "RelatedColumn": "file_class_id",
+                                    "DisplayColumn": "compaction_flg"
+                                  }
+                                },
+                                "ColumnName": "転圧フラグ"
+                              },
+                              {
+                                "GUID": "8027e06e-0e15-425d-8115-e572d1c7efa0",
+                                "BindingInfo": {
+                                  "TableName": "m_file_attribute",
+                                  "ColumnName": "no_attachment_required_flg",
+                                  "GUID": "3ebd5fce-a3f1-4d56-8dd2-a7fdfd4f8726"
+                                },
+                                "ColumnName": "初期添付不要フラグ"
+                              }
+                            ],
+                            "SqlCondition": {
+                              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                              "ColumnBindingInfo": {
+                                "TableName": "m_file_attribute",
+                                "ColumnName": "file_attribute_id",
+                                "GUID": "3ffeb00d-ca9a-49c6-89e4-08708b5e0ed6"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=ファイル属性ID"
+                              }
+                            },
+                            "NullFormulaValueQueryPolicy": 0
+                          },
+                          "ID": "9d25bec5149741daab1f7f1eabf5af77"
+                        },
+                        {
+                          "$type": "OperateFilesCommand.GetFileInformation, OperateFilesCommand",
+                          "FilePath": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=保存元ファイルフルパス名"
+                          },
+                          "FileInfomationType": 1,
+                          "ToParameterName": "拡張子",
+                          "Comments": "拡張子"
+                        },
+                        {
+                          "$type": "OperateFilesCommand.GetFileInformation, OperateFilesCommand",
+                          "FilePath": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=保存元ファイルフルパス名"
+                          },
+                          "FileInfomationType": 6,
+                          "ToParameterName": "ファイルサイズ",
+                          "Comments": "ファイルサイズ"
+                        },
+                        {
+                          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                          "ParameterName": "表示ファイル名",
+                          "ParameterValue": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=Item.P_表示ファイル名"
+                          },
+                          "ID": "d9d273bdcd5941739d360c907ec74033"
+                        },
+                        {
+                          "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+                          "LoopInfo": {
+                            "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+                            "LoopCount": "999",
+                            "LoopIndexParamName": "カウンター",
+                            "LoopItemParamName": "Item"
+                          },
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                              "ConditionAndCommandPairList": [
+                                {
+                                  "Condition": {
+                                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                    "param": {
+                                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                                      "ParamObject": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=カウンター"
+                                      }
+                                    },
+                                    "value": "1"
+                                  },
+                                  "CommandList": [
+                                    {
+                                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                                      "ParameterName": "保存ファイル名",
+                                      "ParameterValue": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=TEXT(ファイル属性ID,\"000\")&\"_\"&表示ファイル名"
+                                      },
+                                      "ID": "c4317bb19a414e44aa5734f2aed5895a"
+                                    }
+                                  ],
+                                  "ID": "4cbce8cb-4556-43b8-87d8-32cbeeeb6804"
+                                },
+                                {
+                                  "CommandList": [
+                                    {
+                                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                                      "ParameterName": "連番付与ファイル名",
+                                      "ParameterValue": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=SUBSTITUTE(表示ファイル名,拡張子,\"\")&\"_\"&TEXT(カウンター-1,\"0\")"
+                                      },
+                                      "ID": "1fa71b19ac834c75a466df99a9370375"
+                                    },
+                                    {
+                                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                                      "ParameterName": "保存ファイル名",
+                                      "ParameterValue": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=TEXT(ファイル属性ID,\"000\")&\"_\"&連番付与ファイル名&拡張子"
+                                      },
+                                      "ID": "3fdbef49df9b4b43a0a14a4a10a26034"
+                                    }
+                                  ],
+                                  "ID": "75d355af-5794-44cf-ae00-eefea7906ea7"
+                                }
+                              ]
+                            },
+                            {
+                              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                              "ParameterName": "登録済みカウント",
+                              "TableValue": {
+                                "TableName": "t_object_attachment",
+                                "TableValueType": 3,
+                                "SqlCondition": {
+                                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                                  "SubConditions": [
+                                    {
+                                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                      "ColumnBindingInfo": {
+                                        "TableName": "t_object_attachment",
+                                        "ColumnName": "object_order_id",
+                                        "GUID": "e035fda9-4837-47f3-a47c-38af653f0c81"
+                                      },
+                                      "Value": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=申込情報.申込ID"
+                                      }
+                                    },
+                                    {
+                                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                      "ColumnBindingInfo": {
+                                        "TableName": "t_object_attachment",
+                                        "ColumnName": "analysis_id",
+                                        "GUID": "574e39f3-cd90-43d3-b8e6-a6e2f59949fe"
+                                      },
+                                      "Value": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=申込情報.最新解析ID"
+                                      }
+                                    },
+                                    {
+                                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                      "ColumnBindingInfo": {
+                                        "TableName": "t_object_attachment",
+                                        "ColumnName": "file_attribute_id",
+                                        "GUID": "c5f4dd14-c05c-4041-ba8d-b1935b528710"
+                                      },
+                                      "Value": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=ファイル属性ID"
+                                      }
+                                    },
+                                    {
+                                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                      "ColumnBindingInfo": {
+                                        "TableName": "t_object_attachment",
+                                        "ColumnName": "save_file_name",
+                                        "GUID": "2df7737d-5d79-405a-9351-5e655fb6133e"
+                                      },
+                                      "Value": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=保存ファイル名"
+                                      }
+                                    }
+                                  ]
+                                },
+                                "NullFormulaValueQueryPolicy": 0
+                              },
+                              "ID": "45a684780cf24c9bb53e188380726875"
+                            },
+                            {
+                              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                              "ConditionAndCommandPairList": [
+                                {
+                                  "Condition": {
+                                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                    "param": {
+                                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                                      "ParamObject": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=登録済みカウント"
+                                      }
+                                    },
+                                    "value": "0"
+                                  },
+                                  "CommandList": [
+                                    {
+                                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                                      "ParameterName": "保存ファイルフルパス名",
+                                      "ParameterValue": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=保存先フォルダパス名&保存ファイル名"
+                                      },
+                                      "ID": "3e3faeea3a8a4dd2b2c5d6d2324feee0"
+                                    },
+                                    {
+                                      "$type": "OperateFilesCommand.GetFileInformation, OperateFilesCommand",
+                                      "FilePath": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=保存ファイルフルパス名"
+                                      },
+                                      "FileInfomationType": 5,
+                                      "ToParameterName": "ファイル有無"
+                                    },
+                                    {
+                                      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                                      "ConditionAndCommandPairList": [
+                                        {
+                                          "Condition": {
+                                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                            "param": {
+                                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                                              "ParamObject": {
+                                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                "SerializeProperty": "=ファイル有無"
+                                              }
+                                            },
+                                            "value": "False"
+                                          },
+                                          "CommandList": [
+                                            {
+                                              "$type": "OperateFilesCommand.CopyFileCommand, OperateFilesCommand",
+                                              "FilePath": {
+                                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                "SerializeProperty": "=保存元ファイルフルパス名"
+                                              },
+                                              "TargetFolderPath": {
+                                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                "SerializeProperty": "=保存先フォルダパス名"
+                                              }
+                                            },
+                                            {
+                                              "$type": "OperateFilesCommand.RenameFileCommand, OperateFilesCommand",
+                                              "FilePath": {
+                                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                "SerializeProperty": "=保存先フォルダパス名&Item.P_ファイル名"
+                                              },
+                                              "NewName": {
+                                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                "SerializeProperty": "=保存ファイル名"
+                                              }
+                                            },
+                                            {
+                                              "$type": "OperateFilesCommand.DeleteFileCommand, OperateFilesCommand",
+                                              "FilePath": {
+                                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                "SerializeProperty": "=保存元ファイルフルパス名"
+                                              }
+                                            },
+                                            {
+                                              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                                              "TableName": "t_object_attachment",
+                                              "UpdateType": "add",
+                                              "ShowConfirm": false,
+                                              "UpdateBindingValues": [
+                                                {
+                                                  "BindingInfo": {
+                                                    "TableName": "t_object_attachment",
+                                                    "ColumnName": "object_order_id",
+                                                    "GUID": "6db91c25-db41-4395-b273-059ba2059e36"
+                                                  },
+                                                  "Value": {
+                                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                    "SerializeProperty": "=申込情報.申込ID"
+                                                  }
+                                                },
+                                                {
+                                                  "BindingInfo": {
+                                                    "TableName": "t_object_attachment",
+                                                    "ColumnName": "object_id",
+                                                    "GUID": "e2a47420-9933-4e19-9256-c23deb3eeabc"
+                                                  },
+                                                  "Value": {
+                                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                    "SerializeProperty": "=申込情報.物件ID"
+                                                  }
+                                                },
+                                                {
+                                                  "BindingInfo": {
+                                                    "TableName": "t_object_attachment",
+                                                    "ColumnName": "file_attribute_id",
+                                                    "GUID": "9d648ecb-7cf1-4b7d-8e36-ae31b95bd7a4"
+                                                  },
+                                                  "Value": {
+                                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                    "SerializeProperty": "=ファイル属性ID"
+                                                  }
+                                                },
+                                                {
+                                                  "BindingInfo": {
+                                                    "TableName": "t_object_attachment",
+                                                    "ColumnName": "display_file_name",
+                                                    "GUID": "19df359d-93b0-4fbb-acad-9b47b3a8c91b"
+                                                  },
+                                                  "Value": {
+                                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                    "SerializeProperty": "=Item.P_表示ファイル名"
+                                                  }
+                                                },
+                                                {
+                                                  "BindingInfo": {
+                                                    "TableName": "t_object_attachment",
+                                                    "ColumnName": "file_path_name",
+                                                    "GUID": "9027aad5-3821-49c1-a6f0-624bcbd84300"
+                                                  },
+                                                  "Value": {
+                                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                    "SerializeProperty": "=保存先フォルダパス名"
+                                                  }
+                                                },
+                                                {
+                                                  "BindingInfo": {
+                                                    "TableName": "t_object_attachment",
+                                                    "ColumnName": "save_file_name",
+                                                    "GUID": "5a9ea985-3ec5-43e2-8996-908c58070dba"
+                                                  },
+                                                  "Value": {
+                                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                    "SerializeProperty": "=保存ファイル名"
+                                                  }
+                                                },
+                                                {
+                                                  "BindingInfo": {
+                                                    "TableName": "t_object_attachment",
+                                                    "ColumnName": "file_size",
+                                                    "GUID": "46f817a6-b551-4e53-b7b1-ca803029ec08"
+                                                  },
+                                                  "Value": {
+                                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                    "SerializeProperty": "=ファイルサイズ"
+                                                  }
+                                                },
+                                                {
+                                                  "BindingInfo": {
+                                                    "TableName": "t_object_attachment",
+                                                    "ColumnName": "file_created_date",
+                                                    "GUID": "935ef8b7-2cc5-4bdd-b587-6ad93cff3086"
+                                                  },
+                                                  "Value": {
+                                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                    "SerializeProperty": "=NOW()"
+                                                  }
+                                                },
+                                                {
+                                                  "BindingInfo": {
+                                                    "TableName": "t_object_attachment",
+                                                    "ColumnName": "upload_user_id",
+                                                    "GUID": "57d33325-b520-43ae-afdb-bee9476c8d66"
+                                                  },
+                                                  "Value": {
+                                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                    "SerializeProperty": "=V_解析担当者ID"
+                                                  }
+                                                },
+                                                {
+                                                  "BindingInfo": {
+                                                    "TableName": "t_object_attachment",
+                                                    "ColumnName": "no_attachment_required_flg",
+                                                    "GUID": "6a79db60-064a-4471-97de-bbc6ec00100b"
+                                                  },
+                                                  "Value": {
+                                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                    "SerializeProperty": "=ファイル属性.初期添付不要フラグ"
+                                                  }
+                                                },
+                                                {
+                                                  "BindingInfo": {
+                                                    "TableName": "t_object_attachment",
+                                                    "ColumnName": "publish_flg",
+                                                    "GUID": "fd2d9486-b337-4f70-a014-524cff77fc2a"
+                                                  },
+                                                  "Value": {
+                                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                    "SerializeProperty": "=IF(ファイル属性.初期非公開フラグ=1,0,1)"
+                                                  }
+                                                },
+                                                {
+                                                  "BindingInfo": {
+                                                    "TableName": "t_object_attachment",
+                                                    "ColumnName": "contractor_publish_flg",
+                                                    "GUID": "56cdc57d-682e-4f51-961f-dd34e1f1c552"
+                                                  },
+                                                  "Value": {
+                                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                    "SerializeProperty": "=IF(ファイル属性.初期非公開フラグ=1,0,ファイル属性.初期業者公開フラグ)"
+                                                  }
+                                                },
+                                                {
+                                                  "BindingInfo": {
+                                                    "TableName": "t_object_attachment",
+                                                    "ColumnName": "analysis_id",
+                                                    "GUID": "f2b5bde0-16bf-490a-a741-7f6b3ad19cc1"
+                                                  },
+                                                  "Value": {
+                                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                    "SerializeProperty": "=IF(ファイル属性.解析フラグ=1,申込情報.最新解析ID,\"\")"
+                                                  }
+                                                },
+                                                {
+                                                  "BindingInfo": {
+                                                    "TableName": "t_object_attachment",
+                                                    "ColumnName": "compaction_id",
+                                                    "GUID": "fcf3e508-df04-4d1c-ad1f-899e4ba3fbb4"
+                                                  },
+                                                  "Value": {
+                                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                    "SerializeProperty": "=IF(ファイル属性.転圧フラグ=1,V_転圧ID,\"\")"
+                                                  }
+                                                }
+                                              ],
+                                              "ParamNameToSaveNewRowValue": "New添付情報"
+                                            },
+                                            {
+                                              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                                              "TableName": "t_object_attachment_relation",
+                                              "UpdateType": "add",
+                                              "ShowConfirm": false,
+                                              "UpdateBindingValues": [
+                                                {
+                                                  "BindingInfo": {
+                                                    "TableName": "t_object_attachment_relation",
+                                                    "ColumnName": "attachment_id",
+                                                    "GUID": "91eea974-792a-4c8e-b399-b0d19004039f"
+                                                  },
+                                                  "Value": {
+                                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                    "SerializeProperty": "=New添付情報.添付ID"
+                                                  }
+                                                },
+                                                {
+                                                  "BindingInfo": {
+                                                    "TableName": "t_object_attachment_relation",
+                                                    "ColumnName": "object_id",
+                                                    "GUID": "39a6570a-31ee-41d1-b411-9674aa8f2c71"
+                                                  },
+                                                  "Value": {
+                                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                    "SerializeProperty": "=申込情報.物件ID"
+                                                  }
+                                                },
+                                                {
+                                                  "BindingInfo": {
+                                                    "TableName": "t_object_attachment_relation",
+                                                    "ColumnName": "parent_object_id",
+                                                    "GUID": "c1eb6552-531f-4619-b5b7-4d0cb5c13a54"
+                                                  },
+                                                  "Value": {
+                                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                    "SerializeProperty": "=申込情報.親物件ID"
+                                                  }
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                                              "ConditionAndCommandPairList": [
+                                                {
+                                                  "Condition": {
+                                                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                                    "param": {
+                                                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                                                      "ParamObject": {
+                                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                        "SerializeProperty": "=ファイル属性.転圧フラグ"
+                                                      }
+                                                    },
+                                                    "value": "1"
+                                                  },
+                                                  "CommandList": [
+                                                    {
+                                                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                                                      "ParameterName": "転圧ステータス",
+                                                      "TableValue": {
+                                                        "TableName": "m_compaction_status",
+                                                        "OnlyGetValue": true,
+                                                        "TableValueType": 0,
+                                                        "BindingInfos": [
+                                                          {
+                                                            "GUID": "44bb359b-3e4c-4bca-b249-3344d2645c40",
+                                                            "BindingInfo": {
+                                                              "TableName": "m_compaction_status",
+                                                              "ColumnName": "compaction_status_id",
+                                                              "GUID": "975aa6ea-353e-4640-be1f-0bc5470bdeb9"
+                                                            },
+                                                            "ColumnName": "compaction_status_id"
+                                                          }
+                                                        ],
+                                                        "SqlCondition": {
+                                                          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                                          "ColumnBindingInfo": {
+                                                            "TableName": "m_compaction_status",
+                                                            "ColumnName": "estimate_arrange_wait_flg",
+                                                            "GUID": "d98c041d-ac0d-47dc-897b-da03e77a6f8f"
+                                                          },
+                                                          "Value": "1"
+                                                        }
+                                                      },
+                                                      "ID": "f9316042f7ad423eaa3c202921031c67"
+                                                    },
+                                                    {
+                                                      "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                                                      "TableName": "t_object_compaction",
+                                                      "ShowConfirm": false,
+                                                      "RowsToUpdate": 1,
+                                                      "RowsToUpdateCondition": {
+                                                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                                        "ColumnBindingInfo": {
+                                                          "TableName": "t_object_compaction",
+                                                          "ColumnName": "compaction_id",
+                                                          "GUID": "4832b0dc-39d4-4891-8a87-a365de057051"
+                                                        },
+                                                        "Value": {
+                                                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                          "SerializeProperty": "=V_転圧ID"
+                                                        }
+                                                      },
+                                                      "UpdateBindingValues": [
+                                                        {
+                                                          "BindingInfo": {
+                                                            "TableName": "t_object_compaction",
+                                                            "ColumnName": "design_create_date",
+                                                            "GUID": "21e2ab9d-fbee-4efd-b047-e9d3e3e1fe0e"
+                                                          },
+                                                          "Value": {
+                                                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                            "SerializeProperty": "=TODAY()"
+                                                          }
+                                                        },
+                                                        {
+                                                          "BindingInfo": {
+                                                            "TableName": "t_object_compaction",
+                                                            "ColumnName": "compaction_status_id",
+                                                            "GUID": "a754c1d4-b0f9-4d28-9244-2555cc7afdd1"
+                                                          },
+                                                          "Value": {
+                                                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                            "SerializeProperty": "=転圧ステータス"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "Comments": "設計作成日を更新する"
+                                                    }
+                                                  ],
+                                                  "Comments": "転圧設計図の場合",
+                                                  "ID": "d9738aa4-4fc3-444b-9dca-adb976ee1ed9"
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "$type": "Forguncy.Model.EndLoopCommand, ServerDesignerCommon",
+                                              "WithinLoop": true
+                                            }
+                                          ],
+                                          "ID": "154b4a35-6c89-4d79-8dc7-a80f3a7c4f39"
+                                        }
+                                      ]
+                                    }
+                                  ],
+                                  "ID": "14ac5e40-e254-4d45-a234-0bf3c912e2cd"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ],
+                      "ID": "662651f6-bba4-45a1-a9f7-9edb6d8ca1e4"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "ファイル数更新処理",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_物件IDs",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=申込情報.物件ID"
+              }
+            }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        },
+        {
+          "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+          "ErrorCode": "0"
+        }
+      ]
+    }
+  ]
+}

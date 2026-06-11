@@ -1,0 +1,553 @@
+{
+  "Name": "資料待ち登録処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.InvokeTriggerSaveData, ServerDesignerCommon",
+      "Parameters": [
+        {
+          "Name": "P_申込ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_対象顧客ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_宛先区分",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_送付予定日",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_送付期日",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_コメント",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_送付予定資料",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "登録更新ラベル取得",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_ユーザーID"
+            }
+          ],
+          "ResultErrorCodeTo": {
+            "SerializeProperty": "リターンコード"
+          },
+          "ResultMessageTo": {
+            "SerializeProperty": "リターンメッセージ"
+          },
+          "ReturnPropertiesTo": [
+            {
+              "ResultPropertyName": "R_ラベル名",
+              "ResultTo": {
+                "SerializeProperty": "ラベル名"
+              }
+            },
+            {
+              "ResultPropertyName": "R_外部ユーザーフラグ"
+            },
+            {
+              "ResultPropertyName": "R_ユーザー名"
+            },
+            {
+              "ResultPropertyName": "R_所属会社名"
+            }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "送付件数",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=LEN(P_送付予定資料)-LEN(SUBSTITUTE(P_送付予定資料,\",\",\"\"))+1"
+          },
+          "ID": "c764544ebbd04e6e99ddaee06b4024b0"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "検索文字列",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_送付予定資料"
+          },
+          "ID": "ff2b6669a75c44ae8755a389e0a22484"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "送付待ち資料名",
+          "ID": "79dd81c00b1a4694a72751a5bd1814e5"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "申込情報",
+          "TableValue": {
+            "TableName": "t_object_order",
+            "TableValueType": 1,
+            "BindingInfos": [
+              {
+                "GUID": "5a0b85b7-2e79-455d-a567-1897726694a3",
+                "BindingInfo": {
+                  "TableName": "t_object_order",
+                  "ColumnName": "object_order_id",
+                  "GUID": "60bd2a91-371c-4adc-b537-108799d4bfdd",
+                  "RelationBinding": {
+                    "RelatedTable": "t_object_order_sub",
+                    "RelatedColumn": "object_order_id",
+                    "DisplayColumn": "document_wait_count"
+                  }
+                },
+                "ColumnName": "資料待ち件数"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_order",
+                "ColumnName": "object_order_id",
+                "GUID": "d1fac4f2-d061-45a5-a79c-b41e0162a23d"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_申込ID"
+              }
+            }
+          },
+          "ID": "3fbf5b82f2794495a3ca477156ccc4ae"
+        },
+        {
+          "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+          "LoopInfo": {
+            "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+            "LoopCount": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=送付件数"
+            },
+            "LoopIndexParamName": "カウンター",
+            "LoopItemParamName": "Item"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "カンマ文字位置",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=IFERROR(FIND(\",\",検索文字列),0)"
+              },
+              "ID": "2b8c2eb800ae448b916f1e5a589778b1"
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=カンマ文字位置"
+                      }
+                    },
+                    "value": "0"
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "資料名",
+                      "ParameterValue": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=検索文字列"
+                      },
+                      "ID": "ed51202763ae4b108dc94934cffee5a8"
+                    }
+                  ],
+                  "ID": "59f9960d-7af2-4c46-a194-5088cc49f014"
+                },
+                {
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "資料名",
+                      "ParameterValue": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=LEFT(検索文字列,カンマ文字位置-1)"
+                      },
+                      "ID": "b37a38b3085242d498341ac3956e2d05"
+                    },
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "検索文字列",
+                      "ParameterValue": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=MID(検索文字列,カンマ文字位置+1,1000)"
+                      },
+                      "ID": "a7a93e5dec7346f7b3460e2b4eb0c681"
+                    }
+                  ],
+                  "ID": "d549cf33-f7a3-4fd7-a221-a65d5f808e58"
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=送付待ち資料名"
+                      }
+                    },
+                    "value": "%Null%"
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "送付待ち資料名",
+                      "ParameterValue": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=\"・\"&資料名"
+                      },
+                      "ID": "501a3c6c46d34048a266bf7c8fc76544"
+                    }
+                  ],
+                  "ID": "17939088-7e35-4231-bc7c-9a09b8871e56"
+                },
+                {
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "送付待ち資料名",
+                      "ParameterValue": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=送付待ち資料名&CHAR(10)&\"・\"&資料名"
+                      },
+                      "ID": "e85b59783e4f45a99c46598713526053"
+                    }
+                  ],
+                  "ID": "966f1f8a-b160-46ff-8ca4-ba0b9aa00dbc"
+                }
+              ],
+              "Comments": "改行「・」付きで文字列生成"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "マスタ登録済み件数",
+              "TableValue": {
+                "TableName": "m_documant",
+                "TableValueType": 3,
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "m_documant",
+                    "ColumnName": "document_name",
+                    "GUID": "c4970d72-5656-4cf9-9174-b03b3b886db3"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=資料名"
+                  }
+                }
+              },
+              "ID": "55cd9c19b27e41c7a3594d5e33c462b3"
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=マスタ登録済み件数"
+                      }
+                    },
+                    "value": "0",
+                    "compareType": 2
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "ファイル属性ID",
+                      "TableValue": {
+                        "TableName": "m_documant",
+                        "OnlyGetValue": true,
+                        "TableValueType": 0,
+                        "BindingInfos": [
+                          {
+                            "GUID": "157dc339-91ea-4304-b74f-858267b50022",
+                            "BindingInfo": {
+                              "TableName": "m_documant",
+                              "ColumnName": "file_attribute_id",
+                              "GUID": "954b6bf2-63f1-44f6-9444-6ea837566076"
+                            },
+                            "ColumnName": "file_attribute_id"
+                          }
+                        ],
+                        "SqlCondition": {
+                          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                          "ColumnBindingInfo": {
+                            "TableName": "m_documant",
+                            "ColumnName": "document_name",
+                            "GUID": "842b6998-8b23-4cfd-a103-5d90058b8c7a"
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=資料名"
+                          }
+                        }
+                      },
+                      "ID": "0cfbabfb067d485e8f90bd0f2ec386f2",
+                      "Comments": "資料マスタのファイル属性IDをセット"
+                    }
+                  ],
+                  "ID": "f1c0b91c-b5b4-481a-9284-f4fa6a9a226c"
+                },
+                {
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "ファイル属性ID",
+                      "TableValue": {
+                        "TableName": "m_file_attribute",
+                        "OnlyGetValue": true,
+                        "TableValueType": 0,
+                        "BindingInfos": [
+                          {
+                            "GUID": "1186f2bb-5e96-49eb-8376-bfb39c0cbcb1",
+                            "BindingInfo": {
+                              "TableName": "m_file_attribute",
+                              "ColumnName": "file_attribute_id",
+                              "GUID": "5380e282-9871-4366-9de9-40471c5d09f6"
+                            },
+                            "ColumnName": "file_attribute_id"
+                          }
+                        ],
+                        "SqlCondition": {
+                          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                          "ColumnBindingInfo": {
+                            "TableName": "m_file_attribute",
+                            "ColumnName": "others_document_flg",
+                            "GUID": "a5684f9f-88ea-4292-b253-8b75b15222c1"
+                          },
+                          "Value": "1"
+                        },
+                        "TopCount": "1"
+                      },
+                      "ID": "b2dcdcf34d18495dad3d0597a0733210",
+                      "Comments": "その他資料をセット"
+                    }
+                  ],
+                  "ID": "2bc2db79-91e8-46a8-8c3b-e11764010beb"
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object_wait_documents",
+              "UpdateType": "add",
+              "ShowConfirm": false,
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_wait_documents",
+                    "ColumnName": "object_order_id",
+                    "GUID": "17f6da97-afb6-42b3-93ef-9bab74db7eee"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_申込ID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_wait_documents",
+                    "ColumnName": "target_customer_id",
+                    "GUID": "dd13ae95-4565-47c5-853e-a47d0962cd47"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_対象顧客ID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_wait_documents",
+                    "ColumnName": "file_attribute_id",
+                    "GUID": "0d6c1b02-3358-49c0-8a9e-9bd7f855ad27"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=ファイル属性ID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_wait_documents",
+                    "ColumnName": "document_name",
+                    "GUID": "c246ddb7-9b40-4446-9a41-3c6e11d39d01"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=資料名"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_wait_documents",
+                    "ColumnName": "sorce_document_list_name",
+                    "GUID": "0a2126c6-e493-4d00-a5a4-edda89df741e"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=送付待ち資料名"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_wait_documents",
+                    "ColumnName": "post_type_id",
+                    "GUID": "a820f6c8-93ce-49c3-ad4f-a556e9f3266e"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_宛先区分"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_wait_documents",
+                    "ColumnName": "scheduled_sending_date",
+                    "GUID": "3ba5192d-18eb-4724-b2fb-5a262dc01a24"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_送付予定日"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_wait_documents",
+                    "ColumnName": "send_limite_date",
+                    "GUID": "819bf9c3-5c05-4cc3-a11d-e0988a4ab442"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_送付期日"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_wait_documents",
+                    "ColumnName": "wait_comment",
+                    "GUID": "19b58036-ad94-4776-86c9-28f62d87a810"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_コメント"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_wait_documents",
+                    "ColumnName": "first_entry_label",
+                    "GUID": "0cad9b76-428b-4609-a6c1-e9161fe091b0"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=ラベル名"
+                  }
+                }
+              ],
+              "ParamNameToSaveNewRowValue": "New資料待ち"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_object_order_sub",
+          "ShowConfirm": false,
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object_order_sub",
+              "ColumnName": "object_order_id",
+              "GUID": "af7f1edd-839f-4adf-a9d2-e0ddd29c8b45"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_申込ID"
+            }
+          },
+          "UpdateBindingValues": [
+            {
+              "BindingInfo": {
+                "TableName": "t_object_order_sub",
+                "ColumnName": "document_wait_count",
+                "GUID": "836370c6-614c-489e-8fae-17853ec47a10"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=申込情報.資料待ち件数+送付件数"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_order_sub",
+                "ColumnName": "wait_ducoment_flg",
+                "GUID": "4ac786bb-63ca-4045-823d-6203999cf291"
+              },
+              "Value": "1"
+            }
+          ],
+          "Comments": "資料待ちフラグを更新する"
+        },
+        {
+          "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+          "ErrorCode": "0",
+          "CustomReturns": [
+            {
+              "ReturnPropertyName": "R_最終資料待ちID",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=New資料待ち.資料待ちID"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ReturnProperties": [
+    {
+      "Name": "R_最終資料待ちID"
+    }
+  ]
+}

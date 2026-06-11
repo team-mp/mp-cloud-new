@@ -1,0 +1,91 @@
+{
+  "ID": "de118a7c-afac-4976-8b3a-e98a8ad53d72",
+  "Name": "ファイル表示",
+  "Params": [
+    {
+      "ID": "fe3256a1-5916-4cae-95c1-8f84802840a1",
+      "Name": "P_添付ID"
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
+      "LoadingText": "お待ちください",
+      "LoadingTextColor": "Background 1 0"
+    },
+    {
+      "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+      "ServerCommandName": "ファイル表示URL取得",
+      "Parameters": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_添付ID",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_添付ID"
+          }
+        }
+      ],
+      "ResultErrorCodeTo": {
+        "SerializeProperty": "リターンコード"
+      },
+      "ResultMessageTo": {
+        "SerializeProperty": "リターンメッセージ"
+      },
+      "ReturnPropertiesTo": [
+        {
+          "ResultPropertyName": "R_参照URL",
+          "ResultTo": {
+            "SerializeProperty": "参照URL"
+          }
+        }
+      ],
+      "CheckDataValidation": false
+    },
+    {
+      "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=リターンコード"
+                }
+              ]
+            },
+            "value": "0"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.NavigateCommand, ServerDesignerCommon",
+              "ValueFormula": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=参照URL"
+              },
+              "IsOpenInNewTab": true
+            }
+          ],
+          "ID": "a25b8c9c-94a9-4207-92ab-42bc3567b24c"
+        },
+        {
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+              "MessageFormula": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=リターンメッセージ"
+              }
+            }
+          ],
+          "ID": "256bf1a1-253d-4309-bcff-8ad7fff7b97d"
+        }
+      ]
+    }
+  ]
+}

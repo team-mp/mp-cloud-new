@@ -1,0 +1,51 @@
+{
+  "ID": "a55b1a4f-d637-4fa2-9ebd-5d244a200681",
+  "Name": "請求書レポート表示",
+  "Params": [
+    {
+      "ID": "76e0044e-82b1-489d-9e50-ccf8b94819c2",
+      "Name": "P_請求番号"
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
+      "LoadingText": "お待ちください",
+      "LoadingTextColor": "Background 1 0"
+    },
+    {
+      "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+      "ServerCommandName": "請求書PDFファイルプレビュー",
+      "Parameters": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_請求番号",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_請求番号"
+          }
+        }
+      ],
+      "ReturnPropertiesTo": [
+        {
+          "ResultPropertyName": "R_表示用URL",
+          "ResultTo": {
+            "SerializeProperty": "表示用URL"
+          }
+        }
+      ],
+      "CheckDataValidation": false
+    },
+    {
+      "$type": "Forguncy.Model.NavigateCommand, ServerDesignerCommon",
+      "ValueFormula": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=表示用URL"
+      },
+      "IsOpenInNewTab": true
+    },
+    {
+      "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
+    }
+  ]
+}

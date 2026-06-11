@@ -1,0 +1,31 @@
+{
+  "PageType": 0,
+  "ColumnCount": 120,
+  "RowCount": 140,
+  "Formulas": {
+    "19,55": "TEXT(EOMONTH(F2&\"/01\",N2-1),\"yyyymm\")",
+    "16,55": "IF(F2<>\"\",LEFT(F2,4)&RIGHT(F2,2),\"\")",
+    "19,69": "ODATA(\"m_environment?$select=warranty_account_product_id&$filter=environment_id eq 1\")",
+    "6,65": "SUMIFS($CM$7,$CK$7,BD7)/CC7",
+    "6,70": "SUMIFS($CN$7,$CK$7,BD7)/CC7",
+    "6,75": "SUMIFS($CO$7,$CK$7,BD7)/CC7",
+    "26,65": "SUMIFS($CM$7,$CK$7,BD27,$CL$7,$BD$34)/CC27",
+    "26,70": "SUMIFS($CN$7,$CK$7,BD27,$CL$7,$BD$34)/CC27",
+    "26,75": "SUMIFS($CO$7,$CK$7,BD27,$CL$7,$BD$34)/CC27",
+    "45,65": "SUMIFS($CM$7,$CK$7,BD46,$CL$7,$BD$53)/CC46",
+    "45,70": "SUMIFS($CN$7,$CK$7,BD46,$CL$7,$BD$53)/CC46",
+    "45,75": "SUMIFS($CO$7,$CK$7,BD46,$CL$7,$BD$53)/CC46",
+    "64,65": "SUMIFS($CM$7,$CK$7,BD65,$CL$7,$BD$72)/CC65",
+    "64,70": "SUMIFS($CN$7,$CK$7,BD65,$CL$7,$BD$72)/CC65",
+    "64,75": "SUMIFS($CO$7,$CK$7,BD65,$CL$7,$BD$72)/CC65",
+    "83,65": "SUMIFS($CM$7,$CK$7,BD84,$CL$7,$BD$91)/CC84",
+    "83,70": "SUMIFS($CN$7,$CK$7,BD84,$CL$7,$BD$91)/CC84",
+    "83,75": "SUMIFS($CO$7,$CK$7,BD84,$CL$7,$BD$91)/CC84",
+    "102,65": "SUMIFS($CM$7,$CK$7,BD103,$CL$7,$BD$110)/CC103",
+    "102,70": "SUMIFS($CN$7,$CK$7,BD103,$CL$7,$BD$110)/CC103",
+    "102,75": "SUMIFS($CO$7,$CK$7,BD103,$CL$7,$BD$110)/CC103",
+    "121,65": "SUMIFS($CM$7,$CK$7,BD122,$CL$7,$BD$129)/CC122",
+    "121,70": "SUMIFS($CN$7,$CK$7,BD122,$CL$7,$BD$129)/CC122",
+    "121,75": "SUMIFS($CO$7,$CK$7,BD122,$CL$7,$BD$129)/CC122"
+  }
+}

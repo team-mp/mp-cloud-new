@@ -1,0 +1,94 @@
+{
+  "Name": "v_object_file_attribute_app",
+  "Columns": [
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "物件ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "親物件ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "ファイル分類ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "text",
+      "MaxLength": -1,
+      "Name": "ファイル分類キー",
+      "ColumnType": "System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "ファイル属性ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "text",
+      "MaxLength": -1,
+      "Name": "ファイル属性キー",
+      "ColumnType": "System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "text",
+      "MaxLength": -1,
+      "Name": "ファイル属性名",
+      "ColumnType": "System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "ファイル数",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    }
+  ],
+  "ExternalDatabaseInfo": {
+    "DataBaseType": "6db454c0-531c-4395-9122-921a18942902",
+    "AllowModifySchema": true,
+    "ConnectionId": "PostgreSQL1",
+    "SourceTableName": "v_object_file_attribute_app",
+    "SourceTableSchema": "public",
+    "CreateViewSql": " SELECT a.object_id AS \"物件ID\",\n    d.parent_object_id AS \"親物件ID\",\n    c.file_class_id AS \"ファイル分類ID\",\n    ((a.object_id || '_'::text) || c.file_class_id) AS \"ファイル分類キー\",\n    b.file_attribute_id AS \"ファイル属性ID\",\n    ((((a.object_id || '_'::text) || c.file_class_id) || '_'::text) || b.file_attribute_id) AS \"ファイル属性キー\",\n    ((((c.file_attribute_name)::text || '…('::text) || count(b.attachment_id)) || ')'::text) AS \"ファイル属性名\",\n    count(b.attachment_id) AS \"ファイル数\"\n   FROM (((t_object_attachment_relation a\n     JOIN t_object_attachment b ON (((a.attachment_id = b.attachment_id) AND (b.active_flg = 1) AND (b.publish_flg = 1) AND (b.hidden_flg = 0))))\n     JOIN m_file_attribute c ON (((b.file_attribute_id = c.file_attribute_id) AND (c.applicant_company_authority > 0))))\n     JOIN t_object d ON ((a.object_id = d.object_id)))\n  GROUP BY a.object_id, d.parent_object_id, c.file_class_id, b.file_attribute_id, c.file_attribute_name\n  ORDER BY a.object_id, c.file_class_id, b.file_attribute_id;",
+    "ViewInfo": {
+      "ViewName": "v_object_file_attribute_app",
+      "QueryColumns": [
+        "物件ID",
+        "ファイル分類ID",
+        "ファイル属性ID"
+      ]
+    }
+  },
+  "Relations": [
+    {
+      "PrimaryTable": "m_file_class",
+      "PrimaryColumn": "file_class_id",
+      "ForeignTable": "v_object_file_attribute_app",
+      "ForeignColumn": "ファイル分類ID",
+      "IsDetailTableRelation": false
+    },
+    {
+      "PrimaryTable": "m_file_attribute",
+      "PrimaryColumn": "file_attribute_id",
+      "ForeignTable": "v_object_file_attribute_app",
+      "ForeignColumn": "ファイル属性ID",
+      "IsDetailTableRelation": false
+    }
+  ],
+  "Indexes": []
+}

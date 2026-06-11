@@ -1,0 +1,1323 @@
+{
+  "Name": "変更前ステータス戻し処理",
+  "Description": "申込ステータスを変更前のステータスに戻します",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_申込ID",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "申込情報",
+      "TableValue": {
+        "TableName": "t_object_order",
+        "TableValueType": 1,
+        "BindingInfos": [
+          {
+            "GUID": "71a2da53-b02a-464f-b599-d4f367af59d3",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "latest_survey_id",
+              "GUID": "564966f2-0e45-4b85-b53b-2a6ac8571a1a"
+            },
+            "ColumnName": "最新調査ID"
+          },
+          {
+            "GUID": "0deeab03-d859-492e-b2ff-68fd9efea512",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "latest_survey_id",
+              "GUID": "27495233-3f03-423d-823d-9025c3695cac",
+              "RelationBinding": {
+                "RelatedTable": "t_object_survey",
+                "RelatedColumn": "survey_id",
+                "DisplayColumn": "before_survey_status_id"
+              }
+            },
+            "ColumnName": "変更前調査ステータスID"
+          },
+          {
+            "GUID": "b4147e18-9527-4b73-8b3e-9f06aa58855e",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "latest_surveying_id",
+              "GUID": "5780d529-76d3-4cf2-8f06-6aaab6b3eecd"
+            },
+            "ColumnName": "最新測量ID"
+          },
+          {
+            "GUID": "40bfe010-74fc-4439-94fe-2576d08708bc",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "latest_surveying_id",
+              "GUID": "302d1c3c-2356-4bc9-97b5-9c7fb2217ae8",
+              "RelationBinding": {
+                "RelatedTable": "t_object_surveying",
+                "RelatedColumn": "surveying_id",
+                "DisplayColumn": "before_surveying_status_id"
+              }
+            },
+            "ColumnName": "変更前測量ステータスID"
+          },
+          {
+            "GUID": "f2368020-e539-43bf-ab79-813e804b2237",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "latest_analysis_id",
+              "GUID": "e9cd0371-50bb-47be-9cce-df78a9947f6e"
+            },
+            "ColumnName": "最新解析ID"
+          },
+          {
+            "GUID": "43891f73-b411-4a44-914b-c5f1815f9f79",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "latest_analysis_id",
+              "GUID": "80224c38-3d8d-498a-9623-9d218b2d99d0",
+              "RelationBinding": {
+                "RelatedTable": "t_object_analysis",
+                "RelatedColumn": "analysis_id",
+                "DisplayColumn": "before_analysis_status_id"
+              }
+            },
+            "ColumnName": "変更前解析ステータスID"
+          },
+          {
+            "GUID": "1fa3aa66-0aa2-44ea-9fab-1280a8adedb4",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "latest_analysis_id",
+              "GUID": "44dc967a-47a5-474a-bcb6-8c53c6a33c4e",
+              "RelationBinding": {
+                "RelatedTable": "t_object_analysis",
+                "RelatedColumn": "analysis_id",
+                "DisplayColumn": "before_analysis_status_id",
+                "NextRelationBinding": {
+                  "RelatedTable": "m_analysis_status",
+                  "RelatedColumn": "analysis_status_id",
+                  "DisplayColumn": "confirm_flg"
+                }
+              }
+            },
+            "ColumnName": "変更前解析完了フラグ"
+          },
+          {
+            "GUID": "2025f1ba-05df-4b6c-b33d-fc04ecf3b47c",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "latest_compaction_id",
+              "GUID": "0c844592-a1b5-4222-be55-a3421756193f"
+            },
+            "ColumnName": "最新転圧ID"
+          },
+          {
+            "GUID": "62ec8eb9-d23b-4e37-be3a-a5e1aac36327",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "latest_compaction_id",
+              "GUID": "b93d58c2-f9c1-44a0-9939-d4272b5fc646",
+              "RelationBinding": {
+                "RelatedTable": "t_object_compaction",
+                "RelatedColumn": "compaction_id",
+                "DisplayColumn": "before_compaction_status_id"
+              }
+            },
+            "ColumnName": "変更前転圧ステータスID"
+          },
+          {
+            "GUID": "04ae2479-4936-4d67-8da7-e0d8a5a0369e",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "latest_compaction_id",
+              "GUID": "51636bb6-f519-411c-bc3a-8f76b8a984eb",
+              "RelationBinding": {
+                "RelatedTable": "t_object_compaction",
+                "RelatedColumn": "compaction_id",
+                "DisplayColumn": "before_compaction_status_id",
+                "NextRelationBinding": {
+                  "RelatedTable": "m_compaction_status",
+                  "RelatedColumn": "compaction_status_id",
+                  "DisplayColumn": "complete_flg"
+                }
+              }
+            },
+            "ColumnName": "変更前転圧完了フラグ"
+          },
+          {
+            "GUID": "a2add334-f74f-41f9-b1cf-28572e5bfd77",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "latest_construction_id",
+              "GUID": "b9920d83-2441-44de-adf6-2e8c87a8efac"
+            },
+            "ColumnName": "最新工事ID"
+          },
+          {
+            "GUID": "dea93f1d-feed-41b7-a7e7-aa48b87634ec",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "latest_construction_id",
+              "GUID": "7acaae7f-f0c9-4931-b09a-653d7b3cab9f",
+              "RelationBinding": {
+                "RelatedTable": "t_object_construction",
+                "RelatedColumn": "construction_id",
+                "DisplayColumn": "before_construction_status_id"
+              }
+            },
+            "ColumnName": "変更前工事ステータスID"
+          },
+          {
+            "GUID": "51e321e2-bd70-4e1b-b23d-518af656ba25",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "latest_construction_id",
+              "GUID": "345b45fc-1fde-4dd8-a0e2-526565a7ede5",
+              "RelationBinding": {
+                "RelatedTable": "t_object_construction",
+                "RelatedColumn": "construction_id",
+                "DisplayColumn": "before_construction_status_id",
+                "NextRelationBinding": {
+                  "RelatedTable": "m_construction_status",
+                  "RelatedColumn": "construction_status_id",
+                  "DisplayColumn": "complete_flg"
+                }
+              }
+            },
+            "ColumnName": "変更前工事完了フラグ"
+          },
+          {
+            "GUID": "334c0494-c282-45a8-91c1-562a1d154fec",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "latest_warranty_id",
+              "GUID": "5079e1f2-bfa3-4984-990f-5a95593d8ce2"
+            },
+            "ColumnName": "最新保証ID"
+          },
+          {
+            "GUID": "21491046-abc9-421c-9adc-c2cff4f2ce54",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "latest_warranty_id",
+              "GUID": "d0dd44d2-c5ee-4719-b42e-e4e344939a51",
+              "RelationBinding": {
+                "RelatedTable": "t_object_warranty",
+                "RelatedColumn": "warranty_id",
+                "DisplayColumn": "before_warranty_status_id"
+              }
+            },
+            "ColumnName": "変更前保証ステータスID"
+          },
+          {
+            "GUID": "ae7a192a-238a-4a94-84ea-400f5df6b69e",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "latest_warranty_id",
+              "GUID": "0fad1035-fd56-4e52-82bd-107964d56427",
+              "RelationBinding": {
+                "RelatedTable": "t_object_warranty",
+                "RelatedColumn": "warranty_id",
+                "DisplayColumn": "before_warranty_status_id",
+                "NextRelationBinding": {
+                  "RelatedTable": "m_warranty_status",
+                  "RelatedColumn": "warranty_status_id",
+                  "DisplayColumn": "complete_flg"
+                }
+              }
+            },
+            "ColumnName": "変更前保証完了フラグ"
+          },
+          {
+            "GUID": "0dccf19a-9e1d-4381-8c6c-b32037cb9efc",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "latest_external_id",
+              "GUID": "358dd418-4ec7-4988-a127-e1cde11ed7bc"
+            },
+            "ColumnName": "最新外販ID"
+          },
+          {
+            "GUID": "cfc2d952-2987-41fa-9e70-bb8dca9abfc6",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "latest_external_id",
+              "GUID": "ebfd0770-ff29-4855-b948-8b02b63b3f25",
+              "RelationBinding": {
+                "RelatedTable": "t_object_external",
+                "RelatedColumn": "external_id",
+                "DisplayColumn": "before_external_status_id"
+              }
+            },
+            "ColumnName": "変更前外販ステータスID"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "t_object_order",
+            "ColumnName": "object_order_id",
+            "GUID": "f7d39159-93bb-4e2d-9b6b-260429fb6768"
+          },
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_申込ID"
+          }
+        }
+      },
+      "ID": "18ce8e50b83c4c7b9c358b6824b745f5"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=申込情報.変更前調査ステータスID"
+              }
+            },
+            "value": "%Null%",
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object_survey",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_survey",
+                  "ColumnName": "survey_id",
+                  "GUID": "df290675-015b-495f-88aa-d7cfa3d73856"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=申込情報.最新調査ID"
+                }
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_survey",
+                    "ColumnName": "survey_status_id",
+                    "GUID": "e3def8ae-23f8-4810-8087-58b60c804ab3"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=申込情報.変更前調査ステータスID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_survey",
+                    "ColumnName": "before_survey_status_id",
+                    "GUID": "9334bd6a-779b-4470-a628-c1b80a32b527"
+                  }
+                }
+              ]
+            }
+          ],
+          "ID": "80aa38cf-1cd5-4d07-a7c3-79e6bbe865a0"
+        }
+      ],
+      "Comments": "調査レコード更新"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=申込情報.変更前測量ステータスID"
+              }
+            },
+            "value": "%Null%",
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object_surveying",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_surveying",
+                  "ColumnName": "surveying_id",
+                  "GUID": "1ebc1621-afdb-4a19-a41b-b2a354b555e2"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=申込情報.最新測量ID"
+                }
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_surveying",
+                    "ColumnName": "surveying_status_id",
+                    "GUID": "de401d27-9bee-4b2d-9722-34ac90f04e52"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=申込情報.変更前測量ステータスID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_surveying",
+                    "ColumnName": "before_surveying_status_id",
+                    "GUID": "e53f3954-b3f7-4e0d-bd92-2fa579f82541"
+                  }
+                }
+              ]
+            }
+          ],
+          "ID": "704e9276-a5c7-45ae-a4df-d184c14e7350"
+        }
+      ],
+      "Comments": "測量レコード更新"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=申込情報.変更前解析ステータスID"
+              }
+            },
+            "value": "%Null%",
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object_analysis",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_analysis",
+                  "ColumnName": "analysis_id",
+                  "GUID": "6170f307-1742-48ef-a77f-064ff6c27750"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=申込情報.最新解析ID"
+                }
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "analysis_status_id",
+                    "GUID": "bec690e0-7db2-49ad-b22d-a3b54060beea"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=申込情報.変更前解析ステータスID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "analysis_done_flg",
+                    "GUID": "572cf428-a66a-4d8c-9f76-bdbab4b61be0"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=申込情報.変更前解析完了フラグ"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "before_analysis_status_id",
+                    "GUID": "a4a7d4d4-b505-4993-98c8-8612187225d5"
+                  }
+                }
+              ]
+            }
+          ],
+          "ID": "44b04fa7-15b8-4eeb-aa59-b2cc4b4d1189"
+        }
+      ],
+      "Comments": "解析レコード更新"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=申込情報.変更前転圧ステータスID"
+              }
+            },
+            "value": "%Null%",
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object_compaction",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_compaction",
+                  "ColumnName": "compaction_id",
+                  "GUID": "e25c5406-95d7-45c1-819b-2171a5bee311"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=申込情報.最新転圧ID"
+                }
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_compaction",
+                    "ColumnName": "compaction_status_id",
+                    "GUID": "75fc60ef-74cc-446f-8696-af63bba22e9c"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=申込情報.変更前転圧ステータスID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_compaction",
+                    "ColumnName": "before_compaction_status_id",
+                    "GUID": "9b23bf02-939e-4c0d-96f9-152854e5b122"
+                  }
+                }
+              ]
+            }
+          ],
+          "ID": "f6da2c15-04c4-4bcc-ac08-0fc904d8293a"
+        }
+      ],
+      "Comments": "転圧レコード更新"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=申込情報.変更前工事ステータスID"
+              }
+            },
+            "value": "%Null%",
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object_construction",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_construction",
+                  "ColumnName": "construction_id",
+                  "GUID": "b472c339-dded-49d5-b3e5-f67970594b2c"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=申込情報.最新工事ID"
+                }
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_construction",
+                    "ColumnName": "construction_status_id",
+                    "GUID": "93972c64-e664-4fe3-81a5-0b35a2bf3ba8"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=申込情報.変更前工事ステータスID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_construction",
+                    "ColumnName": "before_construction_status_id",
+                    "GUID": "9f13d731-07be-47d6-b334-9009646bf197"
+                  }
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=申込情報.変更前工事完了フラグ"
+                      }
+                    },
+                    "value": "0"
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "工事見積情報",
+                      "TableValue": {
+                        "TableName": "t_object_construction_estimate",
+                        "BindingInfos": [
+                          {
+                            "GUID": "b0034ee4-4dbc-4d6e-add5-d0e2a06c6a94",
+                            "BindingInfo": {
+                              "TableName": "t_object_construction_estimate",
+                              "ColumnName": "construction_estimate_id",
+                              "GUID": "ebd1c320-6e90-43f1-bcac-aef609ef9fa3"
+                            },
+                            "ColumnName": "工事見積ID"
+                          },
+                          {
+                            "GUID": "bf7c373d-7b4c-4fbe-8776-04833b656198",
+                            "BindingInfo": {
+                              "TableName": "t_object_construction_estimate",
+                              "ColumnName": "before_construction_estimate_status_id",
+                              "GUID": "b0c407ec-3d8b-4b5c-8d64-b9abdd2cc2d3"
+                            },
+                            "ColumnName": "変更前工事見積ステータスID"
+                          },
+                          {
+                            "GUID": "d1aa7ed3-2876-4216-a2cf-abbd7e1a86d7",
+                            "BindingInfo": {
+                              "TableName": "t_object_construction_estimate",
+                              "ColumnName": "before_construction_estimate_status_id",
+                              "GUID": "b8ba1e86-8f68-4aca-b86b-0b0637eea913",
+                              "RelationBinding": {
+                                "RelatedTable": "m_construction_estimate_status",
+                                "RelatedColumn": "construction_estimate_status_id",
+                                "DisplayColumn": "order_confirm_flg"
+                              }
+                            },
+                            "ColumnName": "受注確定フラグ"
+                          },
+                          {
+                            "GUID": "4faa9739-e868-482e-bb46-0bd5986f1f30",
+                            "BindingInfo": {
+                              "TableName": "t_object_construction_estimate",
+                              "ColumnName": "before_construction_estimate_status_id",
+                              "GUID": "50aab622-cb4c-47b2-b093-37c48a671667",
+                              "RelationBinding": {
+                                "RelatedTable": "m_construction_estimate_status",
+                                "RelatedColumn": "construction_estimate_status_id",
+                                "DisplayColumn": "order_schedule_flg"
+                              }
+                            },
+                            "ColumnName": "受注予定フラグ"
+                          },
+                          {
+                            "GUID": "7245b7b1-8ee5-4ee7-9077-b7ff4122d6d2",
+                            "BindingInfo": {
+                              "TableName": "t_object_construction_estimate",
+                              "ColumnName": "before_construction_estimate_status_id",
+                              "GUID": "96ce0ab1-3fa6-4905-9eb8-d73c790c3b69",
+                              "RelationBinding": {
+                                "RelatedTable": "m_construction_estimate_status",
+                                "RelatedColumn": "construction_estimate_status_id",
+                                "DisplayColumn": "decline_end_flg"
+                              }
+                            },
+                            "ColumnName": "辞退終了フラグ"
+                          },
+                          {
+                            "GUID": "6d06b6a4-1dcd-4199-8a2e-c9542f006b2c",
+                            "BindingInfo": {
+                              "TableName": "t_object_construction_estimate",
+                              "ColumnName": "before_construction_estimate_status_id",
+                              "GUID": "65cccd4b-5148-40b2-a3cb-eb4c800654d4",
+                              "RelationBinding": {
+                                "RelatedTable": "m_construction_estimate_status",
+                                "RelatedColumn": "construction_estimate_status_id",
+                                "DisplayColumn": "lost_order_flg"
+                              }
+                            },
+                            "ColumnName": "失注終了フラグ"
+                          }
+                        ],
+                        "SqlCondition": {
+                          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                          "SubConditions": [
+                            {
+                              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                              "ColumnBindingInfo": {
+                                "TableName": "t_object_construction_estimate",
+                                "ColumnName": "object_order_id",
+                                "GUID": "8ca05eb8-a353-4a00-a3f3-34ebac89eaba"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_申込ID"
+                              }
+                            },
+                            {
+                              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                              "CompareType": 1,
+                              "ColumnBindingInfo": {
+                                "TableName": "t_object_construction_estimate",
+                                "ColumnName": "before_construction_estimate_status_id",
+                                "GUID": "573904e1-55b1-4cb7-a67d-a722e9ed9aa6"
+                              },
+                              "Value": "%Null%"
+                            }
+                          ]
+                        }
+                      },
+                      "ID": "88782d07eaa147d99fd1d341c86ca086"
+                    },
+                    {
+                      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+                      "LoopInfo": {
+                        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+                        "LoopCount": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=工事見積情報"
+                        },
+                        "LoopItemParamName": "Item"
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                          "TableName": "t_object_construction_estimate",
+                          "ShowConfirm": false,
+                          "RowsToUpdate": 1,
+                          "RowsToUpdateCondition": {
+                            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                            "ColumnBindingInfo": {
+                              "TableName": "t_object_construction_estimate",
+                              "ColumnName": "construction_estimate_id",
+                              "GUID": "971be895-adc4-47ce-8c69-18cd46c90c4c"
+                            },
+                            "Value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=Item.工事見積ID"
+                            }
+                          },
+                          "UpdateBindingValues": [
+                            {
+                              "BindingInfo": {
+                                "TableName": "t_object_construction_estimate",
+                                "ColumnName": "construction_estimate_status_id",
+                                "GUID": "b0681737-37cc-4553-bb99-04f479ebb342"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item.変更前工事見積ステータスID"
+                              }
+                            },
+                            {
+                              "BindingInfo": {
+                                "TableName": "t_object_construction_estimate",
+                                "ColumnName": "before_construction_estimate_status_id",
+                                "GUID": "22ac0409-f5e6-4dfa-ac1e-ffee3c0bc96c"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                          "ConditionAndCommandPairList": [
+                            {
+                              "Condition": {
+                                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                "param": {
+                                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                                  "ParamObject": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=Item.受注確定フラグ"
+                                  }
+                                },
+                                "value": "1"
+                              },
+                              "CommandList": [
+                                {
+                                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                                  "TableName": "t_object_construction_estimate_ext",
+                                  "ShowConfirm": false,
+                                  "RowsToUpdate": 1,
+                                  "RowsToUpdateCondition": {
+                                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                    "ColumnBindingInfo": {
+                                      "TableName": "t_object_construction_estimate_ext",
+                                      "ColumnName": "construction_estimate_id",
+                                      "GUID": "3ce589b1-6668-4966-96b2-2df9afe543fb"
+                                    },
+                                    "Value": {
+                                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                      "SerializeProperty": "=Item.工事見積ID"
+                                    }
+                                  },
+                                  "UpdateBindingValues": [
+                                    {
+                                      "BindingInfo": {
+                                        "TableName": "t_object_construction_estimate_ext",
+                                        "ColumnName": "order_confirm_flg",
+                                        "GUID": "8aaaa161-a538-4442-9d0a-773d1bf6084a"
+                                      },
+                                      "Value": "1"
+                                    },
+                                    {
+                                      "BindingInfo": {
+                                        "TableName": "t_object_construction_estimate_ext",
+                                        "ColumnName": "order_schedule_flg",
+                                        "GUID": "e9b7865a-7635-49b5-87cc-17df639adbb1"
+                                      },
+                                      "Value": "0"
+                                    },
+                                    {
+                                      "BindingInfo": {
+                                        "TableName": "t_object_construction_estimate_ext",
+                                        "ColumnName": "decline_end_flg",
+                                        "GUID": "1d6ce802-9643-440b-a7d6-e88d403babaa"
+                                      },
+                                      "Value": "0"
+                                    },
+                                    {
+                                      "BindingInfo": {
+                                        "TableName": "t_object_construction_estimate_ext",
+                                        "ColumnName": "lost_order_flg",
+                                        "GUID": "43edd8a5-afaa-4bd6-8e81-949306d69fa2"
+                                      },
+                                      "Value": "0"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "ID": "b4b9444e-cc79-4e23-88aa-a1ae8e7ff3c8"
+                            },
+                            {
+                              "Condition": {
+                                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                "param": {
+                                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                                  "ParamObject": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=Item.受注予定フラグ"
+                                  }
+                                },
+                                "value": "1"
+                              },
+                              "CommandList": [
+                                {
+                                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                                  "TableName": "t_object_construction_estimate_ext",
+                                  "ShowConfirm": false,
+                                  "RowsToUpdate": 1,
+                                  "RowsToUpdateCondition": {
+                                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                    "ColumnBindingInfo": {
+                                      "TableName": "t_object_construction_estimate_ext",
+                                      "ColumnName": "construction_estimate_id",
+                                      "GUID": "032ab4ce-e5e8-4b23-94ae-ef34957f833f"
+                                    },
+                                    "Value": {
+                                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                      "SerializeProperty": "=Item.工事見積ID"
+                                    }
+                                  },
+                                  "UpdateBindingValues": [
+                                    {
+                                      "BindingInfo": {
+                                        "TableName": "t_object_construction_estimate_ext",
+                                        "ColumnName": "order_confirm_flg",
+                                        "GUID": "01a9267f-b7a3-4ae7-bca4-572a99d89573"
+                                      },
+                                      "Value": "0"
+                                    },
+                                    {
+                                      "BindingInfo": {
+                                        "TableName": "t_object_construction_estimate_ext",
+                                        "ColumnName": "order_schedule_flg",
+                                        "GUID": "27651476-433d-4f5b-99f3-c51a8491009d"
+                                      },
+                                      "Value": "1"
+                                    },
+                                    {
+                                      "BindingInfo": {
+                                        "TableName": "t_object_construction_estimate_ext",
+                                        "ColumnName": "decline_end_flg",
+                                        "GUID": "93b273dd-4427-4338-a9ed-376804248f1b"
+                                      },
+                                      "Value": "0"
+                                    },
+                                    {
+                                      "BindingInfo": {
+                                        "TableName": "t_object_construction_estimate_ext",
+                                        "ColumnName": "lost_order_flg",
+                                        "GUID": "fdf6685f-6d06-4900-8d4e-e8c87fe15100"
+                                      },
+                                      "Value": "0"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "ID": "15f3b812-7768-4499-876a-b8feaa1dc349"
+                            },
+                            {
+                              "Condition": {
+                                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                "param": {
+                                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                                  "ParamObject": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=Item.辞退終了フラグ"
+                                  }
+                                },
+                                "value": "1"
+                              },
+                              "CommandList": [
+                                {
+                                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                                  "TableName": "t_object_construction_estimate_ext",
+                                  "ShowConfirm": false,
+                                  "RowsToUpdate": 1,
+                                  "RowsToUpdateCondition": {
+                                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                    "ColumnBindingInfo": {
+                                      "TableName": "t_object_construction_estimate_ext",
+                                      "ColumnName": "construction_estimate_id",
+                                      "GUID": "9c4a581c-1e38-4534-becd-d2611388dd3f"
+                                    },
+                                    "Value": {
+                                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                      "SerializeProperty": "=Item.工事見積ID"
+                                    }
+                                  },
+                                  "UpdateBindingValues": [
+                                    {
+                                      "BindingInfo": {
+                                        "TableName": "t_object_construction_estimate_ext",
+                                        "ColumnName": "order_confirm_flg",
+                                        "GUID": "6e6726bc-b57a-4b6c-bdeb-7824ad84b710"
+                                      },
+                                      "Value": "0"
+                                    },
+                                    {
+                                      "BindingInfo": {
+                                        "TableName": "t_object_construction_estimate_ext",
+                                        "ColumnName": "order_schedule_flg",
+                                        "GUID": "45b7d65a-3970-45b1-a8f3-c520698b888a"
+                                      },
+                                      "Value": "0"
+                                    },
+                                    {
+                                      "BindingInfo": {
+                                        "TableName": "t_object_construction_estimate_ext",
+                                        "ColumnName": "decline_end_flg",
+                                        "GUID": "a210c600-a84b-4c73-ba02-43fa7889da24"
+                                      },
+                                      "Value": "1"
+                                    },
+                                    {
+                                      "BindingInfo": {
+                                        "TableName": "t_object_construction_estimate_ext",
+                                        "ColumnName": "lost_order_flg",
+                                        "GUID": "c2dd397b-4bb9-405d-ab23-97c3a6f3439c"
+                                      },
+                                      "Value": "0"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "ID": "f2ae88c1-7b1b-4ce1-9b77-5c418ef08e9c"
+                            },
+                            {
+                              "Condition": {
+                                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                "param": {
+                                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                                  "ParamObject": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=Item.失注終了フラグ"
+                                  }
+                                },
+                                "value": "1"
+                              },
+                              "CommandList": [
+                                {
+                                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                                  "TableName": "t_object_construction_estimate_ext",
+                                  "ShowConfirm": false,
+                                  "RowsToUpdate": 1,
+                                  "RowsToUpdateCondition": {
+                                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                    "ColumnBindingInfo": {
+                                      "TableName": "t_object_construction_estimate_ext",
+                                      "ColumnName": "construction_estimate_id",
+                                      "GUID": "d53725bd-89c4-4d79-9166-5076df06f5a7"
+                                    },
+                                    "Value": {
+                                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                      "SerializeProperty": "=Item.工事見積ID"
+                                    }
+                                  },
+                                  "UpdateBindingValues": [
+                                    {
+                                      "BindingInfo": {
+                                        "TableName": "t_object_construction_estimate_ext",
+                                        "ColumnName": "order_confirm_flg",
+                                        "GUID": "949b57ae-358d-484f-9f08-cf5ebd13011c"
+                                      },
+                                      "Value": "0"
+                                    },
+                                    {
+                                      "BindingInfo": {
+                                        "TableName": "t_object_construction_estimate_ext",
+                                        "ColumnName": "order_schedule_flg",
+                                        "GUID": "454fd8c9-331c-4b86-8166-8cd6fc8dfbfe"
+                                      },
+                                      "Value": "0"
+                                    },
+                                    {
+                                      "BindingInfo": {
+                                        "TableName": "t_object_construction_estimate_ext",
+                                        "ColumnName": "decline_end_flg",
+                                        "GUID": "4533e2c9-1ac2-496a-8103-c5e984aa3dc6"
+                                      },
+                                      "Value": "0"
+                                    },
+                                    {
+                                      "BindingInfo": {
+                                        "TableName": "t_object_construction_estimate_ext",
+                                        "ColumnName": "lost_order_flg",
+                                        "GUID": "ca2a0d6e-1764-4659-a86e-b665ed332ffc"
+                                      },
+                                      "Value": "1"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "ID": "86d9720a-1781-4d3c-af0f-9c2a398af310"
+                            },
+                            {
+                              "CommandList": [
+                                {
+                                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                                  "TableName": "t_object_construction_estimate_ext",
+                                  "ShowConfirm": false,
+                                  "RowsToUpdate": 1,
+                                  "RowsToUpdateCondition": {
+                                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                    "ColumnBindingInfo": {
+                                      "TableName": "t_object_construction_estimate_ext",
+                                      "ColumnName": "construction_estimate_id",
+                                      "GUID": "1d0287d8-9033-4139-9e29-acd99d729cf1"
+                                    },
+                                    "Value": {
+                                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                      "SerializeProperty": "=Item.工事見積ID"
+                                    }
+                                  },
+                                  "UpdateBindingValues": [
+                                    {
+                                      "BindingInfo": {
+                                        "TableName": "t_object_construction_estimate_ext",
+                                        "ColumnName": "order_confirm_flg",
+                                        "GUID": "39340f52-7fe7-4a51-b5a4-c6e0a282f15e"
+                                      },
+                                      "Value": "0"
+                                    },
+                                    {
+                                      "BindingInfo": {
+                                        "TableName": "t_object_construction_estimate_ext",
+                                        "ColumnName": "order_schedule_flg",
+                                        "GUID": "1017bf0c-71ef-4673-993c-16eb52f6cdc4"
+                                      },
+                                      "Value": "0"
+                                    },
+                                    {
+                                      "BindingInfo": {
+                                        "TableName": "t_object_construction_estimate_ext",
+                                        "ColumnName": "decline_end_flg",
+                                        "GUID": "36b8ff7c-6a64-44ce-bbd1-cc1fb3df7338"
+                                      },
+                                      "Value": "0"
+                                    },
+                                    {
+                                      "BindingInfo": {
+                                        "TableName": "t_object_construction_estimate_ext",
+                                        "ColumnName": "lost_order_flg",
+                                        "GUID": "4d9636c8-ef9c-47bb-b00a-ec79e744690f"
+                                      },
+                                      "Value": "0"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "ID": "1049b7b2-2229-4a1e-9c3c-ff611b008d3b"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "ID": "d0c05ff1-6691-461d-bdea-178ce9d4d20c"
+                }
+              ]
+            }
+          ],
+          "ID": "54bf5487-1f79-497e-9f63-b68b50570f05"
+        }
+      ],
+      "Comments": "工事レコード更新"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=申込情報.変更前保証ステータスID"
+              }
+            },
+            "value": "%Null%",
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object_warranty",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_warranty",
+                  "ColumnName": "warranty_id",
+                  "GUID": "1d773cfe-cde1-44ac-8ef4-b943f5981660"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=申込情報.最新保証ID"
+                }
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_warranty",
+                    "ColumnName": "warranty_status_id",
+                    "GUID": "8cb24ede-3673-42e7-b0e6-9ef0ae15f011"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=申込情報.変更前保証ステータスID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_warranty",
+                    "ColumnName": "warranty_complete_flg",
+                    "GUID": "95173f89-e8b4-4f69-95ce-8919d5e9af99"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=申込情報.変更前保証完了フラグ"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_warranty",
+                    "ColumnName": "before_warranty_status_id",
+                    "GUID": "505b650f-309a-4548-99ee-55fd7e6b8b28"
+                  }
+                }
+              ]
+            }
+          ],
+          "ID": "5e05f473-0b27-41ce-ba3c-c71b06edca96"
+        }
+      ],
+      "Comments": "保証レコード更新"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=申込情報.変更前外販ステータスID"
+              }
+            },
+            "value": "%Null%",
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object_external",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_external",
+                  "ColumnName": "external_id",
+                  "GUID": "55e4c6f2-1496-426a-9060-974de2a84870"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=申込情報.最新外販ID"
+                }
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_external",
+                    "ColumnName": "external_status_id",
+                    "GUID": "41b56d4e-7664-4728-aa0a-0aac790487b9"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=申込情報.変更前外販ステータスID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_external",
+                    "ColumnName": "before_external_status_id",
+                    "GUID": "3f9bb34b-797a-4445-9c36-05a56eaec49e"
+                  }
+                }
+              ]
+            }
+          ],
+          "ID": "6f996beb-3973-4f61-b2a8-cd8392c20bd7"
+        }
+      ],
+      "Comments": "外販レコード更新"
+    },
+    {
+      "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+      "ServerCommandName": "最新申込ステータス更新処理",
+      "Parameters": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_申込ID",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_申込ID"
+          }
+        }
+      ],
+      "ResultErrorCodeTo": {
+        "SerializeProperty": "リターンコード"
+      },
+      "ResultMessageTo": {
+        "SerializeProperty": "リターンメッセージ"
+      },
+      "ReturnPropertiesTo": [
+        {
+          "ResultPropertyName": "R_申込ステータス更新フラグ"
+        },
+        {
+          "ResultPropertyName": "R_更新済み申込ステータスID"
+        }
+      ],
+      "RefreshAfterFinish": true,
+      "CheckDataValidation": true
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=リターンコード"
+              }
+            },
+            "value": "0",
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=リターンコード"
+              },
+              "Message": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=リターンメッセージ"
+              }
+            }
+          ],
+          "ID": "344cefb7-8f8a-42db-8b4e-7d9e6b8db34f"
+        }
+      ]
+    }
+  ]
+}

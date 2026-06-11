@@ -1,0 +1,890 @@
+{
+  "Name": "一斉通知処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.InvokeTriggerSaveData, ServerDesignerCommon",
+      "InvokeTriggerTestData": {
+        "UserName": "Administrator",
+        "RequestTimeout": 0
+      }
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "一斉通知マスタ",
+      "TableValue": {
+        "TableName": "m_mass_notification",
+        "BindingInfos": [
+          {
+            "GUID": "22113e68-6567-494c-8d6d-88728ee3fc37",
+            "BindingInfo": {
+              "TableName": "m_mass_notification",
+              "ColumnName": "mass_notification_id",
+              "GUID": "2941f136-de67-474e-968b-ebf255251e96"
+            },
+            "ColumnName": "一斉通知ID"
+          },
+          {
+            "GUID": "927281e6-4a11-4c02-bf5c-edfe8f6fc9ae",
+            "BindingInfo": {
+              "TableName": "m_mass_notification",
+              "ColumnName": "subject",
+              "GUID": "3dabd40b-4631-4e25-adb6-8613e934c2b6"
+            },
+            "ColumnName": "件名"
+          },
+          {
+            "GUID": "cdb515ff-c504-46d1-9102-348df928ff69",
+            "BindingInfo": {
+              "TableName": "m_mass_notification",
+              "ColumnName": "content",
+              "GUID": "6426a7cb-3c70-4592-8221-f32465c9fd65"
+            },
+            "ColumnName": "内容"
+          },
+          {
+            "GUID": "f863fb08-6197-4ea7-92ce-ec5045d12c3f",
+            "BindingInfo": {
+              "TableName": "m_mass_notification",
+              "ColumnName": "signature_id",
+              "GUID": "0ed62c69-8239-45e0-a0b4-6bf799bc184d",
+              "RelationBinding": {
+                "RelatedTable": "m_mail_signature",
+                "RelatedColumn": "signature_id",
+                "DisplayColumn": "signature"
+              }
+            },
+            "ColumnName": "署名"
+          },
+          {
+            "GUID": "3e4bdc58-2a75-4acd-8e71-a3c79fad3490",
+            "BindingInfo": {
+              "TableName": "m_mass_notification",
+              "ColumnName": "to_builder_flg",
+              "GUID": "3cfab6dc-67d5-4e52-b450-568580394440"
+            },
+            "ColumnName": "住宅事業者宛フラグ"
+          },
+          {
+            "GUID": "d618a97b-b857-4a0a-980c-1b6a87e5b726",
+            "BindingInfo": {
+              "TableName": "m_mass_notification",
+              "ColumnName": "to_agency_flg",
+              "GUID": "c26cd921-a23c-4111-b646-c2972e243011"
+            },
+            "ColumnName": "代理店宛フラグ"
+          },
+          {
+            "GUID": "4cbebbdb-a767-47b3-84bc-156fea66df99",
+            "BindingInfo": {
+              "TableName": "m_mass_notification",
+              "ColumnName": "to_brokerage_flg",
+              "GUID": "720be61f-3ee5-4223-b296-c1cbe13d9044"
+            },
+            "ColumnName": "取次店宛フラグ"
+          },
+          {
+            "GUID": "f20d8be3-4831-4fa5-9b76-81d7f32080f2",
+            "BindingInfo": {
+              "TableName": "m_mass_notification",
+              "ColumnName": "to_subcontractor_flg",
+              "GUID": "169dde3c-89ee-49c3-986a-8fd667ca56ac"
+            },
+            "ColumnName": "外注先宛フラグ"
+          },
+          {
+            "GUID": "a81b8a2c-b958-473d-8ddd-d44fc7040efe",
+            "BindingInfo": {
+              "TableName": "m_mass_notification",
+              "ColumnName": "to_survey_flg",
+              "GUID": "8df2b0d7-44bf-43e6-993e-dfb92c3eec2f"
+            },
+            "ColumnName": "調査会社宛フラグ"
+          },
+          {
+            "GUID": "b64a75b2-7264-4925-b0ad-921a043aa414",
+            "BindingInfo": {
+              "TableName": "m_mass_notification",
+              "ColumnName": "to_construction_flg",
+              "GUID": "b5c88e65-2bd4-4266-a746-1849d4b33c54"
+            },
+            "ColumnName": "工事会社宛フラグ"
+          },
+          {
+            "GUID": "652e9aa4-3a9f-4630-847a-7b143094c6cf",
+            "BindingInfo": {
+              "TableName": "m_mass_notification",
+              "ColumnName": "to_other_partners_flg",
+              "GUID": "fd3abae1-ec6b-478b-a5e3-92969f577dc4"
+            },
+            "ColumnName": "その他取引先宛フラグ"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_mass_notification",
+                "ColumnName": "notification_end_date",
+                "GUID": "eaedc21c-2bca-4a07-a676-34a9700eb279"
+              },
+              "Value": "%Null%"
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "CompareType": 5,
+              "ColumnBindingInfo": {
+                "TableName": "m_mass_notification",
+                "ColumnName": "notification_start_date",
+                "GUID": "3e2c7ba1-3f8f-464c-ac91-2b4d80d2204a"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=TODAY()"
+              }
+            }
+          ]
+        },
+        "NullFormulaValueQueryPolicy": 0,
+        "OrderBySqlCondition": {
+          "OrderByColumns": [
+            {
+              "ColumnBindingInfo": {
+                "TableName": "m_mass_notification",
+                "ColumnName": "mass_notification_id",
+                "GUID": "4290df00-d3cf-4bf9-858a-79114d9b6149"
+              },
+              "Order": 0
+            }
+          ]
+        }
+      },
+      "ID": "21f1ecf305404ac1bca3635505b4717a"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "環境設定",
+      "TableValue": {
+        "TableName": "m_environment",
+        "TableValueType": 1,
+        "BindingInfos": [
+          {
+            "GUID": "6964f731-de3d-4311-bc51-731fe2547b26",
+            "BindingInfo": {
+              "TableName": "m_environment",
+              "ColumnName": "mailsender_address",
+              "GUID": "ef61a408-3d37-47c6-bbae-26132d99a920"
+            },
+            "ColumnName": "差出人アドレス"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "m_environment",
+            "ColumnName": "environment_id",
+            "GUID": "2248b948-6f38-4c97-8921-99c05bae3f1d"
+          },
+          "Value": "1"
+        }
+      },
+      "ID": "9d6c81b1fd23480ea69627cd0a1cf611"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "差出人アドレス",
+      "TableValue": {
+        "TableName": "m_sender_mail_address",
+        "TableValueType": 1,
+        "BindingInfos": [
+          {
+            "GUID": "a35a8938-afe9-4415-8358-cd0c29e57094",
+            "BindingInfo": {
+              "TableName": "m_sender_mail_address",
+              "ColumnName": "mail_address",
+              "GUID": "d7b67cc3-bdc4-46c2-9e31-808443bed7e2"
+            },
+            "ColumnName": "メールアドレス"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "m_sender_mail_address",
+            "ColumnName": "sender_id",
+            "GUID": "78bbc899-6c36-466f-a0d9-e4623fd9a894"
+          },
+          "Value": "1"
+        }
+      },
+      "ID": "c985ac98d611427792ef8586e2d46a38"
+    },
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=一斉通知マスタ"
+        },
+        "LoopItemParamName": "Item"
+      },
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "メール本文",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=Item.内容&CHAR(10)&CHAR(10)&Item.署名"
+          },
+          "ID": "00c9899b8edd474e9d9d7b24af137e2f"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "一斉通知リスト",
+          "TableValue": {
+            "TableName": "v_mass_notification",
+            "BindingInfos": [
+              {
+                "GUID": "f62f8e9e-9462-40c6-8e2c-cb3a82b202f3",
+                "BindingInfo": {
+                  "TableName": "v_mass_notification",
+                  "ColumnName": "メールアドレス",
+                  "GUID": "d62062e4-a15f-4ea6-ac83-101cb6664707"
+                },
+                "ColumnName": "メールアドレス"
+              },
+              {
+                "GUID": "2be71c26-b45e-457c-9e78-df76eadf0e18",
+                "BindingInfo": {
+                  "TableName": "v_mass_notification",
+                  "ColumnName": "差出人既定値フラグ",
+                  "GUID": "ec94f427-2da2-444f-916e-dbd808714539"
+                },
+                "ColumnName": "差出人既定値フラグ"
+              },
+              {
+                "GUID": "6fce606e-c5f1-45f6-94da-49788c63d3de",
+                "BindingInfo": {
+                  "TableName": "v_mass_notification",
+                  "ColumnName": "住宅事業者フラグ",
+                  "GUID": "2e4625b0-82c5-4528-8f35-a42b7c2328ba"
+                },
+                "ColumnName": "住宅事業者フラグ"
+              },
+              {
+                "GUID": "93e90667-4993-44b4-a65f-fb412c36b924",
+                "BindingInfo": {
+                  "TableName": "v_mass_notification",
+                  "ColumnName": "代理店フラグ",
+                  "GUID": "ad28fe5b-d099-484b-a333-2a092165bf2d"
+                },
+                "ColumnName": "代理店フラグ"
+              },
+              {
+                "GUID": "a7646b31-aea0-4a4f-8fbe-dcfd06bc003e",
+                "BindingInfo": {
+                  "TableName": "v_mass_notification",
+                  "ColumnName": "取次店フラグ",
+                  "GUID": "41fdba6e-bae0-4d84-8b13-666a28a80ab8"
+                },
+                "ColumnName": "取次店フラグ"
+              },
+              {
+                "GUID": "52e33c29-c3a0-4a88-a336-e519a3f1dc1e",
+                "BindingInfo": {
+                  "TableName": "v_mass_notification",
+                  "ColumnName": "外注先フラグ",
+                  "GUID": "b5925b5a-7f7f-4453-bc85-9b4ea1b6eba8"
+                },
+                "ColumnName": "外注先フラグ"
+              },
+              {
+                "GUID": "805b2b96-5200-4f5c-8195-5f2db9bbb7ec",
+                "BindingInfo": {
+                  "TableName": "v_mass_notification",
+                  "ColumnName": "調査会社フラグ",
+                  "GUID": "ea7e1e13-681f-46d8-9bb5-fb4d2311238d"
+                },
+                "ColumnName": "調査会社フラグ"
+              },
+              {
+                "GUID": "dae8ea2a-5fa4-4dce-8233-775987bfed41",
+                "BindingInfo": {
+                  "TableName": "v_mass_notification",
+                  "ColumnName": "工事会社フラグ",
+                  "GUID": "10eeb2f8-55f6-4c40-a6bd-f341e4326a38"
+                },
+                "ColumnName": "工事会社フラグ"
+              },
+              {
+                "GUID": "416de757-ccaa-4504-8272-c22714e03e4b",
+                "BindingInfo": {
+                  "TableName": "v_mass_notification",
+                  "ColumnName": "その他取引先フラグ",
+                  "GUID": "adf0cb87-1604-4805-b656-3077267f2198"
+                },
+                "ColumnName": "その他取引先フラグ"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "SubConditions": [
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "v_mass_notification",
+                    "ColumnName": "一斉通知ID",
+                    "GUID": "a2981ca9-6209-4475-82d5-09d06d51403e"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.一斉通知ID"
+                  }
+                },
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "v_mass_notification",
+                    "ColumnName": "通知済みフラグ",
+                    "GUID": "ae6dc5cf-312e-4517-8dac-71d3412fdaee"
+                  },
+                  "Value": "0"
+                }
+              ]
+            },
+            "OrderBySqlCondition": {
+              "OrderByColumns": [
+                {
+                  "ColumnBindingInfo": {
+                    "TableName": "v_mass_notification",
+                    "ColumnName": "メールアドレス",
+                    "GUID": "f26cc142-0061-46ee-ba6e-753dcf85c748"
+                  },
+                  "Order": 0
+                }
+              ]
+            }
+          },
+          "ID": "841e559a770f460ebf85dd845060389e"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "通知カウント",
+          "ParameterValue": "0",
+          "ID": "e8e517f8f44b4387bce7022be3f8a4ff"
+        },
+        {
+          "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+          "LoopInfo": {
+            "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+            "LoopCount": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=一斉通知リスト"
+            },
+            "LoopIndexParamName": "",
+            "LoopItemParamName": "Item_一斉通知リスト"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "SubConditions": [
+                      {
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "SubConditions": [
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item.住宅事業者宛フラグ"
+                              }
+                            },
+                            "value": "1",
+                            "LeftBracket": 1
+                          },
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item_一斉通知リスト.住宅事業者フラグ"
+                              }
+                            },
+                            "value": "1",
+                            "RightBracket": 1
+                          }
+                        ]
+                      },
+                      {
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "SubConditions": [
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item.代理店宛フラグ"
+                              }
+                            },
+                            "value": "1",
+                            "LeftBracket": 1
+                          },
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item_一斉通知リスト.代理店フラグ"
+                              }
+                            },
+                            "value": "1",
+                            "RightBracket": 1
+                          }
+                        ]
+                      },
+                      {
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "SubConditions": [
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item.取次店宛フラグ"
+                              }
+                            },
+                            "value": "1",
+                            "LeftBracket": 1
+                          },
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item_一斉通知リスト.取次店フラグ"
+                              }
+                            },
+                            "value": "1",
+                            "RightBracket": 1
+                          }
+                        ]
+                      },
+                      {
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "SubConditions": [
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item.外注先宛フラグ"
+                              }
+                            },
+                            "value": "1",
+                            "LeftBracket": 1
+                          },
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item_一斉通知リスト.外注先フラグ"
+                              }
+                            },
+                            "value": "1",
+                            "RightBracket": 1
+                          }
+                        ]
+                      },
+                      {
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "SubConditions": [
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item.調査会社宛フラグ"
+                              }
+                            },
+                            "value": "1",
+                            "LeftBracket": 1
+                          },
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item_一斉通知リスト.調査会社フラグ"
+                              }
+                            },
+                            "value": "1",
+                            "RightBracket": 1
+                          }
+                        ]
+                      },
+                      {
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "SubConditions": [
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item.工事会社宛フラグ"
+                              }
+                            },
+                            "value": "1",
+                            "LeftBracket": 1
+                          },
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item_一斉通知リスト.工事会社フラグ"
+                              }
+                            },
+                            "value": "1",
+                            "RightBracket": 1
+                          }
+                        ]
+                      },
+                      {
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "SubConditions": [
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item.その他取引先宛フラグ"
+                              }
+                            },
+                            "value": "1",
+                            "LeftBracket": 1
+                          },
+                          {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item_一斉通知リスト.その他取引先フラグ"
+                              }
+                            },
+                            "value": "1",
+                            "RightBracket": 1
+                          }
+                        ]
+                      }
+                    ],
+                    "RelationType": 1
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "通知カウント",
+                      "ParameterValue": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=通知カウント+1"
+                      },
+                      "ID": "2932bdf641594c9698b7224594d8cc64"
+                    },
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "差出人",
+                      "ParameterValue": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=IF(Item_一斉通知リスト.差出人既定値フラグ=1,差出人アドレス.メールアドレス,環境設定.差出人アドレス)"
+                      },
+                      "ID": "554264d7413b4c0792c4c7d092883574"
+                    },
+                    {
+                      "$type": "Forguncy.Model.CatchExceptionCommand, ServerDesignerCommon",
+                      "TryCommandPart": {
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.SendMailCommand, ServerDesignerCommon",
+                            "From": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=差出人"
+                            },
+                            "EnhancedRecipient": {
+                              "CommonValue": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item_一斉通知リスト.メールアドレス"
+                              }
+                            },
+                            "Subject": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=Item.件名"
+                            },
+                            "Content": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=メール本文"
+                            },
+                            "ID": "e5bbc98eb987427e9335380e2599d310"
+                          }
+                        ]
+                      },
+                      "FinallyCommandPart": {
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                            "TableName": "t_notification_history",
+                            "UpdateType": "add",
+                            "ShowConfirm": false,
+                            "UpdateBindingValues": [
+                              {
+                                "BindingInfo": {
+                                  "TableName": "t_notification_history",
+                                  "ColumnName": "mass_notification_id",
+                                  "GUID": "7c010c1e-acd2-4417-849d-d2b5601a3d6a"
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=Item.一斉通知ID"
+                                }
+                              },
+                              {
+                                "BindingInfo": {
+                                  "TableName": "t_notification_history",
+                                  "ColumnName": "mail_address",
+                                  "GUID": "fb89f714-b02f-4a26-9c58-0b1f4a6b62ed"
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=Item_一斉通知リスト.メールアドレス"
+                                }
+                              },
+                              {
+                                "BindingInfo": {
+                                  "TableName": "t_notification_history",
+                                  "ColumnName": "notification_datetime",
+                                  "GUID": "7b6b6ae1-9076-4b0f-8f63-a3fa27e037e4"
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=NOW()"
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                      "ConditionAndCommandPairList": [
+                        {
+                          "Condition": {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=通知カウント"
+                              }
+                            },
+                            "value": "100"
+                          },
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                              "ParameterName": "総通知数",
+                              "TableValue": {
+                                "TableName": "t_notification_history",
+                                "TableValueType": 3,
+                                "SqlCondition": {
+                                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                  "ColumnBindingInfo": {
+                                    "TableName": "t_notification_history",
+                                    "ColumnName": "mass_notification_id",
+                                    "GUID": "116b3a3d-90a2-4148-8633-966c1c8a9647"
+                                  },
+                                  "Value": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=Item.一斉通知ID"
+                                  }
+                                }
+                              },
+                              "ID": "1af8e236f2654c2b8ec32a056d973da1"
+                            },
+                            {
+                              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                              "TableName": "m_mass_notification",
+                              "ShowConfirm": false,
+                              "RowsToUpdate": 1,
+                              "RowsToUpdateCondition": {
+                                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                "ColumnBindingInfo": {
+                                  "TableName": "m_mass_notification",
+                                  "ColumnName": "mass_notification_id",
+                                  "GUID": "1d8b8be4-6ded-43d7-9c83-8bb6f2ecb64d"
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=Item.一斉通知ID"
+                                }
+                              },
+                              "UpdateBindingValues": [
+                                {
+                                  "BindingInfo": {
+                                    "TableName": "m_mass_notification",
+                                    "ColumnName": "total_notification",
+                                    "GUID": "d8e242ff-0a3c-4764-b9dd-5dde70bfc818"
+                                  },
+                                  "Value": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=総通知数"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                              "ErrorCode": "0"
+                            }
+                          ],
+                          "ID": "e7e52bbd-a0d0-4b58-bab1-26ca3a73926d"
+                        }
+                      ]
+                    }
+                  ],
+                  "ID": "ebf93382-c496-4229-9bce-37ad199b72e9"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "総通知数",
+          "TableValue": {
+            "TableName": "t_notification_history",
+            "TableValueType": 3,
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_notification_history",
+                "ColumnName": "mass_notification_id",
+                "GUID": "16f4e4b9-0d01-4d46-8656-3f44e612a46e"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=Item.一斉通知ID"
+              }
+            }
+          },
+          "ID": "5baed51b4ea0418eaf7c94c2c277e9e2"
+        },
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "m_mass_notification",
+          "ShowConfirm": false,
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "m_mass_notification",
+              "ColumnName": "mass_notification_id",
+              "GUID": "62d8e29d-1d26-415d-a5e5-010a116fe088"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=Item.一斉通知ID"
+            }
+          },
+          "UpdateBindingValues": [
+            {
+              "BindingInfo": {
+                "TableName": "m_mass_notification",
+                "ColumnName": "total_notification",
+                "GUID": "105672b1-b9bd-4215-b53a-d02968b6e16b"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=総通知数"
+              }
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=通知カウント"
+                  }
+                },
+                "value": "0"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "m_mass_notification",
+                  "ShowConfirm": false,
+                  "RowsToUpdate": 1,
+                  "RowsToUpdateCondition": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "m_mass_notification",
+                      "ColumnName": "mass_notification_id",
+                      "GUID": "bef304c0-c8e8-4b60-84e2-97cd644d3d77"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=Item.一斉通知ID"
+                    }
+                  },
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_mass_notification",
+                        "ColumnName": "notification_end_date",
+                        "GUID": "b236b5b5-04ad-44db-846c-5733589881c2"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=TODAY()"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "ID": "b37fbfe8-ebc4-44ce-834e-7867c562670a"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

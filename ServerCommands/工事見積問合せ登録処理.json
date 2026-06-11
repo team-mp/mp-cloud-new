@@ -1,0 +1,199 @@
+{
+  "Name": "工事見積問合せ登録処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_工事見積問合せID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_工事見積ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_問合せ回答内容",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_元工事見積問合せID",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "登録更新ラベル取得",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_ユーザーID"
+            }
+          ],
+          "ReturnPropertiesTo": [
+            {
+              "ResultPropertyName": "R_ラベル名",
+              "ResultTo": {
+                "SerializeProperty": "最終更新ラベル"
+              }
+            },
+            {
+              "ResultPropertyName": "R_外部ユーザーフラグ"
+            },
+            {
+              "ResultPropertyName": "R_ユーザー名"
+            },
+            {
+              "ResultPropertyName": "R_所属会社名"
+            }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_工事見積問合せID"
+                  }
+                },
+                "value": "%Null%"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "t_construction_estimate_qa",
+                  "UpdateType": "add",
+                  "ShowConfirm": false,
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_construction_estimate_qa",
+                        "ColumnName": "construction_estimate_id",
+                        "GUID": "ad54c89c-622a-4f6a-a511-0e663b1c689d"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_工事見積ID"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_construction_estimate_qa",
+                        "ColumnName": "qa_content",
+                        "GUID": "57443cee-5f9e-4650-ae64-c4c31b156f7d"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_問合せ回答内容"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_construction_estimate_qa",
+                        "ColumnName": "origin_construction_estimate_qa_id",
+                        "GUID": "9ac07f52-cff7-4725-8c5d-378aaab4c222"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_元工事見積問合せID"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_construction_estimate_qa",
+                        "ColumnName": "update_user_label",
+                        "GUID": "800c0675-41ba-4cf6-a6cd-bd3bc2d6b99e"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=最終更新ラベル"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "ID": "6fd23305-aa15-4e52-bc4e-9498c23178db"
+            },
+            {
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "t_construction_estimate_qa",
+                  "ShowConfirm": false,
+                  "RowsToUpdate": 1,
+                  "RowsToUpdateCondition": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_construction_estimate_qa",
+                      "ColumnName": "construction_estimate_qa_id",
+                      "GUID": "e903a5b0-89ca-4c7e-8ffc-2d4c70ddcc6e"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_工事見積問合せID"
+                    }
+                  },
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_construction_estimate_qa",
+                        "ColumnName": "qa_content",
+                        "GUID": "d56d6b36-2b27-4160-95bc-894398385fb6"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_問合せ回答内容"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_construction_estimate_qa",
+                        "ColumnName": "update_user_label",
+                        "GUID": "ff2d7f29-ed3c-487d-95e3-986f0d708c66"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=最終更新ラベル"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "ID": "d2dd8df0-83ce-4cb2-b01a-5e43b573d49c"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

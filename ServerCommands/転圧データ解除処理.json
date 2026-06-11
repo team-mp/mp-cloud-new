@@ -1,0 +1,560 @@
+{
+  "Name": "転圧データ解除処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_申込ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_転圧ID",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "申込情報",
+          "TableValue": {
+            "TableName": "t_object_order",
+            "TableValueType": 1,
+            "BindingInfos": [
+              {
+                "GUID": "e3cc3550-6322-4aed-99e7-8cef0b35e3c3",
+                "BindingInfo": {
+                  "TableName": "t_object_order",
+                  "ColumnName": "latest_warranty_id",
+                  "GUID": "5aa2139d-bc85-4d1c-b1d5-e796248cc1a4"
+                },
+                "ColumnName": "最新保証ID"
+              },
+              {
+                "GUID": "8b152e2d-be94-47d4-ae2f-0ab9ed352011",
+                "BindingInfo": {
+                  "TableName": "t_object_order",
+                  "ColumnName": "latest_warranty_id",
+                  "GUID": "4e833571-4a82-416c-a309-1911cb2e6a54",
+                  "RelationBinding": {
+                    "RelatedTable": "t_object_warranty",
+                    "RelatedColumn": "warranty_id",
+                    "DisplayColumn": "warranty_status_id"
+                  }
+                },
+                "ColumnName": "保証ステータスID"
+              },
+              {
+                "GUID": "224e9da8-5d72-4c52-b004-ebc9531d07dd",
+                "BindingInfo": {
+                  "TableName": "t_object_order",
+                  "ColumnName": "latest_warranty_id",
+                  "GUID": "482c4990-7f85-4496-a540-79de8cf97023",
+                  "RelationBinding": {
+                    "RelatedTable": "t_object_warranty",
+                    "RelatedColumn": "warranty_id",
+                    "DisplayColumn": "warranty_status_id",
+                    "NextRelationBinding": {
+                      "RelatedTable": "m_warranty_status",
+                      "RelatedColumn": "warranty_status_id",
+                      "DisplayColumn": "warranty_done_flg"
+                    }
+                  }
+                },
+                "ColumnName": "保証済みフラグ"
+              },
+              {
+                "GUID": "1d679122-8e57-4ecd-af53-8206061e5281",
+                "BindingInfo": {
+                  "TableName": "t_object_order",
+                  "ColumnName": "latest_warranty_id",
+                  "GUID": "000b4919-65fd-4307-97d7-9d32f924e166",
+                  "RelationBinding": {
+                    "RelatedTable": "t_object_warranty",
+                    "RelatedColumn": "warranty_id",
+                    "DisplayColumn": "warranty_status_id",
+                    "NextRelationBinding": {
+                      "RelatedTable": "m_warranty_status",
+                      "RelatedColumn": "warranty_status_id",
+                      "DisplayColumn": "complete_flg"
+                    }
+                  }
+                },
+                "ColumnName": "保証完了フラグ"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_order",
+                "ColumnName": "object_order_id",
+                "GUID": "9e70849d-d3e7-4fb1-bde5-eb638ece836c"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_申込ID"
+              }
+            }
+          },
+          "ID": "ba51b96304fd4cd5a1eda60ef6c3ecfb"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "転圧完了待ちST",
+          "TableValue": {
+            "TableName": "m_compaction_status",
+            "TableValueType": 1,
+            "BindingInfos": [
+              {
+                "GUID": "ff46c17e-5b5e-420f-bdc6-bc13a23d0079",
+                "BindingInfo": {
+                  "TableName": "m_compaction_status",
+                  "ColumnName": "compaction_status_id",
+                  "GUID": "ac2ea8fe-cdb5-4f48-a09c-fe3b412646cb"
+                },
+                "ColumnName": "転圧ステータスID"
+              },
+              {
+                "GUID": "6d01dd5f-8cf8-46b2-a4ea-2d3597b0e2e7",
+                "BindingInfo": {
+                  "TableName": "m_compaction_status",
+                  "ColumnName": "order_status_id",
+                  "GUID": "2fe6e018-3340-4591-babf-03866d01915f"
+                },
+                "ColumnName": "申込ステータスID"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_compaction_status",
+                "ColumnName": "compaction_complete_wait_flg",
+                "GUID": "6169ba2d-0076-40cc-a6f8-37be7bc152eb"
+              },
+              "Value": "1"
+            }
+          },
+          "ID": "d127e1a345e54c4880616c8906f79854"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "登録更新ラベル取得",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_ユーザーID"
+            }
+          ],
+          "ResultErrorCodeTo": {
+            "SerializeProperty": "リターンコード"
+          },
+          "ResultMessageTo": {
+            "SerializeProperty": "リターンメッセージ"
+          },
+          "ReturnPropertiesTo": [
+            {
+              "ResultPropertyName": "R_ラベル名",
+              "ResultTo": {
+                "SerializeProperty": "最終更新ラベル"
+              }
+            },
+            {
+              "ResultPropertyName": "R_外部ユーザーフラグ"
+            },
+            {
+              "ResultPropertyName": "R_ユーザー名"
+            },
+            {
+              "ResultPropertyName": "R_所属会社名"
+            }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        },
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_object_compaction",
+          "ShowConfirm": false,
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object_compaction",
+              "ColumnName": "compaction_id",
+              "GUID": "106b5883-27e3-47e6-afe0-69c404636d54"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_転圧ID"
+            }
+          },
+          "UpdateBindingValues": [
+            {
+              "BindingInfo": {
+                "TableName": "t_object_compaction",
+                "ColumnName": "compaction_status_id",
+                "GUID": "8ca7044e-11f8-4a14-932a-5f24493f08ac"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=転圧完了待ちST.転圧ステータスID"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_compaction",
+                "ColumnName": "last_updated_label",
+                "GUID": "74fa9f51-c6c8-437b-9a3d-1fad41408503"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=最終更新ラベル"
+              }
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=転圧完了待ちST.申込ステータスID"
+                  }
+                },
+                "value": "%Null%",
+                "compareType": 1
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "t_object_order",
+                  "ShowConfirm": false,
+                  "RowsToUpdate": 1,
+                  "RowsToUpdateCondition": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_order",
+                      "ColumnName": "object_order_id",
+                      "GUID": "b2906d5d-632b-452f-b5e8-9670515b2270"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_申込ID"
+                    }
+                  },
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_object_order",
+                        "ColumnName": "order_status_id",
+                        "GUID": "1b6fb9b8-b75e-457e-b569-b8e115c322c0"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=転圧完了待ちST.申込ステータスID"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "ID": "c8c2d07e-074a-463f-8170-7887015c500d"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                "SubConditions": [
+                  {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=申込情報.最新保証ID"
+                      }
+                    },
+                    "value": "%Null%",
+                    "compareType": 1
+                  },
+                  {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=申込情報.保証完了フラグ"
+                      }
+                    },
+                    "value": "0"
+                  }
+                ]
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "転圧結果待ちST",
+                  "TableValue": {
+                    "TableName": "m_warranty_status",
+                    "TableValueType": 1,
+                    "BindingInfos": [
+                      {
+                        "GUID": "90747bea-f6e0-4024-80a0-a7fa9847e9cc",
+                        "BindingInfo": {
+                          "TableName": "m_warranty_status",
+                          "ColumnName": "warranty_status_id",
+                          "GUID": "a2a14c4a-9bce-4bce-9c60-9e0e722d3334"
+                        },
+                        "ColumnName": "保証ステータスID"
+                      }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_warranty_status",
+                        "ColumnName": "compaction_result_waite_flg",
+                        "GUID": "1a91264b-aca8-4e1a-9ec1-05123c0ae5e5"
+                      },
+                      "Value": "1"
+                    }
+                  },
+                  "ID": "9e942c66f70449eda4e9499395a85cdb"
+                },
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "t_object_warranty",
+                  "ShowConfirm": false,
+                  "RowsToUpdate": 1,
+                  "RowsToUpdateCondition": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_warranty",
+                      "ColumnName": "warranty_id",
+                      "GUID": "f56dc384-9f79-455e-a07c-e1fce1511e77"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=申込情報.最新保証ID"
+                    }
+                  },
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_object_warranty",
+                        "ColumnName": "warranty_status_id",
+                        "GUID": "f7a39cd2-4e1e-4be7-b911-e2b57e28b7e0"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=転圧結果待ちST.保証ステータスID"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_object_warranty",
+                        "ColumnName": "before_warranty_status_id",
+                        "GUID": "d82eed22-913c-4c5f-acab-68915bd7f79e"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=申込情報.保証ステータスID"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_object_warranty",
+                        "ColumnName": "last_updated_label",
+                        "GUID": "36db89a4-f91f-4326-8120-34c0a45b778a"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=最終更新ラベル"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_object_warranty",
+                        "ColumnName": "warranty_complete_flg",
+                        "GUID": "16429dd6-8c8e-41ee-9929-9b2716cd1b54"
+                      },
+                      "Value": "0"
+                    }
+                  ]
+                }
+              ],
+              "ID": "04fc4401-1f20-4ab9-8219-202aec6d99d0"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "業務完了フラグ更新処理",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_調査ID"
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_測量ID"
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_解析ID"
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_転圧ID",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_転圧ID"
+              }
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_工事ID"
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_保証ID"
+            }
+          ],
+          "ReturnPropertiesTo": [
+            {
+              "ResultPropertyName": "R_業務完了フラグ"
+            }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true,
+          "Comments": "商品の業務完了フラグを更新"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "添付ファイル非公開処理",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_申込ID",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_申込ID"
+              }
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_調査ID"
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_測量ID"
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_解析ID"
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_転圧ID",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_転圧ID"
+              }
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_工事見積ID"
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_工事ID"
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_保証ID"
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_付保ID"
+            }
+          ],
+          "ResultErrorCodeTo": {
+            "SerializeProperty": "リターンコード"
+          },
+          "ResultMessageTo": {
+            "SerializeProperty": "リターンメッセージ"
+          },
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true,
+          "Comments": "添付ファイル非公開"
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=リターンコード"
+                  }
+                },
+                "value": "0",
+                "compareType": 1
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                  "ErrorCode": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=リターンコード"
+                  },
+                  "Message": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=リターンメッセージ"
+                  }
+                }
+              ],
+              "ID": "be11ec35-ce75-4291-a4a3-d2ea25b32ec4"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+          "ErrorCode": "0"
+        }
+      ]
+    }
+  ]
+}

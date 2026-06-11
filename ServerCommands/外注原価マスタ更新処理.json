@@ -1,0 +1,355 @@
+{
+  "Name": "外注原価マスタ更新処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_外注原価ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_外注先ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_商品ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_原価設定区分",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_グループID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_住宅事業者ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_指定エリア",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_優先度",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_原価",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "登録更新ラベル取得",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_ユーザーID"
+            }
+          ],
+          "ReturnPropertiesTo": [
+            {
+              "ResultPropertyName": "R_ラベル名",
+              "ResultTo": {
+                "SerializeProperty": "ラベル名"
+              }
+            },
+            {
+              "ResultPropertyName": "R_外部ユーザーフラグ"
+            },
+            {
+              "ResultPropertyName": "R_ユーザー名"
+            },
+            {
+              "ResultPropertyName": "R_所属会社名"
+            }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_外注原価ID"
+                  }
+                },
+                "value": "%Null%"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "m_outsourcing_cost",
+                  "UpdateType": "add",
+                  "ShowConfirm": false,
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_outsourcing_cost",
+                        "ColumnName": "customer_id",
+                        "GUID": "e37636c5-1cc2-49a7-b105-c8c02a0f5283"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_外注先ID"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_outsourcing_cost",
+                        "ColumnName": "product_id",
+                        "GUID": "ad3f8586-f8c9-4da3-a040-7f00c91b8c4e"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_商品ID"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_outsourcing_cost",
+                        "ColumnName": "cost_setting_type",
+                        "GUID": "00aa735a-458b-4b06-9465-6855ea0ad27b"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_原価設定区分"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_outsourcing_cost",
+                        "ColumnName": "group_id",
+                        "GUID": "22a0e9d6-02a9-406c-846d-a68dd638ea87"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_グループID"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_outsourcing_cost",
+                        "ColumnName": "builder_id",
+                        "GUID": "d1dcfcd2-ecc8-49bb-abf0-331615d8d2cd"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_住宅事業者ID"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_outsourcing_cost",
+                        "ColumnName": "designated_area",
+                        "GUID": "b8756010-0fe2-4a25-88e4-38e67a645ee5"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_指定エリア"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_outsourcing_cost",
+                        "ColumnName": "priority",
+                        "GUID": "0d507a1a-13a2-45ee-9377-4f928aaa74eb"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_優先度"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_outsourcing_cost",
+                        "ColumnName": "cost_price",
+                        "GUID": "fc860810-a323-4053-8030-c85bcde1fac9"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_原価"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_outsourcing_cost",
+                        "ColumnName": "last_updated_label",
+                        "GUID": "042ce930-7f00-4860-8e9a-92d976321056"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=ラベル名"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "ID": "3dc52fc4-f81e-461d-9d2e-07555b3f8280"
+            },
+            {
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "m_outsourcing_cost",
+                  "ShowConfirm": false,
+                  "RowsToUpdate": 1,
+                  "RowsToUpdateCondition": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "m_outsourcing_cost",
+                      "ColumnName": "outsourcing_cost_id",
+                      "GUID": "d6e7f0df-4cb1-43d5-9eac-71f82385bc19"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_外注原価ID"
+                    }
+                  },
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_outsourcing_cost",
+                        "ColumnName": "customer_id",
+                        "GUID": "c5ee6e3f-9451-4384-98e7-fd01d65c2b23"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_外注先ID"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_outsourcing_cost",
+                        "ColumnName": "product_id",
+                        "GUID": "0168f516-1099-49c2-a4e7-1a09ed24d056"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_商品ID"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_outsourcing_cost",
+                        "ColumnName": "cost_setting_type",
+                        "GUID": "9acc8128-7758-40b2-89df-85b3068e4544"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_原価設定区分"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_outsourcing_cost",
+                        "ColumnName": "group_id",
+                        "GUID": "c3492095-0912-4bd5-a0ce-80e9754893c1"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_グループID"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_outsourcing_cost",
+                        "ColumnName": "builder_id",
+                        "GUID": "5b5d6e48-94ee-4e9e-b3ac-65d59b37e9fe"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_住宅事業者ID"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_outsourcing_cost",
+                        "ColumnName": "designated_area",
+                        "GUID": "249aecee-1118-4af6-99fc-969213df92ae"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_指定エリア"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_outsourcing_cost",
+                        "ColumnName": "priority",
+                        "GUID": "d6d6204a-0860-4116-b3c2-c0e6dcd63c5e"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_優先度"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_outsourcing_cost",
+                        "ColumnName": "cost_price",
+                        "GUID": "97a260b4-a5f8-45ad-8f79-644bb2dd3477"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_原価"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_outsourcing_cost",
+                        "ColumnName": "last_updated_label",
+                        "GUID": "33851709-0cb3-4651-a906-91a78c168211"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=ラベル名"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "ID": "63fceb4b-41a2-4077-8181-1f22db3b0b82"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+          "ErrorCode": "0"
+        }
+      ]
+    }
+  ]
+}

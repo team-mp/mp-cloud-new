@@ -1,0 +1,48 @@
+{
+  "Name": "v_construction_est_file_count",
+  "Columns": [
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "工事見積ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "ファイル数",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "改良工事見積数",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "改良工事見積数_申込事業者",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    }
+  ],
+  "ExternalDatabaseInfo": {
+    "DataBaseType": "6db454c0-531c-4395-9122-921a18942902",
+    "AllowModifySchema": true,
+    "ConnectionId": "PostgreSQL1",
+    "SourceTableName": "v_construction_est_file_count",
+    "SourceTableSchema": "public",
+    "CreateViewSql": " SELECT a.construction_estimate_id AS \"工事見積ID\",\n    count(a.attachment_id) AS \"ファイル数\",\n    count(\n        CASE\n            WHEN (a.file_attribute_id = 7) THEN 1\n            ELSE NULL::integer\n        END) AS \"改良工事見積数\",\n    count(\n        CASE\n            WHEN ((a.file_attribute_id = 7) AND (a.publish_flg = 1) AND (a.hidden_flg = 0) AND (b.applicant_company_authority > 0)) THEN 1\n            ELSE NULL::integer\n        END) AS \"改良工事見積数_申込事業者\"\n   FROM ((t_object_attachment a\n     JOIN m_file_attribute b ON ((a.file_attribute_id = b.file_attribute_id)))\n     JOIN m_file_class c ON ((b.file_class_id = c.file_class_id)))\n  WHERE ((c.construction_estimate_flg = 1) AND (a.construction_estimate_id IS NOT NULL) AND (a.active_flg = 1))\n  GROUP BY a.construction_estimate_id;",
+    "ViewInfo": {
+      "ViewName": "v_construction_est_file_count",
+      "QueryColumns": [
+        "工事見積ID"
+      ]
+    }
+  },
+  "Indexes": []
+}

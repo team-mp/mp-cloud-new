@@ -1,0 +1,250 @@
+{
+  "Name": "付保キャンセル申請更新処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_付保キャンセル日",
+          "DataValidationInfo": {}
+        },
+        {
+          "OnlySendChangedData": true,
+          "PrimaryKeys": [
+            "付保ID"
+          ],
+          "Name": "P_付保ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_キャンセル申請フラグ",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_キャンセル申請取消フラグ",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_キャンセル申請フラグ"
+                  }
+                },
+                "value": "1"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "付保キャンセル済みST",
+                  "TableValue": {
+                    "TableName": "m_insurance_status",
+                    "OnlyGetValue": true,
+                    "TableValueType": 0,
+                    "BindingInfos": [
+                      {
+                        "GUID": "feebe362-b072-496d-adc0-24112556c625",
+                        "BindingInfo": {
+                          "TableName": "m_insurance_status",
+                          "ColumnName": "insurance_status_id",
+                          "GUID": "4ee9074d-96ad-4962-8b3c-7835ff566f67"
+                        },
+                        "ColumnName": "insurance_status_id"
+                      }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_insurance_status",
+                        "ColumnName": "insurance_cancel_flg",
+                        "GUID": "9549b0f0-8d4d-4a09-835f-ebf40ab32b75"
+                      },
+                      "Value": "1"
+                    }
+                  },
+                  "ID": "dd6f54da47574a1eaac1e757809f135b"
+                },
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "t_object_insurance",
+                  "ShowConfirm": false,
+                  "RowsToUpdate": 1,
+                  "RowsToUpdateCondition": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_insurance",
+                      "ColumnName": "insurance_id",
+                      "GUID": "1da8447a-03f2-4e51-879b-5e1a8f179b51"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_付保ID"
+                    }
+                  },
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_object_insurance",
+                        "ColumnName": "insurance_cancel_date",
+                        "GUID": "ea038950-523f-4bc9-a841-6c31fb428ad5"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_付保キャンセル日"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_object_insurance",
+                        "ColumnName": "insurance_status_id",
+                        "GUID": "29b6b1ec-b95e-4f47-913d-c9ffc13b0a3b"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=付保キャンセル済みST"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "ID": "05588a99-2569-4df3-9ccc-6e3b9d562b08"
+            }
+          ],
+          "Comments": "申請の場合"
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_キャンセル申請取消フラグ"
+                  }
+                },
+                "value": "1"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "キャンセル申請待ちST",
+                  "TableValue": {
+                    "TableName": "m_insurance_status",
+                    "OnlyGetValue": true,
+                    "TableValueType": 0,
+                    "BindingInfos": [
+                      {
+                        "GUID": "1f331b29-0beb-4e63-b71d-588bd7b44821",
+                        "BindingInfo": {
+                          "TableName": "m_insurance_status",
+                          "ColumnName": "insurance_status_id",
+                          "GUID": "64f48a37-0ba5-4390-93b2-0bfcb6a9bc32"
+                        },
+                        "ColumnName": "insurance_status_id"
+                      }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_insurance_status",
+                        "ColumnName": "cancel_application_wait_flg",
+                        "GUID": "3767fa05-c855-4eda-931c-59af521dc187"
+                      },
+                      "Value": "1"
+                    }
+                  },
+                  "ID": "18153941d3f449a99c43c347b7c3858a"
+                },
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "t_object_insurance",
+                  "ShowConfirm": false,
+                  "RowsToUpdate": 1,
+                  "RowsToUpdateCondition": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_insurance",
+                      "ColumnName": "insurance_id",
+                      "GUID": "357c7b8a-adfb-436f-8c29-ea975a2f7c63"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_付保ID"
+                    }
+                  },
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_object_insurance",
+                        "ColumnName": "insurance_cancel_date",
+                        "GUID": "b710ba22-1619-4a9b-9aed-f34803a97185"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_object_insurance",
+                        "ColumnName": "insurance_status_id",
+                        "GUID": "9a503925-3f46-4438-a757-c0fab07d93d5"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=キャンセル申請待ちST"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_object_insurance",
+                        "ColumnName": "insurance_certificate_need_flg",
+                        "GUID": "922433cc-31ad-416e-ab42-6d8a35bf62dd"
+                      },
+                      "Value": "0"
+                    }
+                  ]
+                }
+              ],
+              "ID": "f5784066-6982-47ce-9f5b-f00e39f849da"
+            }
+          ],
+          "Comments": "解除の場合"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+      "ErrorCode": "0"
+    }
+  ]
+}

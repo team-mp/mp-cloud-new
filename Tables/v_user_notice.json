@@ -1,0 +1,58 @@
+{
+  "Name": "v_user_notice",
+  "Columns": [
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "ユーザーID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "お知らせID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "閲覧数",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    }
+  ],
+  "ExternalDatabaseInfo": {
+    "DataBaseType": "6db454c0-531c-4395-9122-921a18942902",
+    "AllowModifySchema": true,
+    "ConnectionId": "PostgreSQL1",
+    "SourceTableName": "v_user_notice",
+    "SourceTableSchema": "public",
+    "CreateViewSql": " SELECT u.user_id AS \"ユーザーID\",\n    n.notice_id AS \"お知らせID\",\n    COALESCE(h.cnt, (0)::bigint) AS \"閲覧数\"\n   FROM ((m_user u\n     CROSS JOIN t_notice n)\n     LEFT JOIN ( SELECT t_notice_browse_history.browse_user_id,\n            t_notice_browse_history.notice_id,\n            count(*) AS cnt\n           FROM t_notice_browse_history\n          GROUP BY t_notice_browse_history.browse_user_id, t_notice_browse_history.notice_id) h ON (((u.user_id = h.browse_user_id) AND (n.notice_id = h.notice_id))))\n  WHERE (u.active_flg = 1);",
+    "ViewInfo": {
+      "ViewName": "v_user_notice",
+      "QueryColumns": [
+        "ユーザーID",
+        "お知らせID"
+      ]
+    }
+  },
+  "Relations": [
+    {
+      "PrimaryTable": "m_user",
+      "PrimaryColumn": "user_id",
+      "ForeignTable": "v_user_notice",
+      "ForeignColumn": "ユーザーID",
+      "IsDetailTableRelation": false
+    },
+    {
+      "PrimaryTable": "t_notice",
+      "PrimaryColumn": "notice_id",
+      "ForeignTable": "v_user_notice",
+      "ForeignColumn": "お知らせID",
+      "IsDetailTableRelation": false
+    }
+  ],
+  "Indexes": []
+}

@@ -1,0 +1,31 @@
+{
+  "PageType": 0,
+  "ColumnCount": 103,
+  "RowCount": 140,
+  "Formulas": {
+    "19,55": "TEXT(EOMONTH(F2&\"/01\",N2-1),\"yyyymm\")",
+    "16,55": "IF(F2<>\"\",LEFT(F2,4)&RIGHT(F2,2),\"\")",
+    "19,69": "TEXTJOIN(\",\",TRUE,BR15)",
+    "6,65": "SUMIFS($CL$7,$CJ$7,BD7)/CC7",
+    "6,70": "SUMIFS($CM$7,$CJ$7,BD7)/CC7",
+    "6,75": "SUMIFS($CN$7,$CJ$7,BD7)/CC7",
+    "26,65": "SUMIFS($CL$7,$CJ$7,BD27,$CK$7,$BD$34)/CC27",
+    "26,75": "SUMIFS($CN$7,$CJ$7,BD27,$CK$7,$BD$34)/CC27",
+    "26,70": "SUMIFS($CM$7,$CJ$7,BD27,$CK$7,$BD$34)/CC27",
+    "45,65": "SUMIFS($CL$7,$CJ$7,BD46,$CK$7,$BD$53)/CC46",
+    "45,70": "SUMIFS($CM$7,$CJ$7,BD46,$CK$7,$BD$53)/CC46",
+    "45,75": "SUMIFS($CN$7,$CJ$7,BD46,$CK$7,$BD$53)/CC46",
+    "64,65": "SUMIFS($CL$7,$CJ$7,BD65,$CK$7,$BD$72)/CC65",
+    "64,70": "SUMIFS($CM$7,$CJ$7,BD65,$CK$7,$BD$72)/CC65",
+    "64,75": "SUMIFS($CN$7,$CJ$7,BD65,$CK$7,$BD$72)/CC65",
+    "83,65": "SUMIFS($CL$7,$CJ$7,BD84,$CK$7,$BD$91)/CC84",
+    "83,70": "SUMIFS($CM$7,$CJ$7,BD84,$CK$7,$BD$91)/CC84",
+    "83,75": "SUMIFS($CN$7,$CJ$7,BD84,$CK$7,$BD$91)/CC84",
+    "102,65": "SUMIFS($CL$7,$CJ$7,BD103,$CK$7,$BD$110)/CC103",
+    "102,70": "SUMIFS($CM$7,$CJ$7,BD103,$CK$7,$BD$110)/CC103",
+    "102,75": "SUMIFS($CN$7,$CJ$7,BD103,$CK$7,$BD$110)/CC103",
+    "121,65": "SUMIFS($CL$7,$CJ$7,BD122,$CK$7,$BD$129)/CC122",
+    "121,70": "SUMIFS($CM$7,$CJ$7,BD122,$CK$7,$BD$129)/CC122",
+    "121,75": "SUMIFS($CN$7,$CJ$7,BD122,$CK$7,$BD$129)/CC122"
+  }
+}

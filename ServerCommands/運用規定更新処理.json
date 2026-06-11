@@ -1,0 +1,729 @@
+{
+  "Name": "運用規定更新処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_運用規定ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_運用規定分類ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_件名",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_内容",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_公開先顧客属性NOs",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_制定日",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_並び順",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_添付ファイル",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_変換ファイル",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_有効フラグ",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "V_運用規定ID",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_運用規定ID"
+          },
+          "ID": "b7f7095cb5cf45988942cc148699ee1e"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "登録更新ラベル取得",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_ユーザーID"
+            }
+          ],
+          "ReturnPropertiesTo": [
+            {
+              "ResultPropertyName": "R_ラベル名",
+              "ResultTo": {
+                "SerializeProperty": "V_最終更新ラベル"
+              }
+            },
+            {
+              "ResultPropertyName": "R_外部ユーザーフラグ"
+            },
+            {
+              "ResultPropertyName": "R_ユーザー名"
+            },
+            {
+              "ResultPropertyName": "R_所属会社名"
+            }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_運用規定ID"
+                  }
+                },
+                "value": "%Null%"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "t_policy",
+                  "UpdateType": "add",
+                  "ShowConfirm": false,
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_policy",
+                        "ColumnName": "policy_category_id",
+                        "GUID": "f0c38a71-953b-4508-915b-a2abf0499df8"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_運用規定分類ID"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_policy",
+                        "ColumnName": "subject",
+                        "GUID": "61288737-6810-4757-b717-21e3055ab949"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_件名"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_policy",
+                        "ColumnName": "content",
+                        "GUID": "e2874b30-bd97-4241-8710-7e37ba8fd052"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_内容"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_policy",
+                        "ColumnName": "enactment_date",
+                        "GUID": "b647a8f9-e1b3-4a31-9deb-cde4aa3e77b6"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_制定日"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_policy",
+                        "ColumnName": "sort_no",
+                        "GUID": "c803f98d-f811-4af9-a73a-43c3581297d8"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_並び順"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_policy",
+                        "ColumnName": "open_to",
+                        "GUID": "a9af98e1-06ff-47a2-bc57-dee19c2bcbfd"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_公開先顧客属性NOs"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_policy",
+                        "ColumnName": "last_updated_label",
+                        "GUID": "c79a8ef3-1c6a-4653-865d-fcb6d6ff4381"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=V_最終更新ラベル"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_policy",
+                        "ColumnName": "active_flg",
+                        "GUID": "fcf69137-0065-4fc0-9b40-0b326033621c"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_有効フラグ"
+                      }
+                    }
+                  ],
+                  "ParamNameToSaveNewRowValue": "New運用規定"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "V_運用規定ID",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=New運用規定.運用規定ID"
+                  },
+                  "ID": "0fa185e839304be4bde577c0b7e280a9"
+                }
+              ],
+              "ID": "ca2add26-2cf3-4b53-b2c9-90f399cbe803"
+            },
+            {
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "t_policy",
+                  "ShowConfirm": false,
+                  "RowsToUpdate": 1,
+                  "RowsToUpdateCondition": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_policy",
+                      "ColumnName": "policy_id",
+                      "GUID": "c08f6055-2e82-4f2d-b07b-4e3c16f803e4"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_運用規定ID"
+                    }
+                  },
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_policy",
+                        "ColumnName": "policy_category_id",
+                        "GUID": "deae90f6-6a47-4cf9-b3ed-4d0210396441"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_運用規定分類ID"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_policy",
+                        "ColumnName": "subject",
+                        "GUID": "94ccbc6f-0fe1-4553-84ee-9d0165efbe15"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_件名"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_policy",
+                        "ColumnName": "content",
+                        "GUID": "8aed7efd-83dd-4dee-831e-5da40a6f01df"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_内容"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_policy",
+                        "ColumnName": "enactment_date",
+                        "GUID": "e4c55bb2-83ca-4b20-b804-6b0abfade703"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_制定日"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_policy",
+                        "ColumnName": "sort_no",
+                        "GUID": "eca6f5af-b7f1-472d-af12-5e170d7a7b72"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_並び順"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_policy",
+                        "ColumnName": "open_to",
+                        "GUID": "edd63fee-2870-4e18-95ac-a515b784e560"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_公開先顧客属性NOs"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_policy",
+                        "ColumnName": "last_updated_label",
+                        "GUID": "b01e42dd-066c-4fc2-9e2e-051b4eba5152"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=V_最終更新ラベル"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_policy",
+                        "ColumnName": "active_flg",
+                        "GUID": "6dd520a2-87f6-41cc-90aa-017c19181d7c"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_有効フラグ"
+                      }
+                    }
+                  ],
+                  "ParamNameToSaveNewRowValue": "New運用規定"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "現在の運用規定",
+                  "TableValue": {
+                    "TableName": "t_policy",
+                    "TableValueType": 1,
+                    "BindingInfos": [
+                      {
+                        "GUID": "e823faf6-c729-4f02-8589-5e5349802e0b",
+                        "BindingInfo": {
+                          "TableName": "t_policy",
+                          "ColumnName": "運用規定ファイルフルパス名",
+                          "GUID": "49046d2e-6be5-4aaa-b77d-06b6c7c8eed1"
+                        },
+                        "ColumnName": "運用規定ファイルフルパス名"
+                      }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "t_policy",
+                        "ColumnName": "policy_id",
+                        "GUID": "d3b542b9-f191-444c-b9ad-77321cbd0a7a"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_運用規定ID"
+                      }
+                    },
+                    "NullFormulaValueQueryPolicy": 0
+                  },
+                  "ID": "7a272924987a410f9e7d20fc4c7b9f86"
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=現在の運用規定.運用規定ファイルフルパス名"
+                          }
+                        },
+                        "value": "%Null%",
+                        "compareType": 1
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "OperateFilesCommand.DeleteFileCommand, OperateFilesCommand",
+                          "FilePath": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=現在の運用規定.運用規定ファイルフルパス名"
+                          }
+                        },
+                        {
+                          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                          "TableName": "t_policy",
+                          "ShowConfirm": false,
+                          "RowsToUpdate": 1,
+                          "RowsToUpdateCondition": {
+                            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                            "ColumnBindingInfo": {
+                              "TableName": "t_policy",
+                              "ColumnName": "policy_id",
+                              "GUID": "40ab8207-dbf3-44ac-a6be-e00b787d86bc"
+                            },
+                            "Value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=P_運用規定ID"
+                            }
+                          },
+                          "UpdateBindingValues": [
+                            {
+                              "BindingInfo": {
+                                "TableName": "t_policy",
+                                "ColumnName": "policy_file_path_name",
+                                "GUID": "9c925c46-e848-40d0-9b43-fc903b6f52ec"
+                              }
+                            },
+                            {
+                              "BindingInfo": {
+                                "TableName": "t_policy",
+                                "ColumnName": "policy_save_file_name",
+                                "GUID": "bba6748f-9cb0-4c74-a265-f61895bee0d2"
+                              }
+                            },
+                            {
+                              "BindingInfo": {
+                                "TableName": "t_policy",
+                                "ColumnName": "policy_display_file_name",
+                                "GUID": "2b0a1412-93b8-4504-aec4-d31496b3d1d9"
+                              }
+                            },
+                            {
+                              "BindingInfo": {
+                                "TableName": "t_policy",
+                                "ColumnName": "policy_file_size",
+                                "GUID": "f1c77924-74a9-448b-a73e-e10a2904d70e"
+                              }
+                            }
+                          ],
+                          "ParamNameToSaveNewRowValue": "New運用規定"
+                        }
+                      ],
+                      "Comments": "添付が削除された場合",
+                      "ID": "ce9ebb00-5cea-40f7-bc67-54a220383207"
+                    }
+                  ]
+                }
+              ],
+              "ID": "636bcfef-85bd-448d-aa3e-bfc20cde877d"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_添付ファイル"
+                  }
+                },
+                "value": "%Null%",
+                "compareType": 1
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "環境変数",
+                  "TableValue": {
+                    "TableName": "m_environment",
+                    "TableValueType": 1,
+                    "BindingInfos": [
+                      {
+                        "GUID": "1257fbfa-6d6e-42e5-a905-344744a4c45d",
+                        "BindingInfo": {
+                          "TableName": "m_environment",
+                          "ColumnName": "app_name",
+                          "GUID": "d27f4904-5c8e-4651-81d5-116a1d5d8ba2"
+                        },
+                        "ColumnName": "アプリ名"
+                      },
+                      {
+                        "GUID": "88f78a86-a900-4ca8-95d2-a6f7c34286f4",
+                        "BindingInfo": {
+                          "TableName": "m_environment",
+                          "ColumnName": "file_temp_path",
+                          "GUID": "38ad287e-da6a-4c84-b42b-86c67a64cfae"
+                        },
+                        "ColumnName": "ファイルTempパス"
+                      },
+                      {
+                        "GUID": "2435411f-22e2-4b1d-a10a-8bd44aa929bf",
+                        "BindingInfo": {
+                          "TableName": "m_environment",
+                          "ColumnName": "dropbox_folder_path",
+                          "GUID": "b3b0a627-5244-4961-8986-3598a8cb17f3"
+                        },
+                        "ColumnName": "DropBoxフォルダパス"
+                      }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_environment",
+                        "ColumnName": "environment_id",
+                        "GUID": "9c4dbd0c-7062-4f11-aae6-882c682662c2"
+                      },
+                      "Value": "1"
+                    }
+                  },
+                  "ID": "a2a86e1f565c4afab269c39d773396c0"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "Tempパス名",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=環境変数.ファイルTempパス&環境変数.アプリ名&\"\\Temp\\\""
+                  },
+                  "ID": "2c264410fb04478f96cd001b80b3d4fc"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "V_保存元Tempファイルパス名",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Tempパス名&SUBSTITUTE(P_添付ファイル,\"|\",\"\")"
+                  },
+                  "ID": "7f9ce00a065a4df982b77bfa8c00f913"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "V_接続詞",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=RIGHT(\"000000000\"&V_運用規定ID,10)"
+                  },
+                  "ID": "8e86c3b73a0744ceb54edfd64f6711d2"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "V_元ファイル名",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=MID(SUBSTITUTE(P_変換ファイル,\"|\",\"\"),38,1000)"
+                  },
+                  "ID": "0daa84c12463429aa13ac0eb1bdaf712"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "V_保存ファイル名",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=V_接続詞&\"_\"&V_元ファイル名"
+                  },
+                  "ID": "4bb3a7f2604d442d9a62f50cb8344d20"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "V_保存先サーバーパス名",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=環境変数.DropBoxフォルダパス&\"運用規定\\\""
+                  },
+                  "ID": "09a300f5508f42739bafc5dcbd7c07b9"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "V_保存先ファイルパス名",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=V_保存先サーバーパス名&V_保存ファイル名"
+                  },
+                  "ID": "a2b14c72806b468a9216a8bc96fa25f3"
+                },
+                {
+                  "$type": "OperateFilesCommand.CreateFolderCommand, OperateFilesCommand",
+                  "FolderPath": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=V_保存先サーバーパス名"
+                  }
+                },
+                {
+                  "$type": "OperateFilesCommand.GetFileInformation, OperateFilesCommand",
+                  "FilePath": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=V_保存元Tempファイルパス名"
+                  },
+                  "FileInfomationType": 6,
+                  "ToParameterName": "V_ファイルサイズ"
+                },
+                {
+                  "$type": "OperateFilesCommand.GetFileInformation, OperateFilesCommand",
+                  "FilePath": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=V_保存先ファイルパス名"
+                  },
+                  "FileInfomationType": 5,
+                  "ToParameterName": "ファイル有無"
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=ファイル有無"
+                          }
+                        },
+                        "value": "True"
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "OperateFilesCommand.DeleteFileCommand, OperateFilesCommand",
+                          "FilePath": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=V_保存先ファイルパス名"
+                          }
+                        }
+                      ],
+                      "ID": "82956626-3c04-42e1-b716-05de7fd4ed5c"
+                    }
+                  ]
+                },
+                {
+                  "$type": "OperateFilesCommand.CopyFileCommand, OperateFilesCommand",
+                  "FilePath": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=V_保存元Tempファイルパス名"
+                  },
+                  "TargetFolderPath": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=V_保存先サーバーパス名"
+                  },
+                  "CopyFileName": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=V_保存ファイル名"
+                  }
+                },
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "t_policy",
+                  "ShowConfirm": false,
+                  "RowsToUpdate": 1,
+                  "RowsToUpdateCondition": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_policy",
+                      "ColumnName": "policy_id",
+                      "GUID": "c7c27c55-cbcf-4241-8b4b-1d70fcee54a6"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=V_運用規定ID"
+                    }
+                  },
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_policy",
+                        "ColumnName": "policy_file_path_name",
+                        "GUID": "cef7c5e0-fbf9-4587-8266-4f47bae8c34f"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=V_保存先サーバーパス名"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_policy",
+                        "ColumnName": "policy_save_file_name",
+                        "GUID": "0e34f1d1-7a85-4508-96fc-7794c6b2bc98"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=V_保存ファイル名"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_policy",
+                        "ColumnName": "policy_display_file_name",
+                        "GUID": "fe085e62-4244-4ba1-9485-4d356dad726c"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=V_元ファイル名"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_policy",
+                        "ColumnName": "policy_file_size",
+                        "GUID": "523c8f21-2508-4b42-bb1b-e487e9a9fd2c"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=V_ファイルサイズ"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "ID": "01c82edf-ff14-4c81-86bc-0cdaf2edc824"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

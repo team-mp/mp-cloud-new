@@ -1,0 +1,1378 @@
+{
+  "Name": "商品売上仕入合計処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.InvokeTriggerSaveData, ServerDesignerCommon",
+      "Parameters": [
+        {
+          "Name": "P_調査ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_測量ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_解析ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_転圧ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_工事ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_保証ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_外販ID",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_調査ID"
+              }
+            },
+            "value": "%Null%",
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "調査商品",
+              "TableValue": {
+                "TableName": "t_object_product",
+                "BindingInfos": [
+                  {
+                    "GUID": "264f664f-d046-4684-84bc-89cd9f5f8351",
+                    "BindingInfo": {
+                      "TableName": "t_object_product",
+                      "ColumnName": "sales_amount",
+                      "GUID": "68f097f5-2160-4e69-a8e5-cbda96d3c130"
+                    },
+                    "ColumnName": "売上金額"
+                  },
+                  {
+                    "GUID": "988e6f08-9ede-4919-82d9-727888e0cb27",
+                    "BindingInfo": {
+                      "TableName": "t_object_product",
+                      "ColumnName": "purchase_amount",
+                      "GUID": "cc8ca159-2815-453c-bb47-9e3de53bbfad"
+                    },
+                    "ColumnName": "仕入金額"
+                  }
+                ],
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_product",
+                    "ColumnName": "object_product_ext_id",
+                    "GUID": "838c7496-bedc-4e05-91e9-501b3fc34e29",
+                    "RelationBinding": {
+                      "RelatedTable": "t_object_product_ext",
+                      "RelatedColumn": "object_product_ext_id",
+                      "DisplayColumn": "survey_id"
+                    }
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_調査ID"
+                  }
+                }
+              },
+              "ID": "936d1bcfa3ec419885195087ceece240"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "売上合計",
+              "ParameterValue": "0",
+              "ID": "a8cc9d6d257b4d8da90b06444b2ec0ef"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "仕入合計",
+              "ParameterValue": "0",
+              "ID": "3f78cad2a1704a7e8db1d4810a92b3be"
+            },
+            {
+              "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+              "LoopInfo": {
+                "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+                "LoopCount": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=調査商品"
+                },
+                "LoopItemParamName": "Item"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "売上合計",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=売上合計+Item.売上金額"
+                  },
+                  "ID": "31a029e5b51a46f2a1959cfb13ef8f7a"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "仕入合計",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=仕入合計+Item.仕入金額"
+                  },
+                  "ID": "8f1171dde6714a27b346b975d70208bb"
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object_survey",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                "SubConditions": [
+                  {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_survey",
+                      "ColumnName": "survey_id",
+                      "GUID": "3cce6821-53ef-493d-be2d-beb3c7bd3e5a"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_調査ID"
+                    }
+                  },
+                  {
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "SubConditions": [
+                      {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "CompareType": 1,
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_survey",
+                          "ColumnName": "sales_summary",
+                          "GUID": "c3a65af9-582c-465c-b0aa-bfcf7b693de3"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=売上合計"
+                        },
+                        "LeftBracket": 1
+                      },
+                      {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "CompareType": 1,
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_survey",
+                          "ColumnName": "purchase_summary",
+                          "GUID": "6623eb80-0293-4346-83a3-eda105ad127c"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=仕入合計"
+                        },
+                        "RightBracket": 1
+                      }
+                    ],
+                    "RelationType": 1
+                  }
+                ]
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_survey",
+                    "ColumnName": "sales_summary",
+                    "GUID": "7eb76b0d-775f-438f-a885-3c060550fa54"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=売上合計"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_survey",
+                    "ColumnName": "purchase_summary",
+                    "GUID": "c031a2cd-b5bb-4a0a-9267-c35b111782ea"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=仕入合計"
+                  }
+                }
+              ]
+            }
+          ],
+          "ID": "fb5175b5-c99c-4c4a-a7a9-578504b1b122"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_測量ID"
+              }
+            },
+            "value": "%Null%",
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "測量商品",
+              "TableValue": {
+                "TableName": "t_object_product",
+                "BindingInfos": [
+                  {
+                    "GUID": "acdd9a69-da31-4cc1-a9d9-0681a9be72bb",
+                    "BindingInfo": {
+                      "TableName": "t_object_product",
+                      "ColumnName": "sales_amount",
+                      "GUID": "68f097f5-2160-4e69-a8e5-cbda96d3c130"
+                    },
+                    "ColumnName": "売上金額"
+                  },
+                  {
+                    "GUID": "32fddfa3-f1ce-4174-b2fd-4bf4f540ebaa",
+                    "BindingInfo": {
+                      "TableName": "t_object_product",
+                      "ColumnName": "purchase_amount",
+                      "GUID": "cc8ca159-2815-453c-bb47-9e3de53bbfad"
+                    },
+                    "ColumnName": "仕入金額"
+                  }
+                ],
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_product",
+                    "ColumnName": "object_product_ext_id",
+                    "GUID": "03641f8b-1ffa-41e4-bc3f-c8d45324635f",
+                    "RelationBinding": {
+                      "RelatedTable": "t_object_product_ext",
+                      "RelatedColumn": "object_product_ext_id",
+                      "DisplayColumn": "surveying_id"
+                    }
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_測量ID"
+                  }
+                }
+              },
+              "ID": "624192e065c44d09a824aacc2c620de9"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "売上合計",
+              "ParameterValue": "0",
+              "ID": "b251e998c8ac486e845440a9f7c1ca0b"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "仕入合計",
+              "ParameterValue": "0",
+              "ID": "22ad52afd9654b70b6eb6d8779714464"
+            },
+            {
+              "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+              "LoopInfo": {
+                "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+                "LoopCount": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=測量商品"
+                },
+                "LoopItemParamName": "Item"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "売上合計",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=売上合計+Item.売上金額"
+                  },
+                  "ID": "422352b406204d598175969f9a581e36"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "仕入合計",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=仕入合計+Item.仕入金額"
+                  },
+                  "ID": "7e9b3c3c39914c269cdafc62bfe0438b"
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object_surveying",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                "SubConditions": [
+                  {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_surveying",
+                      "ColumnName": "surveying_id",
+                      "GUID": "f9c2e996-02ca-45b0-87db-0bc60dec304c"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_測量ID"
+                    }
+                  },
+                  {
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "SubConditions": [
+                      {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "CompareType": 1,
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_surveying",
+                          "ColumnName": "sales_summary",
+                          "GUID": "0b333da0-7760-47c5-a1b8-5bac177ca0f2"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=売上合計"
+                        },
+                        "LeftBracket": 1
+                      },
+                      {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "CompareType": 1,
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_surveying",
+                          "ColumnName": "purchase_summary",
+                          "GUID": "d2a3e6a8-6601-44ee-9a68-e73863aa866b"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=仕入合計"
+                        },
+                        "RightBracket": 1
+                      }
+                    ],
+                    "RelationType": 1
+                  }
+                ]
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_surveying",
+                    "ColumnName": "sales_summary",
+                    "GUID": "55393620-9ab8-4551-9f7a-c6fe54c208d2"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=売上合計"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_surveying",
+                    "ColumnName": "purchase_summary",
+                    "GUID": "8dd46edc-224e-4da0-b1fc-95fa5c3031b4"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=仕入合計"
+                  }
+                }
+              ]
+            }
+          ],
+          "ID": "c9a97493-e6c4-4ef9-a2d2-b58959a36e37"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_解析ID"
+              }
+            },
+            "value": "%Null%",
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "解析商品",
+              "TableValue": {
+                "TableName": "t_object_product",
+                "BindingInfos": [
+                  {
+                    "GUID": "2fc030dc-6825-48a6-8a76-8055fac3468f",
+                    "BindingInfo": {
+                      "TableName": "t_object_product",
+                      "ColumnName": "sales_amount",
+                      "GUID": "68f097f5-2160-4e69-a8e5-cbda96d3c130"
+                    },
+                    "ColumnName": "売上金額"
+                  },
+                  {
+                    "GUID": "d7b867c1-88ff-43a7-88cf-9e007dd8ef9d",
+                    "BindingInfo": {
+                      "TableName": "t_object_product",
+                      "ColumnName": "purchase_amount",
+                      "GUID": "cc8ca159-2815-453c-bb47-9e3de53bbfad"
+                    },
+                    "ColumnName": "仕入金額"
+                  }
+                ],
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_product",
+                    "ColumnName": "object_product_ext_id",
+                    "GUID": "e9a682a0-f776-462a-beb1-853f2fad9da1",
+                    "RelationBinding": {
+                      "RelatedTable": "t_object_product_ext",
+                      "RelatedColumn": "object_product_ext_id",
+                      "DisplayColumn": "analysis_id"
+                    }
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_解析ID"
+                  }
+                }
+              },
+              "ID": "108cafd8553246fca432d5f350505be8"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "売上合計",
+              "ParameterValue": "0",
+              "ID": "fda9e29f4f1c4cf9ac96a3b9a40c4805"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "仕入合計",
+              "ParameterValue": "0",
+              "ID": "fbec63e93589406eb94756b6dbc23542"
+            },
+            {
+              "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+              "LoopInfo": {
+                "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+                "LoopCount": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=解析商品"
+                },
+                "LoopItemParamName": "Item"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "売上合計",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=売上合計+Item.売上金額"
+                  },
+                  "ID": "cd56a8180e06496ea65e1e16bda85b75"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "仕入合計",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=仕入合計+Item.仕入金額"
+                  },
+                  "ID": "86c56f6f3e1c4d6f92a62d96fdaa5581"
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object_analysis",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                "SubConditions": [
+                  {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_analysis",
+                      "ColumnName": "analysis_id",
+                      "GUID": "0580ab3b-4647-46f9-b651-dbef475ca87c"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_解析ID"
+                    }
+                  },
+                  {
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "SubConditions": [
+                      {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "CompareType": 1,
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_analysis",
+                          "ColumnName": "sales_summary",
+                          "GUID": "a1ac6a80-f4d0-4cff-82ea-bbb292ef64be"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=売上合計"
+                        },
+                        "LeftBracket": 1
+                      },
+                      {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "CompareType": 1,
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_analysis",
+                          "ColumnName": "purchase_summary",
+                          "GUID": "589f6ba0-6dea-433a-8651-078bc29bf980"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=仕入合計"
+                        },
+                        "RightBracket": 1
+                      }
+                    ],
+                    "RelationType": 1
+                  }
+                ]
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "sales_summary",
+                    "GUID": "f21ccff7-3099-4e14-ac22-a7a1d5314503"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=売上合計"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "purchase_summary",
+                    "GUID": "fbb0ddbf-4b47-401d-a9a9-ac28f46c9d83"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=仕入合計"
+                  }
+                }
+              ]
+            }
+          ],
+          "ID": "1b09b944-1764-48cd-8c4e-eb8cff797e83"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_転圧ID"
+              }
+            },
+            "value": "%Null%",
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "転圧商品",
+              "TableValue": {
+                "TableName": "t_object_product",
+                "BindingInfos": [
+                  {
+                    "GUID": "cb3eff86-903b-43a5-8056-87ad84b2af4d",
+                    "BindingInfo": {
+                      "TableName": "t_object_product",
+                      "ColumnName": "sales_amount",
+                      "GUID": "68f097f5-2160-4e69-a8e5-cbda96d3c130"
+                    },
+                    "ColumnName": "売上金額"
+                  },
+                  {
+                    "GUID": "7cc700d1-3505-4e6c-a8b5-79befccc68a9",
+                    "BindingInfo": {
+                      "TableName": "t_object_product",
+                      "ColumnName": "purchase_amount",
+                      "GUID": "cc8ca159-2815-453c-bb47-9e3de53bbfad"
+                    },
+                    "ColumnName": "仕入金額"
+                  }
+                ],
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_product",
+                    "ColumnName": "object_product_ext_id",
+                    "GUID": "bad330e7-3530-48bf-86d0-33c424b26f8d",
+                    "RelationBinding": {
+                      "RelatedTable": "t_object_product_ext",
+                      "RelatedColumn": "object_product_ext_id",
+                      "DisplayColumn": "compaction_id"
+                    }
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_転圧ID"
+                  }
+                }
+              },
+              "ID": "06f912ea6a314561b87887e3816a27e5"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "売上合計",
+              "ParameterValue": "0",
+              "ID": "94deb07198c3493d94b3116e94df9d4d"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "仕入合計",
+              "ParameterValue": "0",
+              "ID": "31db11c0f64b4b1da83a831abb3be815"
+            },
+            {
+              "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+              "LoopInfo": {
+                "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+                "LoopCount": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=転圧商品"
+                },
+                "LoopItemParamName": "Item"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "売上合計",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=売上合計+Item.売上金額"
+                  },
+                  "ID": "c4466f7fab6f45f8ae6db73342599ff9"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "仕入合計",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=仕入合計+Item.仕入金額"
+                  },
+                  "ID": "a999e3f4165c4ff0a3e140c114c4d3ac"
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object_compaction",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                "SubConditions": [
+                  {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_compaction",
+                      "ColumnName": "compaction_id",
+                      "GUID": "32159145-ba12-442c-8500-94530db69859"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_転圧ID"
+                    }
+                  },
+                  {
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "SubConditions": [
+                      {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "CompareType": 1,
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_compaction",
+                          "ColumnName": "sales_summary",
+                          "GUID": "17a80e80-c1f3-414d-b460-d601ae5e37a8"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=売上合計"
+                        },
+                        "LeftBracket": 1
+                      },
+                      {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "CompareType": 1,
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_compaction",
+                          "ColumnName": "purchase_summary",
+                          "GUID": "3a95a8d0-16fb-4b09-8076-c62f838d90a8"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=仕入合計"
+                        },
+                        "RightBracket": 1
+                      }
+                    ],
+                    "RelationType": 1
+                  }
+                ]
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_compaction",
+                    "ColumnName": "sales_summary",
+                    "GUID": "cd28a488-717e-4420-873a-dac33077e0a5"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=売上合計"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_compaction",
+                    "ColumnName": "purchase_summary",
+                    "GUID": "d6819453-71aa-4dab-9526-d73898ec35e4"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=仕入合計"
+                  }
+                }
+              ]
+            }
+          ],
+          "ID": "027ab417-643a-42d2-a6fd-6260ff91f0fb"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_工事ID"
+              }
+            },
+            "value": "%Null%",
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "工事商品",
+              "TableValue": {
+                "TableName": "t_object_product",
+                "BindingInfos": [
+                  {
+                    "GUID": "736f850e-e63a-4882-b87a-261014173a37",
+                    "BindingInfo": {
+                      "TableName": "t_object_product",
+                      "ColumnName": "sales_amount",
+                      "GUID": "68f097f5-2160-4e69-a8e5-cbda96d3c130"
+                    },
+                    "ColumnName": "売上金額"
+                  },
+                  {
+                    "GUID": "9582b60b-7fa1-4548-bf95-62166eed4828",
+                    "BindingInfo": {
+                      "TableName": "t_object_product",
+                      "ColumnName": "purchase_amount",
+                      "GUID": "cc8ca159-2815-453c-bb47-9e3de53bbfad"
+                    },
+                    "ColumnName": "仕入金額"
+                  }
+                ],
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_product",
+                    "ColumnName": "object_product_ext_id",
+                    "GUID": "db5eff26-cf7f-4d5d-8e8a-cc65c7126332",
+                    "RelationBinding": {
+                      "RelatedTable": "t_object_product_ext",
+                      "RelatedColumn": "object_product_ext_id",
+                      "DisplayColumn": "construction_id"
+                    }
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_工事ID"
+                  }
+                }
+              },
+              "ID": "793ec3f4c19a4a978ef040591ce09c66"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "売上合計",
+              "ParameterValue": "0",
+              "ID": "fb1144ca13e7410ab85420cdbf90ec41"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "仕入合計",
+              "ParameterValue": "0",
+              "ID": "d569d3189aa34c5988924ea4b7a13113"
+            },
+            {
+              "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+              "LoopInfo": {
+                "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+                "LoopCount": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=工事商品"
+                },
+                "LoopItemParamName": "Item"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "売上合計",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=売上合計+Item.売上金額"
+                  },
+                  "ID": "2a284904d3af4f8aafdb5a4412385929"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "仕入合計",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=仕入合計+Item.仕入金額"
+                  },
+                  "ID": "c1b60aba779f416981fc0ef4e8741814"
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object_construction",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                "SubConditions": [
+                  {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_construction",
+                      "ColumnName": "construction_id",
+                      "GUID": "91bd5a3d-eebe-4403-a276-de6e1635c931"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_工事ID"
+                    }
+                  },
+                  {
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "SubConditions": [
+                      {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "CompareType": 1,
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_construction",
+                          "ColumnName": "sales_summary",
+                          "GUID": "90413ec8-f640-4024-8bc4-03a5a9fb31bf"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=売上合計"
+                        },
+                        "LeftBracket": 1
+                      },
+                      {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "CompareType": 1,
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_construction",
+                          "ColumnName": "purchase_summary",
+                          "GUID": "eb4837f1-9d6a-4026-b4dd-7465e5acb6a0"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=仕入合計"
+                        },
+                        "RightBracket": 1
+                      }
+                    ],
+                    "RelationType": 1
+                  }
+                ]
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_construction",
+                    "ColumnName": "sales_summary",
+                    "GUID": "8cf61a73-c862-4ab9-8b4d-72516ddd9fa8"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=売上合計"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_construction",
+                    "ColumnName": "purchase_summary",
+                    "GUID": "96860699-eed9-4075-9a67-751094474590"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=仕入合計"
+                  }
+                }
+              ]
+            }
+          ],
+          "ID": "692571bb-96b4-436a-a5d7-685ee6273c92"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_保証ID"
+              }
+            },
+            "value": "%Null%",
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "保証商品",
+              "TableValue": {
+                "TableName": "t_object_product",
+                "BindingInfos": [
+                  {
+                    "GUID": "b0bf4abf-cf80-422c-a6fe-4214c834b8f2",
+                    "BindingInfo": {
+                      "TableName": "t_object_product",
+                      "ColumnName": "sales_amount",
+                      "GUID": "68f097f5-2160-4e69-a8e5-cbda96d3c130"
+                    },
+                    "ColumnName": "売上金額"
+                  },
+                  {
+                    "GUID": "b8897904-390c-4bea-9ead-4b406702d488",
+                    "BindingInfo": {
+                      "TableName": "t_object_product",
+                      "ColumnName": "purchase_amount",
+                      "GUID": "cc8ca159-2815-453c-bb47-9e3de53bbfad"
+                    },
+                    "ColumnName": "仕入金額"
+                  }
+                ],
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_product",
+                    "ColumnName": "object_product_ext_id",
+                    "GUID": "a8741b36-c477-4911-998b-4cd8ca07def4",
+                    "RelationBinding": {
+                      "RelatedTable": "t_object_product_ext",
+                      "RelatedColumn": "object_product_ext_id",
+                      "DisplayColumn": "warranty_id"
+                    }
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_保証ID"
+                  }
+                }
+              },
+              "ID": "9318cc18a7f84550a6b770b725ef7f66"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "売上合計",
+              "ParameterValue": "0",
+              "ID": "a989cf1e17434063bfce85e546b91399"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "仕入合計",
+              "ParameterValue": "0",
+              "ID": "d512a6b7558d45abb8e5734336de35aa"
+            },
+            {
+              "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+              "LoopInfo": {
+                "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+                "LoopCount": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=保証商品"
+                },
+                "LoopItemParamName": "Item"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "売上合計",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=売上合計+Item.売上金額"
+                  },
+                  "ID": "a83ae0511f0741848fad95396769e5cb"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "仕入合計",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=仕入合計+Item.仕入金額"
+                  },
+                  "ID": "a32e430a9de3404f857e807ae1b73848"
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object_warranty",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                "SubConditions": [
+                  {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_warranty",
+                      "ColumnName": "warranty_id",
+                      "GUID": "e1863c28-73ae-4d2b-9c75-a7ff257c401c"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_保証ID"
+                    }
+                  },
+                  {
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "SubConditions": [
+                      {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "CompareType": 1,
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_warranty",
+                          "ColumnName": "sales_summary",
+                          "GUID": "017d31f9-0029-48c4-83f6-47e49efbff71"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=売上合計"
+                        },
+                        "LeftBracket": 1
+                      },
+                      {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "CompareType": 1,
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_warranty",
+                          "ColumnName": "purchase_summary",
+                          "GUID": "02aede34-9f08-49ec-80a5-e9170ce43c71"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=仕入合計"
+                        },
+                        "RightBracket": 1
+                      }
+                    ],
+                    "RelationType": 1
+                  }
+                ]
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_warranty",
+                    "ColumnName": "sales_summary",
+                    "GUID": "06c64c2e-731b-4ea9-b297-45536f8090a1"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=売上合計"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_warranty",
+                    "ColumnName": "purchase_summary",
+                    "GUID": "dcadb881-12e2-468b-bdb9-b59aa7acf32c"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=仕入合計"
+                  }
+                }
+              ]
+            }
+          ],
+          "ID": "7b294608-2b31-4f46-af36-c73742db394f"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_外販ID"
+              }
+            },
+            "value": "%Null%",
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "外販商品",
+              "TableValue": {
+                "TableName": "t_object_product",
+                "BindingInfos": [
+                  {
+                    "GUID": "eaf08218-164f-4e82-800f-f32e35109d35",
+                    "BindingInfo": {
+                      "TableName": "t_object_product",
+                      "ColumnName": "sales_amount",
+                      "GUID": "68f097f5-2160-4e69-a8e5-cbda96d3c130"
+                    },
+                    "ColumnName": "売上金額"
+                  },
+                  {
+                    "GUID": "f3b3bbb8-fa67-4dbf-8535-746f2f9ea8db",
+                    "BindingInfo": {
+                      "TableName": "t_object_product",
+                      "ColumnName": "purchase_amount",
+                      "GUID": "cc8ca159-2815-453c-bb47-9e3de53bbfad"
+                    },
+                    "ColumnName": "仕入金額"
+                  }
+                ],
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_product",
+                    "ColumnName": "object_product_ext_id",
+                    "GUID": "a2414635-ec83-4c13-b8a2-b9e8e7648323",
+                    "RelationBinding": {
+                      "RelatedTable": "t_object_product_ext",
+                      "RelatedColumn": "object_product_ext_id",
+                      "DisplayColumn": "external_id"
+                    }
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_外販ID"
+                  }
+                }
+              },
+              "ID": "c5b1015d79aa42d489f08e61ceea6bb4"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "売上合計",
+              "ParameterValue": "0",
+              "ID": "e19ea206e21e44edaa2f1fefc09640ee"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "仕入合計",
+              "ParameterValue": "0",
+              "ID": "d75113f1c3184a3d8bdb4d5f677cc4d1"
+            },
+            {
+              "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+              "LoopInfo": {
+                "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+                "LoopCount": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=外販商品"
+                },
+                "LoopItemParamName": "Item"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "売上合計",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=売上合計+Item.売上金額"
+                  },
+                  "ID": "4892c5fc580842928629ed96887cd2d1"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "仕入合計",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=仕入合計+Item.仕入金額"
+                  },
+                  "ID": "b2f65e0244f641af82fb906411793027"
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object_external",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                "SubConditions": [
+                  {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_external",
+                      "ColumnName": "external_id",
+                      "GUID": "1dbea2f5-80c3-4a61-aca4-17d96b056d63"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_外販ID"
+                    }
+                  },
+                  {
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "SubConditions": [
+                      {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "CompareType": 1,
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_external",
+                          "ColumnName": "sales_summary",
+                          "GUID": "388861f7-0221-4e5d-a5c5-8312b640172d"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=売上合計"
+                        },
+                        "LeftBracket": 1
+                      },
+                      {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "CompareType": 1,
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_external",
+                          "ColumnName": "purchase_summary",
+                          "GUID": "ec2187e0-1c30-4d87-b973-a35f8639eaf1"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=仕入合計"
+                        },
+                        "RightBracket": 1
+                      }
+                    ],
+                    "RelationType": 1
+                  }
+                ]
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_external",
+                    "ColumnName": "sales_summary",
+                    "GUID": "e07541d9-e8be-4f55-9870-4f642aa7ea0a"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=売上合計"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_external",
+                    "ColumnName": "purchase_summary",
+                    "GUID": "9f073382-8198-4cff-a9f5-25227dde5ea5"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=仕入合計"
+                  }
+                }
+              ]
+            }
+          ],
+          "ID": "d61f26ab-edfc-423a-bde3-77ba4ac72b0f"
+        }
+      ]
+    }
+  ]
+}

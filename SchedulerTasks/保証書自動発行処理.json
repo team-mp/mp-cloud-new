@@ -1,0 +1,546 @@
+{
+  "Name": "保証書自動発行処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.ScheduleTriggerSaveData, ServerDesignerCommon",
+      "Interval": 10.0,
+      "TimeUnit": 1,
+      "StartDateTime": 46154.0,
+      "ScheduleRunInDebugServer": false
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "保証情報",
+      "TableValue": {
+        "TableName": "t_object_warranty",
+        "BindingInfos": [
+          {
+            "GUID": "8914b00a-9556-4262-adda-a08049b6ed47",
+            "BindingInfo": {
+              "TableName": "t_object_warranty",
+              "ColumnName": "warranty_id",
+              "GUID": "4985224b-8350-4b43-bccf-f19b3c535dc0"
+            },
+            "ColumnName": "保証ID"
+          },
+          {
+            "GUID": "c17c0bf4-2f3f-4a3c-8e36-425729287165",
+            "BindingInfo": {
+              "TableName": "t_object_warranty",
+              "ColumnName": "warranty_type_id",
+              "GUID": "b81a36a2-05d7-4488-ab17-db5d5614fc5e"
+            },
+            "ColumnName": "保証書区分"
+          },
+          {
+            "GUID": "f3c2354f-ba5f-46c6-876d-b642051121cb",
+            "BindingInfo": {
+              "TableName": "t_object_warranty",
+              "ColumnName": "warranty_version_id",
+              "GUID": "10b5c59f-d4f6-4d29-9a22-fbf09b64b7b8"
+            },
+            "ColumnName": "保証書バージョンID"
+          },
+          {
+            "GUID": "1ad4adb0-ea6b-4385-b32c-3da022ceb351",
+            "BindingInfo": {
+              "TableName": "t_object_warranty",
+              "ColumnName": "warranty_object_name",
+              "GUID": "e7a04f56-516b-487a-aa05-192d972c0750"
+            },
+            "ColumnName": "保証物件名"
+          },
+          {
+            "GUID": "814044cf-d178-400f-89bd-5441e5a567df",
+            "BindingInfo": {
+              "TableName": "t_object_warranty",
+              "ColumnName": "warranty_object_address",
+              "GUID": "69d6355c-c936-454c-8754-640ecd35978b"
+            },
+            "ColumnName": "保証物件住所"
+          },
+          {
+            "GUID": "76d4a9a7-9059-49c7-89e2-a83811932f5c",
+            "BindingInfo": {
+              "TableName": "t_object_warranty",
+              "ColumnName": "warranty_start_date",
+              "GUID": "cb0c5a06-4616-4389-903f-51c323230c10"
+            },
+            "ColumnName": "保証開始日"
+          },
+          {
+            "GUID": "dfc5e977-9051-4f76-b76d-05520c17cc90",
+            "BindingInfo": {
+              "TableName": "t_object_warranty",
+              "ColumnName": "warranty_period",
+              "GUID": "6e903061-8c04-40a4-a2ee-6784eced7d76"
+            },
+            "ColumnName": "保証期間"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_warranty",
+                "ColumnName": "warranty_status_id",
+                "GUID": "9811f0de-a9b2-4671-817b-b3c635ad70bc",
+                "RelationBinding": {
+                  "RelatedTable": "m_warranty_status",
+                  "RelatedColumn": "warranty_status_id",
+                  "DisplayColumn": "auto_issue_wait_flg"
+                }
+              },
+              "Value": "1"
+            },
+            {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "SubConditions": [
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_warranty",
+                    "ColumnName": "autojob_error_id",
+                    "GUID": "ee28ddd0-a3d4-4a86-82c4-86a8b4745184"
+                  },
+                  "Value": "%Null%",
+                  "LeftBracket": 1
+                },
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_warranty",
+                    "ColumnName": "autojob_error_id",
+                    "GUID": "50370ed3-4bd8-412f-8b6a-0dd1605d5bca",
+                    "RelationBinding": {
+                      "RelatedTable": "t_autojob_error",
+                      "RelatedColumn": "autojob_error_id",
+                      "DisplayColumn": "error_content"
+                    }
+                  },
+                  "Value": "データベースの操作に失敗しました。",
+                  "RightBracket": 1
+                }
+              ],
+              "RelationType": 1
+            }
+          ]
+        }
+      },
+      "ID": "d84cf0d7462344d4b2ea08b98fc8874e"
+    },
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=保証情報"
+        },
+        "LoopItemParamName": "Item"
+      },
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "エラー1",
+          "ID": "35b380555ff04fc18d819c8444409595"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "エラー2",
+          "ID": "5e32ebf39899456ba3c363393a886250"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "エラー3",
+          "ID": "b81814e35b7945a78cfe6090b61e6481"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "エラー4",
+          "ID": "0e30320b97d04199b31efc115bb89bff"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "エラー5",
+          "ID": "0c62a4bd8bdb485b9ae34e4bd15c8cd2"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "エラー6",
+          "ID": "9722f6b755544d8580319592bd902c0d"
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.保証書区分"
+                  }
+                },
+                "value": "%Null%"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "エラー1",
+                  "ParameterValue": "保証区分",
+                  "ID": "ffc0161a8e2d4fff925d1df270669292"
+                }
+              ],
+              "ID": "5c6c20a5-aa88-4383-84b6-b660099d7b50"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.保証書バージョンID"
+                  }
+                },
+                "value": "%Null%"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "エラー2",
+                  "ParameterValue": "保証書バージョンID",
+                  "ID": "d7a5670edd7e4970939c716ae50b0b9b"
+                }
+              ],
+              "ID": "abcb73fe-c3fd-47b7-93bd-c9ae8d765cd4"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.保証物件名"
+                  }
+                },
+                "value": "%Null%"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "エラー3",
+                  "ParameterValue": "保証書物件名",
+                  "ID": "a7f8b500e0f74ca4b15da6f79faea2e8"
+                }
+              ],
+              "ID": "20bf62f5-899d-4f1c-80ad-56c9dc7ecde5"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.保証物件住所"
+                  }
+                },
+                "value": "%Null%"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "エラー4",
+                  "ParameterValue": "保証書物件住所",
+                  "ID": "ac320fa7af7c42a4b2d1f0e4820d61f3"
+                }
+              ],
+              "ID": "f4b138ce-5d40-47aa-8eca-c5b921116cab"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.保証開始日"
+                  }
+                },
+                "value": "%Null%"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "エラー5",
+                  "ParameterValue": "保証開始日",
+                  "ID": "e4f791cb53754166b90c382412d2e4a8"
+                }
+              ],
+              "ID": "98e7ce58-cca0-4450-ad74-3394aae6286a"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.保証期間"
+                  }
+                },
+                "value": "%Null%"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "エラー6",
+                  "ParameterValue": "保証期間",
+                  "ID": "6864ef58fd064270b6e408a536947e1d"
+                }
+              ],
+              "ID": "10c211e2-9ee2-4d13-8516-a9c6d3e5478e"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "エラー項目",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=TEXTJOIN(\",\",TRUE,エラー1,エラー2,エラー3,エラー4,エラー4,エラー5,エラー6)"
+          },
+          "ID": "21a96813a3c34038a868e8905c363f28"
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=エラー項目"
+                  }
+                },
+                "value": "%Null%"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+                  "ServerCommandName": "保証書自動発行処理",
+                  "Parameters": [
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_保証ID",
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=Item.保証ID"
+                      }
+                    }
+                  ],
+                  "ResultErrorCodeTo": {
+                    "SerializeProperty": "リターンコード"
+                  },
+                  "ResultMessageTo": {
+                    "SerializeProperty": "リターンメッセージ"
+                  },
+                  "RefreshAfterFinish": true,
+                  "CheckDataValidation": true
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=リターンコード"
+                          }
+                        },
+                        "value": "0",
+                        "compareType": 1
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                          "TableName": "t_autojob_error",
+                          "UpdateType": "add",
+                          "ShowConfirm": false,
+                          "UpdateBindingValues": [
+                            {
+                              "BindingInfo": {
+                                "TableName": "t_autojob_error",
+                                "ColumnName": "error_content",
+                                "GUID": "c14ebe1d-c720-4f5f-b3fa-38bde7205504"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=リターンメッセージ"
+                              }
+                            },
+                            {
+                              "BindingInfo": {
+                                "TableName": "t_autojob_error",
+                                "ColumnName": "error_datetime",
+                                "GUID": "6d84d523-932a-407c-ac36-8c7b600bfdec"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=NOW()"
+                              }
+                            }
+                          ],
+                          "ParamNameToSaveNewRowValue": "New自動処理"
+                        },
+                        {
+                          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                          "TableName": "t_object_warranty",
+                          "ShowConfirm": false,
+                          "RowsToUpdate": 1,
+                          "RowsToUpdateCondition": {
+                            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                            "ColumnBindingInfo": {
+                              "TableName": "t_object_warranty",
+                              "ColumnName": "warranty_id",
+                              "GUID": "901c2da5-da02-47e4-a73e-e63322ed21a0"
+                            },
+                            "Value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=Item.保証ID"
+                            }
+                          },
+                          "UpdateBindingValues": [
+                            {
+                              "BindingInfo": {
+                                "TableName": "t_object_warranty",
+                                "ColumnName": "autojob_error_id",
+                                "GUID": "7304e2ff-7a9c-4951-ab79-8ef80a5dde9f"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=New自動処理.自動処理エラーID"
+                              }
+                            }
+                          ]
+                        }
+                      ],
+                      "ID": "2ff1ae59-e428-4876-b8d2-b4354916f5a1"
+                    }
+                  ]
+                }
+              ],
+              "ID": "32a76640-ca42-4a7b-84b4-969dd3d0ba68"
+            },
+            {
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "t_autojob_error",
+                  "UpdateType": "add",
+                  "ShowConfirm": false,
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_autojob_error",
+                        "ColumnName": "error_content",
+                        "GUID": "1d2ccd22-fb5f-4a96-b099-881f5aff6261"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=エラー項目&\"この項目は値が設定されていません\""
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_autojob_error",
+                        "ColumnName": "error_datetime",
+                        "GUID": "75337230-fade-44fb-9fba-63d1d57d9082"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=NOW()"
+                      }
+                    }
+                  ],
+                  "ParamNameToSaveNewRowValue": "New自動処理"
+                },
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "t_object_warranty",
+                  "ShowConfirm": false,
+                  "RowsToUpdate": 1,
+                  "RowsToUpdateCondition": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_warranty",
+                      "ColumnName": "warranty_id",
+                      "GUID": "46663b87-744d-4096-95d3-ea5cfec943d5"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=Item.保証ID"
+                    }
+                  },
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_object_warranty",
+                        "ColumnName": "autojob_error_id",
+                        "GUID": "06cbd079-7db8-4687-b078-8082c5e6a652"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=New自動処理.自動処理エラーID"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "ID": "6d1c01c8-2b93-4677-a81a-96188839d3da"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

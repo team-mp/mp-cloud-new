@@ -1,0 +1,602 @@
+{
+  "ID": "0b8d00ec-55e0-4163-89a7-7262fc84fd16",
+  "Name": "測量確認事項入力チェック",
+  "Params": [
+    {
+      "ID": "d0ec3b5e-8c0a-4116-b0da-adee9e2b7406",
+      "Name": "P_測量確認事項表示フラグ"
+    },
+    {
+      "ID": "4f295b3f-b48e-4693-9fd1-7be4800f7215",
+      "Name": "P_敷役セットフラグ"
+    },
+    {
+      "ID": "9ac8dd94-fc14-4416-9fa4-515883ecc4eb",
+      "Name": "P_敷測フラグ"
+    },
+    {
+      "ID": "45d4e358-1154-4323-a196-d7af70f03316",
+      "Name": "P_敷地面積不明フラグ"
+    },
+    {
+      "ID": "a960eef5-9203-41d2-b0e1-69c65ff8dd3c",
+      "Name": "P_敷地面積"
+    },
+    {
+      "ID": "49039ea9-4608-4151-9fb2-4007065a3e75",
+      "Name": "P_敷地高低差確認区分"
+    },
+    {
+      "ID": "0f7e6085-610f-4f42-8a4f-d7f0ad549a03",
+      "Name": "P_敷地高低差"
+    },
+    {
+      "ID": "3b4800c5-146d-40d6-9dda-b3c8847246be",
+      "Name": "P_既存建物棟数確認区分"
+    },
+    {
+      "ID": "b1374f53-f1f0-4c9e-9ce5-6c6eb6793ab2",
+      "Name": "P_既存建物棟数"
+    },
+    {
+      "ID": "8f45716f-baae-4dd4-a12d-08ec471ba5b5",
+      "Name": "P_解体後調査希望フラグ"
+    },
+    {
+      "ID": "750e518c-d7af-41fb-a094-a52242651858",
+      "Name": "P_解体予定日"
+    },
+    {
+      "ID": "a5d9cb13-6538-4ed0-bbb0-d8fc9879e9d8",
+      "Name": "P_納品ファイル形式"
+    },
+    {
+      "ID": "b2cce2d7-70cf-461d-98b6-2ed691c5ed06",
+      "Name": "P_役調フラグ"
+    },
+    {
+      "ID": "40c861bb-67b5-4bcf-963a-f428460fe836",
+      "Name": "P_指定測量会社ID"
+    },
+    {
+      "ID": "f2ca0cf4-ddf2-4a94-8717-ce35576af545",
+      "Name": "P_指定測量会社件数"
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+            "SubConditions": [
+              {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                  "cellLocations": [
+                    {
+                      "SerializeProperty": "=P_敷役セットフラグ"
+                    }
+                  ]
+                },
+                "value": "1"
+              },
+              {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                  "cellLocations": [
+                    {
+                      "SerializeProperty": "=P_敷測フラグ"
+                    }
+                  ]
+                },
+                "value": "1"
+              }
+            ],
+            "RelationType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                      "cellLocations": [
+                        {
+                          "SerializeProperty": "=P_指定測量会社件数"
+                        }
+                      ]
+                    },
+                    "value": "0"
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                      "MessageFormula": "この住宅事業者には指定測量会社が設定されていないなため、\r\n新規申込を登録することはできません。\r\n顧客マスタに設定するか、ご不明な場合はシステム管理者へ\r\nお問い合わせください。"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                      "JavaScript": "return false;",
+                      "ID": "a8e616bc894848fd8e0bbb937728cbf6"
+                    }
+                  ],
+                  "ID": "21f02f69-0818-4528-ba3e-547056135471"
+                },
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                      "cellLocations": [
+                        {
+                          "SerializeProperty": "=P_指定測量会社ID"
+                        }
+                      ]
+                    },
+                    "value": "%Null%"
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                      "MessageFormula": "指定可能な測量会社が複数セットされています\r\n希望する測量会社を選択してください"
+                    },
+                    {
+                      "$type": "SetFocusCommand.SetFocusCommand, SetFocusCommand",
+                      "TargetCell": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_指定測量会社ID"
+                      }
+                    },
+                    {
+                      "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                      "JavaScript": "return false;",
+                      "ID": "cf05b8ba9a144001b6a1470b51676b9f"
+                    }
+                  ],
+                  "ID": "bd2a8f5c-d1c6-4f6a-ac1d-032f3e946dec"
+                }
+              ]
+            }
+          ],
+          "Comments": "敷役セットまたは敷測の場合",
+          "ID": "00d47972-498e-4f77-b075-04b2a64e5029"
+        },
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=P_役調フラグ"
+                }
+              ]
+            },
+            "value": "1"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "SubConditions": [
+                      {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                          "cellLocations": [
+                            {
+                              "SerializeProperty": "=P_指定測量会社ID"
+                            }
+                          ]
+                        },
+                        "value": "%Null%"
+                      },
+                      {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                          "cellLocations": [
+                            {
+                              "SerializeProperty": "=P_指定測量会社件数"
+                            }
+                          ]
+                        },
+                        "value": "1",
+                        "compareType": 3
+                      }
+                    ]
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                      "MessageFormula": "指定可能な測量会社が複数セットされています\r\n希望する測量会社（役所調査会社）を選択してください"
+                    },
+                    {
+                      "$type": "SetFocusCommand.SetFocusCommand, SetFocusCommand",
+                      "TargetCell": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_指定測量会社ID"
+                      }
+                    },
+                    {
+                      "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                      "JavaScript": "return false;",
+                      "ID": "f3a64599b2a84dfaaed3d779706d6c12"
+                    }
+                  ],
+                  "ID": "5a434851-0557-439b-8e1a-7139f8aee4bc"
+                }
+              ]
+            }
+          ],
+          "ID": "b2527d10-2c48-41ac-980c-b2b206cf1907"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=P_測量確認事項表示フラグ"
+                }
+              ]
+            },
+            "value": "1"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "SubConditions": [
+                      {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                          "cellLocations": [
+                            {
+                              "SerializeProperty": "=P_敷地面積不明フラグ"
+                            }
+                          ]
+                        },
+                        "value": "0"
+                      },
+                      {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                          "cellLocations": [
+                            {
+                              "SerializeProperty": "=P_敷地面積"
+                            }
+                          ]
+                        },
+                        "value": "%Null%"
+                      }
+                    ]
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                      "MessageFormula": "敷地面積を入力してください\r\n※ご不明な場合は「不明」にチェックしてください"
+                    },
+                    {
+                      "$type": "SetFocusCommand.SetFocusCommand, SetFocusCommand",
+                      "TargetCell": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_敷地面積"
+                      }
+                    },
+                    {
+                      "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                      "JavaScript": "return false;",
+                      "ID": "61c10e040ae24602b6b63e01905c86f6"
+                    }
+                  ],
+                  "ID": "54075fae-8e3f-4a3f-9eb9-398d195fa3e5"
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                      "cellLocations": [
+                        {
+                          "SerializeProperty": "=P_敷地高低差確認区分"
+                        }
+                      ]
+                    },
+                    "value": "%Null%"
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                      "MessageFormula": "敷地高低差「なし・あり・不明」のうち何れかを選択してください"
+                    },
+                    {
+                      "$type": "SetFocusCommand.SetFocusCommand, SetFocusCommand",
+                      "TargetCell": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_敷地高低差確認区分"
+                      }
+                    },
+                    {
+                      "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                      "JavaScript": "return false;",
+                      "ID": "74ec07aaa79c40319c9e5f374e547eac"
+                    }
+                  ],
+                  "ID": "b63bd41e-bdb0-48c3-806c-b855e1937702"
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                      "cellLocations": [
+                        {
+                          "SerializeProperty": "=P_既存建物棟数確認区分"
+                        }
+                      ]
+                    },
+                    "value": "%Null%"
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                      "MessageFormula": "既存建物棟数「なし・あり・不明」のうち何れかを選択してください"
+                    },
+                    {
+                      "$type": "SetFocusCommand.SetFocusCommand, SetFocusCommand",
+                      "TargetCell": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_既存建物棟数確認区分"
+                      }
+                    },
+                    {
+                      "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                      "JavaScript": "return false;",
+                      "ID": "778b4d9808dc4277a012497d01c97a79"
+                    }
+                  ],
+                  "ID": "363bab42-2af3-4802-a7ac-285906628c08"
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "SubConditions": [
+                      {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                          "cellLocations": [
+                            {
+                              "SerializeProperty": "=P_敷地高低差確認区分"
+                            }
+                          ]
+                        },
+                        "value": "1"
+                      },
+                      {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                          "cellLocations": [
+                            {
+                              "SerializeProperty": "=P_敷地高低差"
+                            }
+                          ]
+                        },
+                        "value": "%Null%"
+                      }
+                    ]
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                      "MessageFormula": "敷地高低差を入力してください"
+                    },
+                    {
+                      "$type": "SetFocusCommand.SetFocusCommand, SetFocusCommand",
+                      "TargetCell": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_敷地高低差"
+                      }
+                    },
+                    {
+                      "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                      "JavaScript": "return false;",
+                      "ID": "0bf1702d99d64d87b3544fef24e5aa72"
+                    }
+                  ],
+                  "ID": "c5792c39-bd9c-485c-80c5-fb6407d62383"
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "SubConditions": [
+                      {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                          "cellLocations": [
+                            {
+                              "SerializeProperty": "=P_既存建物棟数確認区分"
+                            }
+                          ]
+                        },
+                        "value": "1"
+                      },
+                      {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                          "cellLocations": [
+                            {
+                              "SerializeProperty": "=P_既存建物棟数"
+                            }
+                          ]
+                        },
+                        "value": "%Null%"
+                      }
+                    ]
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                      "MessageFormula": "既存建物棟数を入力してください"
+                    },
+                    {
+                      "$type": "SetFocusCommand.SetFocusCommand, SetFocusCommand",
+                      "TargetCell": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_既存建物棟数"
+                      }
+                    },
+                    {
+                      "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                      "JavaScript": "return false;",
+                      "ID": "7dd9d46d220147de8198008dbe82407d"
+                    }
+                  ],
+                  "ID": "df89e248-fbf1-468c-828c-1d7c75171010"
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "SubConditions": [
+                      {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                          "cellLocations": [
+                            {
+                              "SerializeProperty": "=P_解体後調査希望フラグ"
+                            }
+                          ]
+                        },
+                        "value": "1"
+                      },
+                      {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                          "cellLocations": [
+                            {
+                              "SerializeProperty": "=P_解体予定日"
+                            }
+                          ]
+                        },
+                        "value": "%Null%"
+                      }
+                    ]
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                      "MessageFormula": "解体後調査を希望する場合は、解体予定日を選択してください"
+                    },
+                    {
+                      "$type": "SetFocusCommand.SetFocusCommand, SetFocusCommand",
+                      "TargetCell": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_解体予定日"
+                      }
+                    },
+                    {
+                      "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                      "JavaScript": "return false;",
+                      "ID": "d9d284a68d8e4c90bb9c95c6776ca445"
+                    }
+                  ],
+                  "ID": "2ba27ade-5a4e-4dcd-a28e-08ec3ef2ea79"
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                      "cellLocations": [
+                        {
+                          "SerializeProperty": "=P_納品ファイル形式"
+                        }
+                      ]
+                    },
+                    "value": "%Null%"
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                      "MessageFormula": "納品ファイル形式を選択してください"
+                    },
+                    {
+                      "$type": "SetFocusCommand.SetFocusCommand, SetFocusCommand",
+                      "TargetCell": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_納品ファイル形式"
+                      }
+                    },
+                    {
+                      "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                      "JavaScript": "return false;",
+                      "ID": "186caca735bf4298b19f2d2c32896059"
+                    }
+                  ],
+                  "ID": "7ae6aa07-3c5b-4377-87b2-e831c784d03e"
+                }
+              ]
+            }
+          ],
+          "ID": "bc7522bd-d36b-45e1-aebd-3c8c3eede404"
+        }
+      ]
+    }
+  ]
+}

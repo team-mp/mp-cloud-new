@@ -1,0 +1,401 @@
+{
+  "Name": "請求先一括更新",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_売上IDs",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_請求先ID",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "売上情報",
+          "TableValue": {
+            "TableName": "t_sales",
+            "BindingInfos": [
+              {
+                "GUID": "eab651f3-4cb2-4392-abfb-36e02da5a815",
+                "BindingInfo": {
+                  "TableName": "t_sales",
+                  "ColumnName": "sales_id",
+                  "GUID": "a77d1f36-929f-4ba8-bbb1-50cd997a659c"
+                },
+                "ColumnName": "売上ID"
+              },
+              {
+                "GUID": "92200748-2aa1-436b-8749-47a1b5aff95e",
+                "BindingInfo": {
+                  "TableName": "t_sales",
+                  "ColumnName": "billing_date",
+                  "GUID": "55b3f32b-275e-4bde-976d-fc6f67dc3d50"
+                },
+                "ColumnName": "請求日"
+              },
+              {
+                "GUID": "359caacc-65fb-4712-965a-4503652914fb",
+                "BindingInfo": {
+                  "TableName": "t_sales",
+                  "ColumnName": "object_order_id",
+                  "GUID": "62489303-2289-4ca5-9a35-af41ec814826",
+                  "RelationBinding": {
+                    "RelatedTable": "t_object_order",
+                    "RelatedColumn": "object_order_id",
+                    "DisplayColumn": "object_id"
+                  }
+                },
+                "ColumnName": "物件ID"
+              },
+              {
+                "GUID": "52966cc4-5a6b-4b1c-866e-d4677823b98a",
+                "BindingInfo": {
+                  "TableName": "t_sales",
+                  "ColumnName": "object_order_id",
+                  "GUID": "f5d50097-f45a-4288-8e89-a2abe33bdb68",
+                  "RelationBinding": {
+                    "RelatedTable": "t_object_order",
+                    "RelatedColumn": "object_order_id",
+                    "DisplayColumn": "object_user_id"
+                  }
+                },
+                "ColumnName": "物件担当者ID"
+              },
+              {
+                "GUID": "c6f1840c-a1cc-477e-b925-438a0279ac20",
+                "BindingInfo": {
+                  "TableName": "t_sales",
+                  "ColumnName": "object_order_id",
+                  "GUID": "4c589fe8-c6b2-40bd-bcc6-9e7ed00e868d",
+                  "RelationBinding": {
+                    "RelatedTable": "t_object_order",
+                    "RelatedColumn": "object_order_id",
+                    "DisplayColumn": "housing_type"
+                  }
+                },
+                "ColumnName": "住宅タイプ"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+              "CompareType": 8,
+              "ColumnBindingInfo": {
+                "TableName": "t_sales",
+                "ColumnName": "sales_id",
+                "GUID": "6790ce10-faa1-4373-a565-4d0d67f94756"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_売上IDs"
+              }
+            }
+          },
+          "ID": "0108bad1f41246bcbc6c4cfdbc0c2e6c"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "請求先",
+          "TableValue": {
+            "TableName": "m_customer_billing",
+            "TableValueType": 1,
+            "BindingInfos": [
+              {
+                "GUID": "a17790e3-cedc-4a26-a9ca-c4978ed9da07",
+                "BindingInfo": {
+                  "TableName": "m_customer_billing",
+                  "ColumnName": "billing_send_way",
+                  "GUID": "cc7f6062-2413-4e1d-9628-ef47442973c1"
+                },
+                "ColumnName": "請求書送付方法"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_customer_billing",
+                "ColumnName": "customer_id",
+                "GUID": "a0199d63-7532-4b8f-aeed-394d369eb967"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_請求先ID"
+              }
+            }
+          },
+          "ID": "9934d11a98ec4bbc95f5a4ab68852090"
+        },
+        {
+          "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+          "LoopInfo": {
+            "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+            "LoopCount": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=売上情報"
+            },
+            "LoopItemParamName": "Item"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+              "ServerCommandName": "請求番号取得",
+              "Parameters": [
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_請求先ID",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_請求先ID"
+                  }
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_物件ID",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.物件ID"
+                  }
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_物件担当者ID",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.物件担当者ID"
+                  }
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_住宅タイプ",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.住宅タイプ"
+                  }
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_請求日",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.請求日"
+                  }
+                }
+              ],
+              "ResultErrorCodeTo": {
+                "SerializeProperty": "リターンコード"
+              },
+              "ResultMessageTo": {
+                "SerializeProperty": "リターンメッセージ"
+              },
+              "ReturnPropertiesTo": [
+                {
+                  "ResultPropertyName": "R_請求番号",
+                  "ResultTo": {
+                    "SerializeProperty": "請求番号"
+                  }
+                }
+              ],
+              "RefreshAfterFinish": true,
+              "CheckDataValidation": true
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=リターンコード"
+                      }
+                    },
+                    "value": "0",
+                    "compareType": 1
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                      "ErrorCode": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=リターンコード"
+                      },
+                      "Message": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=リターンメッセージ"
+                      }
+                    }
+                  ],
+                  "ID": "3847e8f0-6715-4930-a7bd-47072970f543"
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+              "ServerCommandName": "回収予定日取得",
+              "Parameters": [
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_請求先ID",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_請求先ID"
+                  }
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_請求日",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.請求日"
+                  }
+                }
+              ],
+              "ResultErrorCodeTo": {
+                "SerializeProperty": "リターンコード"
+              },
+              "ResultMessageTo": {
+                "SerializeProperty": "リターンメッセージ"
+              },
+              "ReturnPropertiesTo": [
+                {
+                  "ResultPropertyName": "R_回収予定日",
+                  "ResultTo": {
+                    "SerializeProperty": "回収予定日"
+                  }
+                }
+              ],
+              "RefreshAfterFinish": true,
+              "CheckDataValidation": true
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=リターンコード"
+                      }
+                    },
+                    "value": "0",
+                    "compareType": 1
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                      "ErrorCode": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=リターンコード"
+                      },
+                      "Message": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=リターンメッセージ"
+                      }
+                    }
+                  ],
+                  "ID": "ed5f47fe-c698-46fa-beca-8f6ca930ee20"
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_sales",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                "CompareType": 8,
+                "ColumnBindingInfo": {
+                  "TableName": "t_sales",
+                  "ColumnName": "sales_id",
+                  "GUID": "8c511955-26b0-4ddd-b323-23dfd3a6c2de"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=Item.売上ID"
+                }
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_sales",
+                    "ColumnName": "billing_comp_id",
+                    "GUID": "07fa9534-13ba-44fd-af37-29597e41a426"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_請求先ID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_sales",
+                    "ColumnName": "billing_no",
+                    "GUID": "9f00317d-fde3-42a5-8754-9250ca082093"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=請求番号"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_sales",
+                    "ColumnName": "billing_send_way",
+                    "GUID": "4c0b94f4-3079-42e4-b27b-44573d22dfee"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=請求先.請求書送付方法"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_sales",
+                    "ColumnName": "collect_scheduled_date",
+                    "GUID": "bb58e9c9-a998-4b69-aaad-666d7e0f0ef7"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=回収予定日"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

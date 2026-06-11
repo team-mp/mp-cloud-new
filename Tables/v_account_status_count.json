@@ -1,0 +1,39 @@
+{
+  "Name": "v_account_status_count",
+  "Columns": [
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "請求_登録内容確認中件数",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "請求_発注書回収待ち件数",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "請求_計上確定待ち件数",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    }
+  ],
+  "ExternalDatabaseInfo": {
+    "DataBaseType": "6db454c0-531c-4395-9122-921a18942902",
+    "AllowModifySchema": true,
+    "ConnectionId": "PostgreSQL1",
+    "SourceTableName": "v_account_status_count",
+    "SourceTableSchema": "public",
+    "CreateViewSql": " SELECT count(\n        CASE\n            WHEN (((suba.contents_checking_flg = 1) OR (subb.contents_checking_flg = 1)) AND (sub.operation_complete_flg = 1)) THEN 1\n            ELSE NULL::integer\n        END) AS \"請求_登録内容確認中件数\",\n    count(\n        CASE\n            WHEN (suba.purchase_collect_wait_flg = 1) THEN 1\n            ELSE NULL::integer\n        END) AS \"請求_発注書回収待ち件数\",\n    count(\n        CASE\n            WHEN ((suba.account_confirm_wait_flg = 1) OR (subb.account_confirm_wait_flg = 1)) THEN 1\n            ELSE NULL::integer\n        END) AS \"請求_計上確定待ち件数\"\n   FROM ((((t_object_product main\n     JOIN t_object_product_ext sub ON ((main.object_product_ext_id = sub.object_product_ext_id)))\n     JOIN t_object_order subc ON ((main.object_order_id = subc.object_order_id)))\n     LEFT JOIN m_account_status suba ON ((main.sales_account_status_id = suba.account_status_id)))\n     LEFT JOIN m_account_status subb ON (((main.purchase_account_status_id = subb.account_status_id) AND ((suba.contents_checking_flg = 1) OR (subb.contents_checking_flg = 1) OR (suba.purchase_collect_wait_flg = 1) OR (suba.account_confirm_wait_flg = 1) OR (subb.account_confirm_wait_flg = 1)))))\n  WHERE (subc.active_flg = 1);",
+    "ViewInfo": {
+      "ViewName": "v_account_status_count",
+      "QueryColumns": []
+    }
+  },
+  "Indexes": []
+}

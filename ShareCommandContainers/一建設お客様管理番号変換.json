@@ -1,0 +1,221 @@
+{
+  "ID": "431aeb1e-e5c4-4e6c-b577-72c97fc62fe2",
+  "Name": "一建設お客様管理番号変換",
+  "Params": [
+    {
+      "ID": "a6015950-40fe-4917-a70f-19816cb550d5",
+      "Name": "P_お客様管理番号"
+    },
+    {
+      "ID": "576503bd-1db8-4a5f-8ff5-9b9aba00b3a3",
+      "Name": "P_棟番号"
+    }
+  ],
+  "Returns": [
+    {
+      "ID": "81f2dc18-92da-4f50-97db-924de1a4ed6a",
+      "Name": "R_変換お客様管理番号"
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "V_お客様管理番号",
+      "ID": "4dc430dc5cfd4a2490c6d94110785a0d"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "文字列長さ",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=LEN(P_お客様管理番号)"
+      },
+      "ID": "472ca50d140842dead455f56578e71f7"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=文字列長さ"
+                }
+              ]
+            },
+            "value": "0",
+            "compareType": 2
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+              "LoopInfo": {
+                "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+                "LoopCount": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=文字列長さ"
+                },
+                "LoopIndexParamName": "カウンター",
+                "LoopItemParamName": "Item"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "判定文字",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=MID(P_お客様管理番号,カウンター,1)"
+                  },
+                  "ID": "1219b074b00b42faa51c915244d0e160"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "数値判定",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=ISNUMBER(判定文字)"
+                  },
+                  "ID": "117123f11a8b4284904a6da46b842364"
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                          "cellLocations": [
+                            {
+                              "SerializeProperty": "=数値判定"
+                            }
+                          ]
+                        },
+                        "value": "true"
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                          "ParameterName": "V_お客様管理番号",
+                          "ParameterValue": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=V_お客様管理番号&判定文字"
+                          },
+                          "ID": "c1e452920b0048af86b500991a1ca9a1"
+                        }
+                      ],
+                      "ID": "5d0ab800-c800-4c3d-80f9-f0116a2b1a3b"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                      "cellLocations": [
+                        {
+                          "SerializeProperty": "=P_棟番号"
+                        }
+                      ]
+                    },
+                    "value": "%Null%",
+                    "compareType": 1
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "V_お客様管理番号",
+                      "ParameterValue": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=LEFT(V_お客様管理番号,6)&RIGHT(\"0000\"&P_棟番号,4)&\"00\""
+                      },
+                      "ID": "0f6dad64731341d3af58f33f429a028f"
+                    }
+                  ],
+                  "ID": "d126d55d-a2af-45c2-87c1-bbfab1f3f0ad"
+                },
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                      "cellLocations": [
+                        {
+                          "SerializeProperty": "=文字列長さ"
+                        }
+                      ]
+                    },
+                    "value": "12",
+                    "compareType": 2
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "V_お客様管理番号",
+                      "ParameterValue": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=LEFT(V_お客様管理番号,12)"
+                      },
+                      "ID": "232269824e34468e9b1dc022ecd54ab4"
+                    }
+                  ],
+                  "ID": "f54e6962-4129-45b8-8d76-c08d1147aa17"
+                },
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                      "cellLocations": [
+                        {
+                          "SerializeProperty": "=文字列長さ"
+                        }
+                      ]
+                    },
+                    "value": "12",
+                    "compareType": 4
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "V_お客様管理番号",
+                      "ParameterValue": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=LEFT(V_お客様管理番号,6)&\"000100\""
+                      },
+                      "ID": "e8de4fc125934a00919c3d04f0cb9049"
+                    }
+                  ],
+                  "ID": "de4b1c87-f71f-48a0-8ad0-1a315b011604"
+                }
+              ]
+            }
+          ],
+          "ID": "3f9b6d33-8a9e-4902-b743-2c960ff3fdd9"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+      "ErrorCode": "0",
+      "CustomReturns": [
+        {
+          "ReturnPropertyName": "R_変換お客様管理番号",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=V_お客様管理番号"
+          }
+        }
+      ]
+    }
+  ]
+}

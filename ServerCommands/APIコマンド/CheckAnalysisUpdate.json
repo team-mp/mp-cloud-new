@@ -1,0 +1,1777 @@
+{
+  "Name": "CheckAnalysisUpdate",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_Anonymous"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_ObjectNo",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_AnalysisResultId",
+          "DataValidationInfo": {}
+        },
+        {
+          "Type": 1,
+          "ArrayParamItems": [
+            {
+              "Name": "ユーザー名",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "ID",
+              "DataValidationInfo": {}
+            }
+          ],
+          "Name": "P_Json_User",
+          "DataValidationInfo": {}
+        },
+        {
+          "Type": 1,
+          "ArrayParamItems": [
+            {
+              "Name": "建物構造",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "ID",
+              "DataValidationInfo": {}
+            }
+          ],
+          "Name": "P_Json_Structure",
+          "DataValidationInfo": {}
+        },
+        {
+          "Type": 1,
+          "ArrayParamItems": [
+            {
+              "Name": "基礎形状",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "ID",
+              "DataValidationInfo": {}
+            }
+          ],
+          "Name": "P_Json_Foundation",
+          "DataValidationInfo": {}
+        },
+        {
+          "Type": 1,
+          "ArrayParamItems": [
+            {
+              "Name": "解析結果内容",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "解析結果表示",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "地業転圧判定フラグ",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "ID",
+              "DataValidationInfo": {}
+            }
+          ],
+          "Name": "P_Json_Result",
+          "DataValidationInfo": {}
+        },
+        {
+          "Type": 1,
+          "ArrayParamItems": [
+            {
+              "Name": "許容応力度内容",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "許容応力度表示",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "ID",
+              "DataValidationInfo": {}
+            }
+          ],
+          "Name": "P_Json_Allowable",
+          "DataValidationInfo": {}
+        },
+        {
+          "Type": 1,
+          "ArrayParamItems": [
+            {
+              "Name": "沈下変状内",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "沈下変状表示",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "ID",
+              "DataValidationInfo": {}
+            }
+          ],
+          "Name": "P_Json_Subsidence",
+          "DataValidationInfo": {}
+        },
+        {
+          "Type": 1,
+          "ArrayParamItems": [
+            {
+              "Name": "その他留意内容",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "ID",
+              "DataValidationInfo": {}
+            }
+          ],
+          "Name": "P_Json_Consider",
+          "DataValidationInfo": {}
+        },
+        {
+          "Type": 1,
+          "ArrayParamItems": [
+            {
+              "Name": "土地履歴内容",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "ID",
+              "DataValidationInfo": {}
+            }
+          ],
+          "Name": "P_Json_History",
+          "DataValidationInfo": {}
+        },
+        {
+          "Type": 1,
+          "ArrayParamItems": [
+            {
+              "Name": "造成経過内容",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "ID",
+              "DataValidationInfo": {}
+            }
+          ],
+          "Name": "P_Json_Development",
+          "DataValidationInfo": {}
+        },
+        {
+          "Type": 1,
+          "ArrayParamItems": [
+            {
+              "Name": "地形条件内容",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "ID",
+              "DataValidationInfo": {}
+            }
+          ],
+          "Name": "P_Json_Terrian",
+          "DataValidationInfo": {}
+        },
+        {
+          "Type": 1,
+          "ArrayParamItems": [
+            {
+              "Name": "考察文",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "解析結果表示",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "ID",
+              "DataValidationInfo": {}
+            }
+          ],
+          "Name": "P_Json_Discussion",
+          "DataValidationInfo": {}
+        }
+      ],
+      "InvokeTriggerTestData": {
+        "UserName": "Administrator"
+      }
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "申込情報",
+      "TableValue": {
+        "TableName": "t_object_order",
+        "TableValueType": 1,
+        "BindingInfos": [
+          {
+            "GUID": "c15e70c8-0cbf-449c-b8c2-6e40b5317407",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "latest_analysis_id",
+              "GUID": "b62afa1c-c8aa-48c5-aee7-30e5ee88cf49",
+              "RelationBinding": {
+                "RelatedTable": "t_object_analysis",
+                "RelatedColumn": "analysis_id",
+                "DisplayColumn": "analysis_result_id",
+                "NextRelationBinding": {
+                  "RelatedTable": "m_analysis_result",
+                  "RelatedColumn": "analysis_result_id",
+                  "DisplayColumn": "analysis_result_class"
+                }
+              }
+            },
+            "ColumnName": "解析結果区分"
+          },
+          {
+            "GUID": "5b397a66-a84f-4fc3-828e-f9f599893eb2",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "latest_analysis_id",
+              "GUID": "84eb91e0-691f-4816-94c1-c6ab58b1dbb0",
+              "RelationBinding": {
+                "RelatedTable": "t_object_analysis",
+                "RelatedColumn": "analysis_id",
+                "DisplayColumn": "first_analysis_done_flg"
+              }
+            },
+            "ColumnName": "初回解析済みフラグ"
+          },
+          {
+            "GUID": "bf5504cd-9f69-4485-9f82-57e93b2bf9fe",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "latest_analysis_id",
+              "GUID": "f82698fa-86e1-41ae-ab5b-33c45c94b001",
+              "RelationBinding": {
+                "RelatedTable": "t_object_analysis",
+                "RelatedColumn": "analysis_id",
+                "DisplayColumn": "analysis_status_id",
+                "NextRelationBinding": {
+                  "RelatedTable": "m_analysis_status",
+                  "RelatedColumn": "analysis_status_id",
+                  "DisplayColumn": "confirm_flg"
+                }
+              }
+            },
+            "ColumnName": "完了フラグ"
+          },
+          {
+            "GUID": "8cd82290-4f53-4706-a30d-6a1ad9b14c20",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "latest_analysis_id",
+              "GUID": "744e750d-5a01-48e9-9b18-fc4789a41c51",
+              "RelationBinding": {
+                "RelatedTable": "t_object_analysis",
+                "RelatedColumn": "analysis_id",
+                "DisplayColumn": "analysis_status_id",
+                "NextRelationBinding": {
+                  "RelatedTable": "m_analysis_status",
+                  "RelatedColumn": "analysis_status_id",
+                  "DisplayColumn": "berore_process_flg"
+                }
+              }
+            },
+            "ColumnName": "処理前フラグ"
+          },
+          {
+            "GUID": "2a652c85-c600-404c-89ab-36b404672388",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "object_id",
+              "GUID": "c24f00f3-2f4c-44be-9ea0-a06b8352a95b",
+              "RelationBinding": {
+                "RelatedTable": "t_object",
+                "RelatedColumn": "object_id",
+                "DisplayColumn": "物件番号"
+              }
+            },
+            "ColumnName": "物件番号"
+          },
+          {
+            "GUID": "1cd7e5ce-b49e-42b5-97dc-4d29bce2ca3a",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "object_id",
+              "GUID": "a499e244-b522-40fe-930f-beabc0b6d7ef",
+              "RelationBinding": {
+                "RelatedTable": "t_object",
+                "RelatedColumn": "object_id",
+                "DisplayColumn": "物件名"
+              }
+            },
+            "ColumnName": "物件名"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_order",
+                "ColumnName": "object_id",
+                "GUID": "8c060749-f398-45a8-9959-373b806e1e91",
+                "RelationBinding": {
+                  "RelatedTable": "t_object",
+                  "RelatedColumn": "object_id",
+                  "DisplayColumn": "物件番号"
+                }
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_ObjectNo"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "CompareType": 1,
+              "ColumnBindingInfo": {
+                "TableName": "t_object_order",
+                "ColumnName": "latest_analysis_id",
+                "GUID": "b080848a-8a72-4d2a-8a1f-c7186af7a71f"
+              },
+              "Value": "%Null%"
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_order",
+                "ColumnName": "latest_analysis_id",
+                "GUID": "80653472-c380-44e8-8350-bf5307398c6c",
+                "RelationBinding": {
+                  "RelatedTable": "t_object_analysis",
+                  "RelatedColumn": "analysis_id",
+                  "DisplayColumn": "analysis_status_id",
+                  "NextRelationBinding": {
+                    "RelatedTable": "m_analysis_status",
+                    "RelatedColumn": "analysis_status_id",
+                    "DisplayColumn": "confirm_flg"
+                  }
+                }
+              },
+              "Value": "0"
+            }
+          ]
+        },
+        "NullFormulaValueQueryPolicy": 0,
+        "TopCount": "1",
+        "OrderBySqlCondition": {
+          "OrderByColumns": [
+            {
+              "ColumnBindingInfo": {
+                "TableName": "t_object_order",
+                "ColumnName": "object_order_id",
+                "GUID": "64a3840a-89ab-4222-a5c1-872ca55557d8"
+              },
+              "Order": 1
+            }
+          ]
+        }
+      },
+      "ID": "080a81eca724477ebb743f4d0450fb4e"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "解析結果",
+      "TableValue": {
+        "TableName": "m_analysis_result",
+        "TableValueType": 1,
+        "BindingInfos": [
+          {
+            "GUID": "a96caee9-a4e1-4785-a61b-f411f60fb0da",
+            "BindingInfo": {
+              "TableName": "m_analysis_result",
+              "ColumnName": "analysis_result_class",
+              "GUID": "ba76f442-c233-429a-ad9c-e440f4f7882a"
+            },
+            "ColumnName": "解析結果区分"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "m_analysis_result",
+            "ColumnName": "analysis_result_id",
+            "GUID": "75f47337-ac32-4896-8965-c0cbfa00ad78"
+          },
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_AnalysisResultId"
+          }
+        }
+      },
+      "ID": "77227fcdb2784bd6b946ae46c985a822"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=申込情報"
+              }
+            },
+            "value": "%Null%"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": "100",
+              "Message": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=\"物件番号:\"&P_ObjectNo&\"は存在しないか、すでに解析済みとなります\""
+              },
+              "CustomReturns": [
+                {
+                  "ReturnPropertyName": "R_バージョンNo"
+                }
+              ]
+            }
+          ],
+          "ID": "fa3022e2-5f82-4f2d-b13d-39497ae7be7a"
+        },
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=申込情報.完了フラグ"
+              }
+            },
+            "value": "1"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": "100",
+              "Message": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=申込情報.物件番号&CHAR(10)&申込情報.物件名&CHAR(10)&\"この物件は、解析が完了しているため更新できません\""
+              },
+              "CustomReturns": [
+                {
+                  "ReturnPropertyName": "R_バージョンNo"
+                }
+              ]
+            }
+          ],
+          "ID": "4e22f5b9-33a5-4c55-881b-aa7dc38abc84"
+        },
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=申込情報.処理前フラグ"
+              }
+            },
+            "value": "1"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": "100",
+              "Message": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=申込情報.物件番号&CHAR(10)&申込情報.物件名&CHAR(10)&\"この物件は解析の処理前のステータスとなるため更新できません\""
+              },
+              "CustomReturns": [
+                {
+                  "ReturnPropertyName": "R_バージョンNo"
+                }
+              ]
+            }
+          ],
+          "ID": "39ed5160-17e1-4481-9f43-37156c53bd77"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "解析ユーザーグループKEY",
+      "TableValue": {
+        "TableName": "m_user_group",
+        "OnlyGetValue": true,
+        "TableValueType": 0,
+        "BindingInfos": [
+          {
+            "GUID": "a7d62ee7-b9b1-49fd-a395-72acb75cf054",
+            "BindingInfo": {
+              "TableName": "m_user_group",
+              "ColumnName": "user_group_key",
+              "GUID": "095d990b-546c-4d5d-aa56-7f1a304b7c06"
+            },
+            "ColumnName": "user_group_key"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "m_user_group",
+            "ColumnName": "analysis_user_flg",
+            "GUID": "0e36ce2e-ce82-4249-b2d4-de1b120b6e23"
+          },
+          "Value": "1"
+        }
+      },
+      "ID": "4128f6496c7a49ad8d0469e1d11f52ef"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "解析ユーザー",
+      "TableValue": {
+        "TableName": "m_user",
+        "BindingInfos": [
+          {
+            "GUID": "f46a8d46-fc69-482c-aafa-1eed0a1989e1",
+            "BindingInfo": {
+              "TableName": "m_user",
+              "ColumnName": "user_name",
+              "GUID": "14dadee7-3452-4d4e-8001-b2bf97f8d62b"
+            },
+            "ColumnName": "ユーザー名"
+          },
+          {
+            "GUID": "733eb491-f327-43b8-96d4-a986acb95921",
+            "BindingInfo": {
+              "TableName": "m_user",
+              "ColumnName": "user_id",
+              "GUID": "b4618f7e-305c-43d7-ad9e-26e548bae064"
+            },
+            "ColumnName": "ID"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+              "CompareType": 6,
+              "ColumnBindingInfo": {
+                "TableName": "m_user",
+                "ColumnName": "user_group_keys",
+                "GUID": "71713b02-2228-4914-b596-cacdffc19e6f"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=解析ユーザーグループKEY"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_user",
+                "ColumnName": "active_flg",
+                "GUID": "3334f1e6-50bc-48ed-8ade-4aaaba26ca8f"
+              },
+              "Value": "1"
+            }
+          ]
+        }
+      },
+      "ID": "40eeae65a53f4e9e9568635917724d3a"
+    },
+    {
+      "$type": "JsonUtilityCommand.JsonSerializeCommand, JsonUtilityCommand",
+      "SourceObject": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=解析ユーザー"
+      },
+      "ToParameter": "現在の解析ユーザーJSON"
+    },
+    {
+      "$type": "JsonUtilityCommand.JsonSerializeCommand, JsonUtilityCommand",
+      "SourceObject": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=P_Json_User"
+      },
+      "ToParameter": "解析ユーザーJSON"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=解析ユーザーJSON"
+              }
+            },
+            "value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=現在の解析ユーザーJSON"
+            },
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": "100",
+              "Message": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=\"解析ユーザーが更新されています。\"&CHAR(10)&\"マスタ情報を最新化してください\""
+              },
+              "CustomReturns": [
+                {
+                  "ReturnPropertyName": "R_バージョンNo"
+                }
+              ]
+            }
+          ],
+          "ID": "93aaf8a0-54be-4ffb-b15e-198602781952"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "建物構造",
+      "TableValue": {
+        "TableName": "m_object_structure",
+        "BindingInfos": [
+          {
+            "GUID": "0dff7c81-4554-425e-9661-ea430f51ba95",
+            "BindingInfo": {
+              "TableName": "m_object_structure",
+              "ColumnName": "structure_name",
+              "GUID": "06aa9545-f5f9-4541-b17e-eaaa47ffde6e"
+            },
+            "ColumnName": "建物構造"
+          },
+          {
+            "GUID": "963c3aa8-2872-4574-9ce7-3345979f85d1",
+            "BindingInfo": {
+              "TableName": "m_object_structure",
+              "ColumnName": "sutructure_id",
+              "GUID": "4d287f6c-1abe-4877-82e4-e5c7aaf30cd6"
+            },
+            "ColumnName": "ID"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "m_object_structure",
+            "ColumnName": "activer_flg",
+            "GUID": "4f5877d2-4812-4909-b52e-5dad899bc68e"
+          },
+          "Value": "1"
+        },
+        "OrderBySqlCondition": {
+          "OrderByColumns": [
+            {
+              "ColumnBindingInfo": {
+                "TableName": "m_object_structure",
+                "ColumnName": "sort_no",
+                "GUID": "178b2508-4d90-4c94-9b3f-c0f621857aef"
+              },
+              "Order": 0
+            }
+          ]
+        }
+      },
+      "ID": "7b47d63e5e3343b9a22d7a2e34093203"
+    },
+    {
+      "$type": "JsonUtilityCommand.JsonSerializeCommand, JsonUtilityCommand",
+      "SourceObject": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=建物構造"
+      },
+      "ToParameter": "現在の建物構造JSON"
+    },
+    {
+      "$type": "JsonUtilityCommand.JsonSerializeCommand, JsonUtilityCommand",
+      "SourceObject": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=P_Json_Structure"
+      },
+      "ToParameter": "建物構造JSON"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=建物構造JSON"
+              }
+            },
+            "value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=現在の建物構造JSON"
+            },
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": "100",
+              "Message": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=\"建物構造マスタが更新されています。\"&CHAR(10)&\"マスタ情報を最新化してください\""
+              },
+              "CustomReturns": [
+                {
+                  "ReturnPropertyName": "R_バージョンNo"
+                }
+              ]
+            }
+          ],
+          "ID": "eba45ec3-6b9b-4dc9-ac59-9976ad3f2310"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "基礎形状",
+      "TableValue": {
+        "TableName": "m_object_foundation",
+        "BindingInfos": [
+          {
+            "GUID": "60e2875e-0e04-499d-8d60-badbcd33fb8c",
+            "BindingInfo": {
+              "TableName": "m_object_foundation",
+              "ColumnName": "foundation_name",
+              "GUID": "77a66cf5-2261-4664-a5ef-3ea2672b1b93"
+            },
+            "ColumnName": "基礎形状"
+          },
+          {
+            "GUID": "8d79447a-d289-4ae0-8c44-18e7761f5f40",
+            "BindingInfo": {
+              "TableName": "m_object_foundation",
+              "ColumnName": "foundastion_id",
+              "GUID": "6adc6213-8965-46f1-ab18-2253b35528a6"
+            },
+            "ColumnName": "ID"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "m_object_foundation",
+            "ColumnName": "active_flg",
+            "GUID": "03de8dc1-5a92-4868-b2b4-46859431d119"
+          },
+          "Value": "1"
+        },
+        "OrderBySqlCondition": {
+          "OrderByColumns": [
+            {
+              "ColumnBindingInfo": {
+                "TableName": "m_object_foundation",
+                "ColumnName": "sort_no",
+                "GUID": "c8407f33-11e7-496d-9601-be37502a2bf8"
+              },
+              "Order": 0
+            }
+          ]
+        }
+      },
+      "ID": "de76474f3f32415d92f8297ed463c765"
+    },
+    {
+      "$type": "JsonUtilityCommand.JsonSerializeCommand, JsonUtilityCommand",
+      "SourceObject": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=基礎形状"
+      },
+      "ToParameter": "現在の基礎形状JSON"
+    },
+    {
+      "$type": "JsonUtilityCommand.JsonSerializeCommand, JsonUtilityCommand",
+      "SourceObject": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=P_Json_Foundation"
+      },
+      "ToParameter": "基礎形状JSON"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=基礎形状JSON"
+              }
+            },
+            "value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=現在の基礎形状JSON"
+            },
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": "100",
+              "Message": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=\"基礎形状マスタが更新されています。\"&CHAR(10)&\"マスタ情報を最新化してください\""
+              },
+              "CustomReturns": [
+                {
+                  "ReturnPropertyName": "R_バージョンNo"
+                }
+              ]
+            }
+          ],
+          "ID": "e3b3043b-b5c5-490f-9151-9dd6184ec828"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "解析結果",
+      "TableValue": {
+        "TableName": "m_analysis_result",
+        "BindingInfos": [
+          {
+            "GUID": "cbdeaa88-0263-4a41-b6eb-8c027316b78b",
+            "BindingInfo": {
+              "TableName": "m_analysis_result",
+              "ColumnName": "analysis_result_content",
+              "GUID": "8b896cb5-7c36-432c-afc6-e11b90a3ba01"
+            },
+            "ColumnName": "解析結果内容"
+          },
+          {
+            "GUID": "a400eaed-7101-4180-ab57-b8eb3e9a90f8",
+            "BindingInfo": {
+              "TableName": "m_analysis_result",
+              "ColumnName": "analysis_result_dsiplay",
+              "GUID": "6e37f839-6e1f-40aa-bf07-842f235f3abc"
+            },
+            "ColumnName": "解析結果表示"
+          },
+          {
+            "GUID": "f2002ac7-5225-4244-a3fa-2e0ceaa85fed",
+            "BindingInfo": {
+              "TableName": "m_analysis_result",
+              "ColumnName": "compaction_judge_flg",
+              "GUID": "b19c510c-5636-476e-b742-dfb1ea3b55b2"
+            },
+            "ColumnName": "地業転圧判定フラグ"
+          },
+          {
+            "GUID": "19a1e06b-f441-40fd-8d02-54fd7f55bd7e",
+            "BindingInfo": {
+              "TableName": "m_analysis_result",
+              "ColumnName": "analysis_result_id",
+              "GUID": "da65a388-d005-45be-908f-2acb2aed29e2"
+            },
+            "ColumnName": "ID"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "m_analysis_result",
+            "ColumnName": "active_flg",
+            "GUID": "e5232db1-4461-4062-b9db-ecb08bb23cab"
+          },
+          "Value": "1"
+        },
+        "OrderBySqlCondition": {
+          "OrderByColumns": [
+            {
+              "ColumnBindingInfo": {
+                "TableName": "m_analysis_result",
+                "ColumnName": "sort_no",
+                "GUID": "5b1ad60d-64bf-4acd-a2eb-d7916f138847"
+              },
+              "Order": 0
+            }
+          ]
+        }
+      },
+      "ID": "13fc432493624f90838039f86ae62859"
+    },
+    {
+      "$type": "JsonUtilityCommand.JsonSerializeCommand, JsonUtilityCommand",
+      "SourceObject": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=解析結果"
+      },
+      "ToParameter": "現在の解析結果JSON"
+    },
+    {
+      "$type": "JsonUtilityCommand.JsonSerializeCommand, JsonUtilityCommand",
+      "SourceObject": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=P_Json_Result"
+      },
+      "ToParameter": "解析結果JSON"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=解析結果JSON"
+              }
+            },
+            "value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=現在の解析結果JSON"
+            },
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": "100",
+              "Message": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=\"解析結果マスタが更新されています。\"&CHAR(10)&\"マスタ情報を最新化してください\""
+              },
+              "CustomReturns": [
+                {
+                  "ReturnPropertyName": "R_バージョンNo"
+                }
+              ]
+            }
+          ],
+          "ID": "a80161a7-d297-46e4-8ee8-d6ae9691c443"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "許容応力度",
+      "TableValue": {
+        "TableName": "m_allowable_stress",
+        "BindingInfos": [
+          {
+            "GUID": "d253ed03-85cb-469a-b8cf-90bd69738b93",
+            "BindingInfo": {
+              "TableName": "m_allowable_stress",
+              "ColumnName": "allowable_stress_content",
+              "GUID": "cb6eae3b-5874-4f37-9a62-de31c3a28834"
+            },
+            "ColumnName": "許容応力度内容"
+          },
+          {
+            "GUID": "0e55c12f-bc00-4f5a-9e33-bbecb13c4dc4",
+            "BindingInfo": {
+              "TableName": "m_allowable_stress",
+              "ColumnName": "allowable_stress_display",
+              "GUID": "fdbe428b-071c-415c-b50a-90ba8e84d3d0"
+            },
+            "ColumnName": "許容応力度表示"
+          },
+          {
+            "GUID": "f467f13e-cb9c-47ee-bd88-1bf2f90ee573",
+            "BindingInfo": {
+              "TableName": "m_allowable_stress",
+              "ColumnName": "allowable_stress_id",
+              "GUID": "49481b9a-d5db-43ca-aefb-919368695780"
+            },
+            "ColumnName": "ID"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "m_allowable_stress",
+            "ColumnName": "active_flg",
+            "GUID": "df0cc1e9-39da-4a02-a634-67c337ae5ec2"
+          },
+          "Value": "1"
+        },
+        "OrderBySqlCondition": {
+          "OrderByColumns": [
+            {
+              "ColumnBindingInfo": {
+                "TableName": "m_allowable_stress",
+                "ColumnName": "sort_no",
+                "GUID": "547e7d3e-a3cd-4883-829b-783d2c4b45a2"
+              },
+              "Order": 0
+            }
+          ]
+        }
+      },
+      "ID": "3ff8377d93a0446fa84b959f515a7c2c"
+    },
+    {
+      "$type": "JsonUtilityCommand.JsonSerializeCommand, JsonUtilityCommand",
+      "SourceObject": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=許容応力度"
+      },
+      "ToParameter": "現在の許容応力度JSON"
+    },
+    {
+      "$type": "JsonUtilityCommand.JsonSerializeCommand, JsonUtilityCommand",
+      "SourceObject": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=P_Json_Allowable"
+      },
+      "ToParameter": "許容応力度JSON"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=許容応力度JSON"
+              }
+            },
+            "value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=現在の許容応力度JSON"
+            },
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": "100",
+              "Message": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=\"許容応力度マスタが更新されています。\"&CHAR(10)&\"マスタ情報を最新化してください\""
+              },
+              "CustomReturns": [
+                {
+                  "ReturnPropertyName": "R_バージョンNo"
+                }
+              ]
+            }
+          ],
+          "ID": "4897ea14-484b-470c-80fc-e5eeca2920e7"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "沈下変状",
+      "TableValue": {
+        "TableName": "m_subsidence_deformation",
+        "BindingInfos": [
+          {
+            "GUID": "57c8853b-a986-470b-977e-dee3bc72ec62",
+            "BindingInfo": {
+              "TableName": "m_subsidence_deformation",
+              "ColumnName": "沈下変状キー",
+              "GUID": "31a50bc4-f624-493b-92e2-74a2dcf0181b"
+            },
+            "ColumnName": "沈下変状キー"
+          },
+          {
+            "GUID": "61ed1df6-f86a-41a3-bcf2-1ac127ea5272",
+            "BindingInfo": {
+              "TableName": "m_subsidence_deformation",
+              "ColumnName": "subsidence_deformation_content",
+              "GUID": "b792694a-e087-4092-a4de-b468063c0386"
+            },
+            "ColumnName": "沈下変状内容"
+          },
+          {
+            "GUID": "63001d2f-2be3-4b34-b5f5-05f01cb2fb44",
+            "BindingInfo": {
+              "TableName": "m_subsidence_deformation",
+              "ColumnName": "subsidence_deformation_display",
+              "GUID": "9b1e7dd6-46ee-40bc-aab5-fc12db5cab33"
+            },
+            "ColumnName": "沈下変状表示"
+          },
+          {
+            "GUID": "e1939caf-82dd-4fe7-bae7-bdc8053577e1",
+            "BindingInfo": {
+              "TableName": "m_subsidence_deformation",
+              "ColumnName": "subsidence_deformation_id",
+              "GUID": "ce467e6c-c27e-4b26-af96-48e37aa9e256"
+            },
+            "ColumnName": "ID"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "m_subsidence_deformation",
+            "ColumnName": "active_flg",
+            "GUID": "8262ebb7-0979-444e-bc45-615cb1ccac91"
+          },
+          "Value": "1"
+        },
+        "OrderBySqlCondition": {
+          "OrderByColumns": [
+            {
+              "ColumnBindingInfo": {
+                "TableName": "m_subsidence_deformation",
+                "ColumnName": "sort_no",
+                "GUID": "a144dcdc-20b6-4e33-bb1f-f4959fe60268"
+              },
+              "Order": 0
+            }
+          ]
+        }
+      },
+      "ID": "2c725b6971084717bb9a933afc98a252"
+    },
+    {
+      "$type": "JsonUtilityCommand.JsonSerializeCommand, JsonUtilityCommand",
+      "SourceObject": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=沈下変状"
+      },
+      "ToParameter": "現在の沈下変状JSON"
+    },
+    {
+      "$type": "JsonUtilityCommand.JsonSerializeCommand, JsonUtilityCommand",
+      "SourceObject": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=P_Json_Subsidence"
+      },
+      "ToParameter": "沈下変状JSON"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=沈下変状JSON"
+              }
+            },
+            "value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=現在の沈下変状JSON"
+            },
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": "100",
+              "Message": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=\"沈下変状マスタが更新されています。\"&CHAR(10)&\"マスタ情報を最新化してください\""
+              },
+              "CustomReturns": [
+                {
+                  "ReturnPropertyName": "R_バージョンNo"
+                }
+              ]
+            }
+          ],
+          "ID": "56bd9e21-16d0-415a-842e-1d20832cd1c4"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "その他留意点",
+      "TableValue": {
+        "TableName": "m_analysis_consider",
+        "BindingInfos": [
+          {
+            "GUID": "700ab6a5-a7e4-4f5d-8d46-6e2908633e01",
+            "BindingInfo": {
+              "TableName": "m_analysis_consider",
+              "ColumnName": "analysis_consider_content",
+              "GUID": "7ef47a83-7f1e-4730-8d1e-aed4999e148a"
+            },
+            "ColumnName": "その他留意内容"
+          },
+          {
+            "GUID": "f59039fa-11c6-4e1c-a7bf-a080cb84b23f",
+            "BindingInfo": {
+              "TableName": "m_analysis_consider",
+              "ColumnName": "analysis_consider_id",
+              "GUID": "143750ff-4683-4609-b025-9d49f60b5ceb"
+            },
+            "ColumnName": "ID"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "m_analysis_consider",
+            "ColumnName": "active_flg",
+            "GUID": "00b1513d-9b6e-46bf-bd19-0d535630085d"
+          },
+          "Value": "1"
+        },
+        "OrderBySqlCondition": {
+          "OrderByColumns": [
+            {
+              "ColumnBindingInfo": {
+                "TableName": "m_analysis_consider",
+                "ColumnName": "sort_no",
+                "GUID": "01eb38a0-260f-4079-b2e1-60573016f449"
+              },
+              "Order": 0
+            }
+          ]
+        }
+      },
+      "ID": "1085e07af26e42048e8e7ecbfc73caab"
+    },
+    {
+      "$type": "JsonUtilityCommand.JsonSerializeCommand, JsonUtilityCommand",
+      "SourceObject": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=その他留意点"
+      },
+      "ToParameter": "現在のその他留意点JSON"
+    },
+    {
+      "$type": "JsonUtilityCommand.JsonSerializeCommand, JsonUtilityCommand",
+      "SourceObject": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=P_Json_Consider"
+      },
+      "ToParameter": "その他留意点JSON"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=その他留意点JSON"
+              }
+            },
+            "value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=現在のその他留意点JSON"
+            },
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": "100",
+              "Message": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=\"その他留意マスタが更新されています。\"&CHAR(10)&\"マスタ情報を最新化してください\""
+              },
+              "CustomReturns": [
+                {
+                  "ReturnPropertyName": "R_バージョンNo"
+                }
+              ]
+            }
+          ],
+          "ID": "37a4b672-a12e-469a-b7fd-12058fd3dedc"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "土地履歴",
+      "TableValue": {
+        "TableName": "m_land_history",
+        "BindingInfos": [
+          {
+            "GUID": "ab8d405c-f64a-43db-b8cc-0a72a271360b",
+            "BindingInfo": {
+              "TableName": "m_land_history",
+              "ColumnName": "land_history_content",
+              "GUID": "74129468-bd8d-44a6-a0a7-e307a594174d"
+            },
+            "ColumnName": "土地履歴内容"
+          },
+          {
+            "GUID": "d3249c80-f821-4cee-96d0-703b10a229d2",
+            "BindingInfo": {
+              "TableName": "m_land_history",
+              "ColumnName": "land_history_id",
+              "GUID": "1b57ab76-03ad-46d8-879e-1ddd28ae9f1c"
+            },
+            "ColumnName": "ID"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "m_land_history",
+            "ColumnName": "active_flg",
+            "GUID": "023ac175-044a-40bd-bbbc-e205de34e498"
+          },
+          "Value": "1"
+        },
+        "OrderBySqlCondition": {
+          "OrderByColumns": [
+            {
+              "ColumnBindingInfo": {
+                "TableName": "m_land_history",
+                "ColumnName": "sort_no",
+                "GUID": "b48eafe9-a60d-4b8a-9c04-f9042bc34ee6"
+              },
+              "Order": 0
+            }
+          ]
+        }
+      },
+      "ID": "56e87bbb7d214f089f72a8055e04733c"
+    },
+    {
+      "$type": "JsonUtilityCommand.JsonSerializeCommand, JsonUtilityCommand",
+      "SourceObject": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=土地履歴"
+      },
+      "ToParameter": "現在の土地履歴JSON"
+    },
+    {
+      "$type": "JsonUtilityCommand.JsonSerializeCommand, JsonUtilityCommand",
+      "SourceObject": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=P_Json_History"
+      },
+      "ToParameter": "土地履歴JSON"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=土地履歴JSON"
+              }
+            },
+            "value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=現在の土地履歴JSON"
+            },
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": "100",
+              "Message": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=\"土地履歴マスタが更新されています。\"&CHAR(10)&\"マスタ情報を最新化してください\""
+              },
+              "CustomReturns": [
+                {
+                  "ReturnPropertyName": "R_バージョンNo"
+                }
+              ]
+            }
+          ],
+          "ID": "273fd79c-4031-4557-9d84-2f5b8161317a"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "造成経過",
+      "TableValue": {
+        "TableName": "m_development_process",
+        "BindingInfos": [
+          {
+            "GUID": "ce8b089b-3d82-40a7-8016-7b873e8aff95",
+            "BindingInfo": {
+              "TableName": "m_development_process",
+              "ColumnName": "development_process_content",
+              "GUID": "f654bec7-c679-440b-8850-0aa2a4f5900b"
+            },
+            "ColumnName": "造成経過内容"
+          },
+          {
+            "GUID": "6824ef07-555e-440c-93ae-fede358fef97",
+            "BindingInfo": {
+              "TableName": "m_development_process",
+              "ColumnName": "development_process_id",
+              "GUID": "29808359-b114-4703-b7d4-cb55423561ae"
+            },
+            "ColumnName": "ID"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "m_development_process",
+            "ColumnName": "active_flg",
+            "GUID": "aa5052b2-810f-48e9-a603-aa84e8f0a045"
+          },
+          "Value": "1"
+        },
+        "OrderBySqlCondition": {
+          "OrderByColumns": [
+            {
+              "ColumnBindingInfo": {
+                "TableName": "m_development_process",
+                "ColumnName": "sort_no",
+                "GUID": "24edce2e-b506-4fb9-853d-70f8859b786f"
+              },
+              "Order": 0
+            }
+          ]
+        }
+      },
+      "ID": "3827a64d197a4a6ebe6b31836da466c4"
+    },
+    {
+      "$type": "JsonUtilityCommand.JsonSerializeCommand, JsonUtilityCommand",
+      "SourceObject": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=造成経過"
+      },
+      "ToParameter": "現在の造成経過JSON"
+    },
+    {
+      "$type": "JsonUtilityCommand.JsonSerializeCommand, JsonUtilityCommand",
+      "SourceObject": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=P_Json_Development"
+      },
+      "ToParameter": "造成経過JSON"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=造成経過JSON"
+              }
+            },
+            "value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=現在の造成経過JSON"
+            },
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": "100",
+              "Message": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=\"造成経過マスタが更新されています。\"&CHAR(10)&\"マスタ情報を最新化してください\""
+              },
+              "CustomReturns": [
+                {
+                  "ReturnPropertyName": "R_バージョンNo"
+                }
+              ]
+            }
+          ],
+          "ID": "736e8014-f8dd-41ff-9885-7f271207c774"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "地形条件",
+      "TableValue": {
+        "TableName": "m_terrian_condition",
+        "BindingInfos": [
+          {
+            "GUID": "21ef1f31-aaee-437f-b666-b444685a9bd4",
+            "BindingInfo": {
+              "TableName": "m_terrian_condition",
+              "ColumnName": "terrian_condition_content",
+              "GUID": "1c325dcc-5c8e-4b1e-978c-38c0f8c8c3dc"
+            },
+            "ColumnName": "地形条件内容"
+          },
+          {
+            "GUID": "261c4e6f-453b-40ba-b0a5-d8c420c810de",
+            "BindingInfo": {
+              "TableName": "m_terrian_condition",
+              "ColumnName": "terrian_condition_id",
+              "GUID": "870caae2-3165-4f5b-a34f-cee664a93902"
+            },
+            "ColumnName": "ID"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "m_terrian_condition",
+            "ColumnName": "active_flg",
+            "GUID": "acc52243-a074-47f7-98ce-f717466bdfd5"
+          },
+          "Value": "1"
+        },
+        "OrderBySqlCondition": {
+          "OrderByColumns": [
+            {
+              "ColumnBindingInfo": {
+                "TableName": "m_terrian_condition",
+                "ColumnName": "sort_no",
+                "GUID": "afb693aa-6a15-4297-941e-9d5ccb1e27d4"
+              },
+              "Order": 0
+            }
+          ]
+        }
+      },
+      "ID": "e764f986f72746a1a847bab01fe07673"
+    },
+    {
+      "$type": "JsonUtilityCommand.JsonSerializeCommand, JsonUtilityCommand",
+      "SourceObject": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=地形条件"
+      },
+      "ToParameter": "現在の地形条件JSON"
+    },
+    {
+      "$type": "JsonUtilityCommand.JsonSerializeCommand, JsonUtilityCommand",
+      "SourceObject": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=P_Json_Terrian"
+      },
+      "ToParameter": "地形条件JSON"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=地形条件JSON"
+              }
+            },
+            "value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=現在の地形条件JSON"
+            },
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": "100",
+              "Message": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=\"地形条件マスタが更新されています。\"&CHAR(10)&\"マスタ情報を最新化してください\""
+              },
+              "CustomReturns": [
+                {
+                  "ReturnPropertyName": "R_バージョンNo"
+                }
+              ]
+            }
+          ],
+          "ID": "4e539a1f-2e7b-4664-a6e8-b97a860f1b99"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "考察",
+      "TableValue": {
+        "TableName": "m_analysis_discussion",
+        "BindingInfos": [
+          {
+            "GUID": "0cf0f1df-a75f-43a4-bb4a-f011f7ad4315",
+            "BindingInfo": {
+              "TableName": "m_analysis_discussion",
+              "ColumnName": "analysis_discussion",
+              "GUID": "0ad3b446-4089-423b-87d3-2c98221ac99d"
+            },
+            "ColumnName": "考察文"
+          },
+          {
+            "GUID": "fd4feb09-9a80-4b5e-90f1-27e9d36e7d05",
+            "BindingInfo": {
+              "TableName": "m_analysis_discussion",
+              "ColumnName": "analysis_result_dsiplay",
+              "GUID": "9db745c6-8701-4205-a6b5-e0a52794ba18"
+            },
+            "ColumnName": "解析結果表示"
+          },
+          {
+            "GUID": "f244caef-e38f-41aa-bda4-6d094b010f8e",
+            "BindingInfo": {
+              "TableName": "m_analysis_discussion",
+              "ColumnName": "analysis_discussion_id",
+              "GUID": "2b7cae3b-1a57-421f-bd26-34edc8eb0696"
+            },
+            "ColumnName": "ID"
+          }
+        ]
+      },
+      "ID": "172dc45173a0422a91cd1498801a6ce9"
+    },
+    {
+      "$type": "JsonUtilityCommand.JsonSerializeCommand, JsonUtilityCommand",
+      "SourceObject": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=考察"
+      },
+      "ToParameter": "現在の考察JSON"
+    },
+    {
+      "$type": "JsonUtilityCommand.JsonSerializeCommand, JsonUtilityCommand",
+      "SourceObject": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=P_Json_Discussion"
+      },
+      "ToParameter": "考察JSON"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=考察JSON"
+              }
+            },
+            "value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=現在の考察JSON"
+            },
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": "100",
+              "Message": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=\"考察マスタが更新されています。\"&CHAR(10)&\"マスタ情報を最新化してください\""
+              },
+              "CustomReturns": [
+                {
+                  "ReturnPropertyName": "R_バージョンNo"
+                }
+              ]
+            }
+          ],
+          "ID": "48e76062-156f-4228-b055-fa4e5687c819"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "解析用EXCEL",
+      "TableValue": {
+        "TableName": "m_analysis_excel_version",
+        "TableValueType": 1,
+        "BindingInfos": [
+          {
+            "GUID": "19dbe7d2-2a16-4162-be0c-cf1ee627833a",
+            "BindingInfo": {
+              "TableName": "m_analysis_excel_version",
+              "ColumnName": "version_no",
+              "GUID": "1bc9dc10-1e23-4a6e-b8ab-20d16da353df"
+            },
+            "ColumnName": "バージョンNo"
+          }
+        ],
+        "TopCount": "1",
+        "OrderBySqlCondition": {
+          "OrderByColumns": [
+            {
+              "ColumnBindingInfo": {
+                "TableName": "m_analysis_excel_version",
+                "ColumnName": "analysis_excel_version_id",
+                "GUID": "3a10b128-a8f4-4c82-bedd-e0f3e4e724c3"
+              },
+              "Order": 1
+            }
+          ]
+        }
+      },
+      "ID": "6a9226a48d434fdca14624ed117b41b2"
+    },
+    {
+      "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+      "ErrorCode": "0",
+      "CustomReturns": [
+        {
+          "ReturnPropertyName": "R_バージョンNo",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=解析用EXCEL.バージョンNo"
+          }
+        }
+      ]
+    }
+  ],
+  "ReturnProperties": [
+    {
+      "Name": "R_バージョンNo"
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "ID": "16f9cca8-6838-4508-a81d-ce74b67bb579",
+  "Name": "運用既定未読ポップアップ表示",
+  "Params": [
+    {
+      "ID": "3b20f08c-2e32-41ad-91be-b0fae3f25674",
+      "Name": "P_参照顧客ID"
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+      "ServerCommandName": "運用規定未読件数取得",
+      "ResultErrorCodeTo": {
+        "SerializeProperty": "リターンコード"
+      },
+      "ResultMessageTo": {
+        "SerializeProperty": "リターンメッセージ"
+      },
+      "ReturnPropertiesTo": [
+        {
+          "ResultPropertyName": "R_未読件数",
+          "ResultTo": {
+            "SerializeProperty": "R_未読件数"
+          }
+        }
+      ],
+      "CheckDataValidation": false
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=R_未読件数"
+                }
+              ]
+            },
+            "value": "0",
+            "compareType": 2
+          },
+          "CommandList": [
+            {
+              "$type": "ElementUI.Commands.ShowNotification, ElementUI",
+              "Title": "お知らせ",
+              "Message": "新着の『運用規定』が公開されています。確認する場合はこちらをクリックしてください。",
+              "Type": "warning",
+              "Duration": "20000",
+              "Position": "top-right",
+              "Offset": "10",
+              "ShowClose": false,
+              "Context": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_参照顧客ID"
+              },
+              "Command": {
+                "$type": "GrapeCity.Forguncy.Commands.CustomCommandObject, Forguncy.Commands",
+                "Commands": [
+                  {
+                    "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
+                    "LoadingTextColor": "Background 1 0"
+                  },
+                  {
+                    "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
+                    "PopupDisplayMode": 3,
+                    "DrawerDirection": 3,
+                    "ShowDrawerHeader": true,
+                    "PageName": "運用規定ポップアップ",
+                    "PassValues": [
+                      {
+                        "Source": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=バナー通知のコンテキスト"
+                        },
+                        "TargetCell": {
+                          "SerializeProperty": "=運用規定ポップアップ!参照顧客ID"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "ParamProperties": {
+                  "title": "バナー通知のタイトル",
+                  "message": "バナー通知のメッセージ",
+                  "context": "バナー通知のコンテキスト"
+                }
+              }
+            }
+          ],
+          "ID": "9ee2998a-1053-41f0-afc9-db36e43856c5"
+        }
+      ]
+    }
+  ]
+}

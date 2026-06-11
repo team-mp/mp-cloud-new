@@ -1,0 +1,118 @@
+{
+  "Name": "運用規定ファイルダウンロード",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_運用規定ID",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "運用規定",
+      "TableValue": {
+        "TableName": "t_policy",
+        "TableValueType": 1,
+        "BindingInfos": [
+          {
+            "GUID": "0357d850-0a8b-458f-b49e-f7ba6e2a3c1d",
+            "BindingInfo": {
+              "TableName": "t_policy",
+              "ColumnName": "運用規定ファイルフルパス名",
+              "GUID": "70a80eac-c228-4f8a-99e6-2aae10fd9278"
+            },
+            "ColumnName": "運用規定ファイルフルパス名"
+          },
+          {
+            "GUID": "3160dfd8-0110-4c36-a9f3-76054650dd24",
+            "BindingInfo": {
+              "TableName": "t_policy",
+              "ColumnName": "policy_display_file_name",
+              "GUID": "03dd1003-c8d5-4d74-8984-4338b7710993"
+            },
+            "ColumnName": "運用規定表示ファイル名"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "t_policy",
+            "ColumnName": "policy_id",
+            "GUID": "b6bb3d73-b691-42a8-9931-93af5b0d6fda"
+          },
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_運用規定ID"
+          }
+        },
+        "NullFormulaValueQueryPolicy": 0
+      },
+      "ID": "948b00fed76f489798c3392982b695f9"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=運用規定.運用規定ファイルフルパス名"
+              }
+            },
+            "value": "%Null%",
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "OperateFilesCommand.DownloadFileCommand, OperateFilesCommand",
+              "FilePath": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=運用規定.運用規定ファイルフルパス名"
+              },
+              "DownloadFileName": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=運用規定.運用規定表示ファイル名"
+              }
+            }
+          ],
+          "ID": "2d204fda-9789-45ab-b1cd-0cd6127cab97"
+        },
+        {
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": "100",
+              "Message": "ダウンロードファイルはありません"
+            }
+          ],
+          "ID": "54619b42-acfc-4864-a36d-ad1e07cb3539"
+        }
+      ]
+    }
+  ]
+}

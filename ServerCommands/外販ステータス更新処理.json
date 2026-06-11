@@ -1,0 +1,840 @@
+{
+  "Name": "外販ステータス更新処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_外販ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_納品手配待ちフラグ",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_見積手配待ちフラグ",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_仕掛中フラグ",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_受注確定待ちフラグ",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_納品完了待ちフラグ",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_失注終了フラグ",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_キャンセルフラグ",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_納品解除フラグ",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_元_外注先ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_元_見積依頼日",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_元_見積送付日",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_元_納品予定日",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_元_実施日",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_元_成果品受領日",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_元_納品日",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_元_外販特記事項",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_元_外販ステータスID",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "登録更新ラベル取得",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_ユーザーID"
+            }
+          ],
+          "ReturnPropertiesTo": [
+            {
+              "ResultPropertyName": "R_ラベル名",
+              "ResultTo": {
+                "SerializeProperty": "最終更新ラベル"
+              }
+            },
+            {
+              "ResultPropertyName": "R_外部ユーザーフラグ"
+            },
+            {
+              "ResultPropertyName": "R_ユーザー名"
+            },
+            {
+              "ResultPropertyName": "R_所属会社名"
+            }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "外販データ排他チェック",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_外販ID",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_外販ID"
+              }
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_元_外注先ID",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_元_外注先ID"
+              }
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_元_見積依頼日",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_元_見積依頼日"
+              }
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_元_見積送付日",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_元_見積送付日"
+              }
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_元_納品予定日",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_元_納品予定日"
+              }
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_元_実施日",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_元_実施日"
+              }
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_元_成果品受領日",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_元_成果品受領日"
+              }
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_元_納品日",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_元_納品日"
+              }
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_元_外販特記事項",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_元_外販特記事項"
+              }
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_元_外販ステータスID",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_元_外販ステータスID"
+              }
+            }
+          ],
+          "ResultErrorCodeTo": {
+            "SerializeProperty": "リターンコード"
+          },
+          "ResultMessageTo": {
+            "SerializeProperty": "リターンメッセージ"
+          },
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "納品日",
+          "ID": "d31f38d3e52c4d5c929c62d57ec01620"
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=リターンコード"
+                  }
+                },
+                "value": "0",
+                "compareType": 1
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                  "ErrorCode": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=リターンコード"
+                  },
+                  "Message": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=リターンメッセージ"
+                  }
+                }
+              ],
+              "ID": "c93aa2a3-d0f9-4254-8d9b-6a2a576acb01"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "外販情報",
+          "TableValue": {
+            "TableName": "t_object_external",
+            "TableValueType": 1,
+            "BindingInfos": [
+              {
+                "GUID": "5229ffb0-8bc6-4212-9326-92d026f7f426",
+                "BindingInfo": {
+                  "TableName": "t_object_external",
+                  "ColumnName": "object_order_id",
+                  "GUID": "f7cfe95a-98ff-43d4-89ef-d4863bcfc638"
+                },
+                "ColumnName": "申込ID"
+              },
+              {
+                "GUID": "9db57a3c-66f5-4463-b04c-3d2266ce97b6",
+                "BindingInfo": {
+                  "TableName": "t_object_external",
+                  "ColumnName": "delivery_date",
+                  "GUID": "1f1627ce-4fcf-4264-819d-4fc0c248239e"
+                },
+                "ColumnName": "納品日"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_external",
+                "ColumnName": "external_id",
+                "GUID": "635652fa-78e3-4c1b-aca8-530155b974e3"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_外販ID"
+              }
+            },
+            "NullFormulaValueQueryPolicy": 0
+          },
+          "ID": "3a58465dce81421a9ef15d3a4d279324"
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=リターンコード"
+                  }
+                },
+                "value": "0",
+                "compareType": 1
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                  "ErrorCode": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=リターンコード"
+                  },
+                  "Message": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=リターンメッセージ"
+                  }
+                }
+              ],
+              "ID": "3980885e-a4ea-4d69-a9f5-1b096fefa55f"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_納品手配待ちフラグ"
+                  }
+                },
+                "value": "1"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "外販ST",
+                  "TableValue": {
+                    "TableName": "m_external_status",
+                    "TableValueType": 1,
+                    "BindingInfos": [
+                      {
+                        "GUID": "9ea82c30-5280-4745-a350-67d5a8e45967",
+                        "BindingInfo": {
+                          "TableName": "m_external_status",
+                          "ColumnName": "external_status_id",
+                          "GUID": "131d1b4e-8302-4b0f-b092-2559182d3246"
+                        },
+                        "ColumnName": "外販ステータスID"
+                      }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_external_status",
+                        "ColumnName": "delivery_arrage_wait_flg",
+                        "GUID": "700cb33d-8795-4f5f-9333-307d21cae64e"
+                      },
+                      "Value": "1"
+                    },
+                    "NullFormulaValueQueryPolicy": 0
+                  },
+                  "ID": "750eec8c6bad430990c4b53c9e5a9cd1"
+                }
+              ],
+              "ID": "6a09bbd8-136c-4767-a970-ffbae2cc19fa"
+            },
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_見積手配待ちフラグ"
+                  }
+                },
+                "value": "1"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "外販ST",
+                  "TableValue": {
+                    "TableName": "m_external_status",
+                    "TableValueType": 1,
+                    "BindingInfos": [
+                      {
+                        "GUID": "b1bd2700-02ef-493c-bea5-f4abafbf744d",
+                        "BindingInfo": {
+                          "TableName": "m_external_status",
+                          "ColumnName": "external_status_id",
+                          "GUID": "a4ea91cd-1b23-4e8b-b9dd-0aca3279a515"
+                        },
+                        "ColumnName": "外販ステータスID"
+                      }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_external_status",
+                        "ColumnName": "estimate_arrange_wait_flg",
+                        "GUID": "329d9a62-55a9-4dc1-a235-6b043c9adf15"
+                      },
+                      "Value": "1"
+                    },
+                    "NullFormulaValueQueryPolicy": 0
+                  },
+                  "ID": "0087ebaf948740b8a23cd44553f4d97a"
+                }
+              ],
+              "ID": "7563033c-fc58-4d7e-9e3b-4bb532d9d5fd"
+            },
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_仕掛中フラグ"
+                  }
+                },
+                "value": "1"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "外販ST",
+                  "TableValue": {
+                    "TableName": "m_external_status",
+                    "TableValueType": 1,
+                    "BindingInfos": [
+                      {
+                        "GUID": "e5359c72-ca3e-4d31-bc57-0543ecafc4b8",
+                        "BindingInfo": {
+                          "TableName": "m_external_status",
+                          "ColumnName": "external_status_id",
+                          "GUID": "641c8a16-1eb3-4157-a9fd-f8bb2648718b"
+                        },
+                        "ColumnName": "外販ステータスID"
+                      }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_external_status",
+                        "ColumnName": "in_progress_flg",
+                        "GUID": "64980c03-d4ee-463e-81d8-ff07f218e5cc"
+                      },
+                      "Value": "1"
+                    },
+                    "NullFormulaValueQueryPolicy": 0
+                  },
+                  "ID": "bedd580e87fa4a54b450ed56cc895bc9"
+                }
+              ],
+              "ID": "ae591b20-75d7-473e-b181-d41bf233b6c4"
+            },
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_受注確定待ちフラグ"
+                  }
+                },
+                "value": "1"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "外販ST",
+                  "TableValue": {
+                    "TableName": "m_external_status",
+                    "TableValueType": 1,
+                    "BindingInfos": [
+                      {
+                        "GUID": "f56e19a3-1f7b-4902-9203-51e111c505e3",
+                        "BindingInfo": {
+                          "TableName": "m_external_status",
+                          "ColumnName": "external_status_id",
+                          "GUID": "cef81d79-138b-4985-9c76-3cb21b1787d8"
+                        },
+                        "ColumnName": "外販ステータスID"
+                      }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_external_status",
+                        "ColumnName": "order_wait_flg",
+                        "GUID": "76a0faff-5174-448b-9553-528e851ba5fe"
+                      },
+                      "Value": "1"
+                    },
+                    "NullFormulaValueQueryPolicy": 0
+                  },
+                  "ID": "6d3fccbfe9a94e9e98fb722f182752a8"
+                }
+              ],
+              "ID": "a6b95e69-9bbb-4948-a849-8004acc0dad9"
+            },
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_納品完了待ちフラグ"
+                  }
+                },
+                "value": "1"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "外販ST",
+                  "TableValue": {
+                    "TableName": "m_external_status",
+                    "TableValueType": 1,
+                    "BindingInfos": [
+                      {
+                        "GUID": "1576a0b3-0200-4ce9-9b5b-cd7a0667d3e1",
+                        "BindingInfo": {
+                          "TableName": "m_external_status",
+                          "ColumnName": "external_status_id",
+                          "GUID": "4364716d-fb9a-4e3a-8151-7d6d3d3d58d8"
+                        },
+                        "ColumnName": "外販ステータスID"
+                      }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_external_status",
+                        "ColumnName": "delivery_complete_wait_flg",
+                        "GUID": "4587b4a5-aa36-4788-ae96-555d0f602873"
+                      },
+                      "Value": "1"
+                    },
+                    "NullFormulaValueQueryPolicy": 0
+                  },
+                  "ID": "572da4f250454acabec70b05c209b167"
+                }
+              ],
+              "ID": "cd1c1f6e-5aac-4573-b9e7-505cfdfac891"
+            },
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_失注終了フラグ"
+                  }
+                },
+                "value": "1"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "外販ST",
+                  "TableValue": {
+                    "TableName": "m_external_status",
+                    "TableValueType": 1,
+                    "BindingInfos": [
+                      {
+                        "GUID": "03bc459a-aaf7-4447-8420-d8a559bb0fb3",
+                        "BindingInfo": {
+                          "TableName": "m_external_status",
+                          "ColumnName": "external_status_id",
+                          "GUID": "108a5a5e-b6f8-46b6-8ff8-1cf6779fb107"
+                        },
+                        "ColumnName": "外販ステータスID"
+                      }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_external_status",
+                        "ColumnName": "lost_order_flg",
+                        "GUID": "16f696e1-0e09-4d94-9236-d48838b2d52c"
+                      },
+                      "Value": "1"
+                    },
+                    "NullFormulaValueQueryPolicy": 0
+                  },
+                  "ID": "921d50ab49b140acbcae2229f288a877"
+                }
+              ],
+              "ID": "f1065227-b5ce-4117-922d-2c38931f4cc2"
+            },
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_キャンセルフラグ"
+                  }
+                },
+                "value": "1"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "外販ST",
+                  "TableValue": {
+                    "TableName": "m_external_status",
+                    "TableValueType": 1,
+                    "BindingInfos": [
+                      {
+                        "GUID": "c0cad237-7be9-4333-bb19-192eebd15186",
+                        "BindingInfo": {
+                          "TableName": "m_external_status",
+                          "ColumnName": "external_status_id",
+                          "GUID": "79f5f4ce-d8b0-4728-8e26-9458251ce38f"
+                        },
+                        "ColumnName": "外販ステータスID"
+                      }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_external_status",
+                        "ColumnName": "cancel_flg",
+                        "GUID": "02768ad7-68a4-49cc-ba5e-6f0355e341c5"
+                      },
+                      "Value": "1"
+                    },
+                    "NullFormulaValueQueryPolicy": 0
+                  },
+                  "ID": "6dcf4c0b55cc4e939722792325e34566"
+                }
+              ],
+              "ID": "98a87008-52c6-4a66-80a7-70ea715f2e13"
+            },
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_納品解除フラグ"
+                  }
+                },
+                "value": "1"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "外販ST",
+                  "TableValue": {
+                    "TableName": "m_external_status",
+                    "TableValueType": 1,
+                    "BindingInfos": [
+                      {
+                        "GUID": "41bd83a6-f103-40b7-b9e3-e372eb651cc8",
+                        "BindingInfo": {
+                          "TableName": "m_external_status",
+                          "ColumnName": "external_status_id",
+                          "GUID": "f1731645-877b-4a0f-9e10-776ad1c49487"
+                        },
+                        "ColumnName": "外販ステータスID"
+                      }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_external_status",
+                        "ColumnName": "delivery_complete_wait_flg",
+                        "GUID": "b0469d77-3528-4f5a-8722-7488ce3d5133"
+                      },
+                      "Value": "1"
+                    },
+                    "NullFormulaValueQueryPolicy": 0
+                  },
+                  "ID": "6fec4a3cbc55461a9efb8a110ccef61d"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "納品日",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=外販情報.納品日"
+                  },
+                  "ID": "1313b82409fe4a1497159bd22c54e306"
+                }
+              ],
+              "ID": "a1089f2f-a98d-4110-883a-5ca48c25c78a"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_object_external",
+          "ShowConfirm": false,
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object_external",
+              "ColumnName": "external_id",
+              "GUID": "bc71de5f-8ab1-4c0a-b4b2-7b1e567d7a43"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_外販ID"
+            }
+          },
+          "UpdateBindingValues": [
+            {
+              "BindingInfo": {
+                "TableName": "t_object_external",
+                "ColumnName": "external_status_id",
+                "GUID": "f12bf9a6-7453-4f2f-9517-880d99d7efdd"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=外販ST.外販ステータスID"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_external",
+                "ColumnName": "delivery_date",
+                "GUID": "e2b4c87b-3222-4f86-9e81-5aefc2ce2271"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=納品日"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_external",
+                "ColumnName": "last_updated_label",
+                "GUID": "5e4beb99-f30e-41ca-a29c-8690a3aeb3aa"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=最終更新ラベル"
+              }
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "最新申込ステータス更新処理",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_申込ID",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=外販情報.申込ID"
+              }
+            }
+          ],
+          "ResultErrorCodeTo": {
+            "SerializeProperty": "リターンコード"
+          },
+          "ResultMessageTo": {
+            "SerializeProperty": "リターンメッセージ"
+          },
+          "ReturnPropertiesTo": [
+            {
+              "ResultPropertyName": "R_申込ステータス更新フラグ"
+            },
+            {
+              "ResultPropertyName": "R_更新済み申込ステータスID"
+            }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=リターンコード"
+                  }
+                },
+                "value": "0",
+                "compareType": 1
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                  "ErrorCode": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=リターンコード"
+                  },
+                  "Message": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=リターンメッセージ"
+                  }
+                }
+              ],
+              "ID": "59bd9a93-040f-4e90-a4ed-2453d808fc5c"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

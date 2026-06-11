@@ -1,0 +1,238 @@
+{
+  "Name": "支払先ID取得",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.InvokeTriggerSaveData, ServerDesignerCommon",
+      "Parameters": [
+        {
+          "Name": "P_外注先ID",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_外注先ID"
+              }
+            },
+            "value": "%Null%"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": "0",
+              "CustomReturns": [
+                {
+                  "ReturnPropertyName": "R_支払先ID"
+                },
+                {
+                  "ReturnPropertyName": "R_支払先略称名"
+                },
+                {
+                  "ReturnPropertyName": "R_外注先略称名"
+                }
+              ]
+            }
+          ],
+          "ID": "04f17380-21ee-4e75-a6c1-42fa1cbc9c03"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "顧客情報",
+      "TableValue": {
+        "TableName": "m_customer_payment",
+        "TableValueType": 1,
+        "BindingInfos": [
+          {
+            "GUID": "4d458f4a-67c7-4092-a7ce-b512ec44d396",
+            "BindingInfo": {
+              "TableName": "m_customer_payment",
+              "ColumnName": "payment_comp_id",
+              "GUID": "26630cae-3772-4fea-ac06-01ef4e46ddcf"
+            },
+            "ColumnName": "支払先ID"
+          },
+          {
+            "GUID": "85bb467c-f495-453d-8b1e-391749ab4207",
+            "BindingInfo": {
+              "TableName": "m_customer_payment",
+              "ColumnName": "customer_id",
+              "GUID": "fab57e14-5d62-4f84-b3b0-4f1cf114bf62",
+              "RelationBinding": {
+                "RelatedTable": "m_customer",
+                "RelatedColumn": "customer_id",
+                "DisplayColumn": "内部顧客名"
+              }
+            },
+            "ColumnName": "支払先略称名"
+          },
+          {
+            "GUID": "06d4dc11-20c4-47f7-a4b0-013b8702276b",
+            "BindingInfo": {
+              "TableName": "m_customer_payment",
+              "ColumnName": "customer_id",
+              "GUID": "9d808264-c7ba-46ba-ab48-6206cc080df0",
+              "RelationBinding": {
+                "RelatedTable": "m_customer",
+                "RelatedColumn": "customer_id",
+                "DisplayColumn": "内部顧客名"
+              }
+            },
+            "ColumnName": "外注先略称名"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "m_customer_payment",
+            "ColumnName": "customer_id",
+            "GUID": "0c0d23d5-9515-4aa4-9c4b-6ad7f4e83d84"
+          },
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_外注先ID"
+          }
+        }
+      },
+      "ID": "ad6362d4d7ac4dba8d90979c7f562dfb"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=顧客情報.支払先ID"
+              }
+            },
+            "value": "%Null%",
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "支払先略称名",
+              "TableValue": {
+                "TableName": "m_customer",
+                "OnlyGetValue": true,
+                "TableValueType": 0,
+                "BindingInfos": [
+                  {
+                    "GUID": "f5a496e2-d117-4af0-8bfb-5ffb86a2f930",
+                    "BindingInfo": {
+                      "TableName": "m_customer",
+                      "ColumnName": "内部顧客名",
+                      "GUID": "18d6715b-2bd7-4a4a-a26f-bb85978963d7"
+                    },
+                    "ColumnName": "内部顧客名"
+                  }
+                ],
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "m_customer",
+                    "ColumnName": "customer_id",
+                    "GUID": "a68f7ea0-ca5a-4381-80cd-6e5a0c45e3d3"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=顧客情報.支払先ID"
+                  }
+                }
+              },
+              "ID": "d1cae6fe05294ca490222f6ca1f95425"
+            },
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": "0",
+              "CustomReturns": [
+                {
+                  "ReturnPropertyName": "R_支払先ID",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=顧客情報.支払先ID"
+                  }
+                },
+                {
+                  "ReturnPropertyName": "R_支払先略称名",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=支払先略称名"
+                  }
+                },
+                {
+                  "ReturnPropertyName": "R_外注先略称名",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=顧客情報.外注先略称名"
+                  }
+                }
+              ]
+            }
+          ],
+          "ID": "bec8ce60-8480-4073-928c-6a3b5e061662"
+        },
+        {
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": "0",
+              "CustomReturns": [
+                {
+                  "ReturnPropertyName": "R_支払先ID",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_外注先ID"
+                  }
+                },
+                {
+                  "ReturnPropertyName": "R_支払先略称名",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=顧客情報.支払先略称名"
+                  }
+                },
+                {
+                  "ReturnPropertyName": "R_外注先略称名",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=顧客情報.外注先略称名"
+                  }
+                }
+              ]
+            }
+          ],
+          "ID": "724daa6f-0392-46a5-bead-e329df59abb3"
+        }
+      ]
+    }
+  ],
+  "ReturnProperties": [
+    {
+      "Name": "R_支払先ID"
+    },
+    {
+      "Name": "R_支払先略称名"
+    },
+    {
+      "Name": "R_外注先略称名"
+    }
+  ]
+}

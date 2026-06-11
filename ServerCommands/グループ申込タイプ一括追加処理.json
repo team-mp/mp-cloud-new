@@ -1,0 +1,331 @@
+{
+  "Name": "グループ申込タイプ一括追加処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_グループIDs",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_申込タイプID",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "グループ",
+          "TableValue": {
+            "TableName": "m_group",
+            "BindingInfos": [
+              {
+                "GUID": "24e95cd2-4380-4f04-8204-e36bcd772519",
+                "BindingInfo": {
+                  "TableName": "m_group",
+                  "ColumnName": "group_id",
+                  "GUID": "afe4ecd2-454a-4960-89b4-1bb717f4f330"
+                },
+                "ColumnName": "グループID"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+              "CompareType": 8,
+              "ColumnBindingInfo": {
+                "TableName": "m_group",
+                "ColumnName": "group_id",
+                "GUID": "60a40892-d9dd-4362-b065-da42685cb8b7"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_グループIDs"
+              }
+            }
+          },
+          "ID": "976414d223834bb6816903e51c8293e6"
+        },
+        {
+          "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+          "LoopInfo": {
+            "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+            "LoopCount": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=グループ"
+            },
+            "LoopItemParamName": "Item"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "登録済みカウント",
+              "TableValue": {
+                "TableName": "m_group_order_type",
+                "TableValueType": 3,
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                  "SubConditions": [
+                    {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_group_order_type",
+                        "ColumnName": "group_id",
+                        "GUID": "90bdfa17-986c-4731-bfeb-e6ab64e30e02"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=Item.グループID"
+                      }
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_group_order_type",
+                        "ColumnName": "order_type_id",
+                        "GUID": "75c99864-9ef3-404b-a068-00e890c3d205"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_申込タイプID"
+                      }
+                    }
+                  ]
+                }
+              },
+              "ID": "73641f368e2443da8e2ef28d02ffbec1"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "初期セットカウント",
+              "TableValue": {
+                "TableName": "m_group_order_type",
+                "TableValueType": 3,
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                  "SubConditions": [
+                    {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_group_order_type",
+                        "ColumnName": "group_id",
+                        "GUID": "8e5a751a-1c56-45d6-9a86-a5d64eca01d8"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=Item.グループID"
+                      }
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_group_order_type",
+                        "ColumnName": "default_set_flg",
+                        "GUID": "2f42bb00-e475-49f9-b1fe-a7f31eda3452"
+                      },
+                      "Value": "1"
+                    }
+                  ]
+                }
+              },
+              "ID": "263866901d5d49d0973e13e161947c2e"
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=初期セットカウント"
+                      }
+                    },
+                    "value": "0"
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "初期セットフラグ",
+                      "ParameterValue": "1",
+                      "ID": "de3243cda2d242d2867f6a71078962b7"
+                    }
+                  ],
+                  "ID": "648f7feb-cb92-438e-82ce-24952f4b4423"
+                },
+                {
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "初期セットフラグ",
+                      "ParameterValue": "0",
+                      "ID": "ef44e302dd1143689f5f01644dc8655b"
+                    }
+                  ],
+                  "ID": "75919207-136e-4aaa-b677-8f1173a37438"
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=登録済みカウント"
+                      }
+                    },
+                    "value": "0"
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                      "TableName": "m_group_order_type",
+                      "UpdateType": "add",
+                      "ShowConfirm": false,
+                      "UpdateBindingValues": [
+                        {
+                          "BindingInfo": {
+                            "TableName": "m_group_order_type",
+                            "ColumnName": "group_id",
+                            "GUID": "bf7e63b8-765a-4577-b4eb-c43d9e43c2fc"
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=Item.グループID"
+                          }
+                        },
+                        {
+                          "BindingInfo": {
+                            "TableName": "m_group_order_type",
+                            "ColumnName": "order_type_id",
+                            "GUID": "cd11d53b-b10a-4ca8-b029-f545924a622d"
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_申込タイプID"
+                          }
+                        },
+                        {
+                          "BindingInfo": {
+                            "TableName": "m_group_order_type",
+                            "ColumnName": "default_set_flg",
+                            "GUID": "731b17d9-f885-4b2b-bd91-a85a2a4b27a7"
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=初期セットフラグ"
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "ID": "f833634a-c0ab-44a8-8001-d90a0fb1e0a7"
+                },
+                {
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                      "ConditionAndCommandPairList": [
+                        {
+                          "Condition": {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=初期セットカウント"
+                              }
+                            },
+                            "value": "0"
+                          },
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                              "TableName": "m_group_order_type",
+                              "ShowConfirm": false,
+                              "RowsToUpdate": 1,
+                              "RowsToUpdateCondition": {
+                                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                                "SubConditions": [
+                                  {
+                                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                    "ColumnBindingInfo": {
+                                      "TableName": "m_group_order_type",
+                                      "ColumnName": "group_id",
+                                      "GUID": "8d92221e-454b-4b49-8114-aa41e6d188e7"
+                                    },
+                                    "Value": {
+                                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                      "SerializeProperty": "=Item.グループID"
+                                    }
+                                  },
+                                  {
+                                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                    "ColumnBindingInfo": {
+                                      "TableName": "m_group_order_type",
+                                      "ColumnName": "order_type_id",
+                                      "GUID": "a22316b6-9b24-4893-a03b-0c4ac1802650"
+                                    },
+                                    "Value": {
+                                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                      "SerializeProperty": "=P_申込タイプID"
+                                    }
+                                  }
+                                ]
+                              },
+                              "UpdateBindingValues": [
+                                {
+                                  "BindingInfo": {
+                                    "TableName": "m_group_order_type",
+                                    "ColumnName": "default_set_flg",
+                                    "GUID": "0de146cf-cd12-457f-865b-ada47fed8315"
+                                  },
+                                  "Value": "1"
+                                }
+                              ]
+                            }
+                          ],
+                          "ID": "751984f9-c91b-4db2-826b-8a3a65eb2ea9"
+                        }
+                      ]
+                    }
+                  ],
+                  "ID": "f992cb85-2d69-48d2-814d-583009604a2f"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

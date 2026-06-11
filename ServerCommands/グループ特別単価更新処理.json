@@ -1,0 +1,461 @@
+{
+  "Name": "グループ特別単価更新処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_グループ商品ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_グループID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_商品ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_独自商品名",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_独自請求品名",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_独自商品注釈",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_特別単価",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_申込タイプID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_特別調査単価",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_特別解析単価",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_特別保証単価",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_特別改良判定保証単価",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_特別基礎単価",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "登録更新ラベル取得",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_ユーザーID"
+            }
+          ],
+          "ResultErrorCodeTo": {
+            "SerializeProperty": "リターンコード"
+          },
+          "ResultMessageTo": {
+            "SerializeProperty": "リターンメッセージ"
+          },
+          "ReturnPropertiesTo": [
+            {
+              "ResultPropertyName": "R_ラベル名",
+              "ResultTo": {
+                "SerializeProperty": "最終更新ラベル"
+              }
+            },
+            {
+              "ResultPropertyName": "R_外部ユーザーフラグ"
+            },
+            {
+              "ResultPropertyName": "R_ユーザー名"
+            },
+            {
+              "ResultPropertyName": "R_所属会社名"
+            }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_グループ商品ID"
+                  }
+                },
+                "value": "%Null%"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "m_group_product",
+                  "UpdateType": "add",
+                  "ShowConfirm": false,
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_product",
+                        "ColumnName": "group_id",
+                        "GUID": "bbeb7cc7-f8f4-43a7-bb56-50d7867bf362"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_グループID"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_product",
+                        "ColumnName": "order_type_id",
+                        "GUID": "43e4f24d-76eb-44dd-955b-3b0b8b3e132e"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_申込タイプID"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_product",
+                        "ColumnName": "product_id",
+                        "GUID": "50ecfbff-27fe-467f-b52d-b69f022b9ba4"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_商品ID"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_product",
+                        "ColumnName": "original_product_name",
+                        "GUID": "ae1420bf-f308-4999-b964-35f484c6ca3b"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_独自商品名"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_product",
+                        "ColumnName": "original_billing_product_name",
+                        "GUID": "22c7e79a-67aa-4e77-ba1c-ad3db2289878"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_独自請求品名"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_product",
+                        "ColumnName": "original_special_note",
+                        "GUID": "8a92bcf0-cfa8-45f4-a7af-6a24dc0aadb3"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_独自商品注釈"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_product",
+                        "ColumnName": "special_price",
+                        "GUID": "e0841854-b3bf-4860-b528-dd089796d19e"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_特別単価"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_product",
+                        "ColumnName": "special_survey_price",
+                        "GUID": "38817855-e301-4794-9657-e9e99b2eccfb"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_特別調査単価"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_product",
+                        "ColumnName": "special_analysis_price",
+                        "GUID": "8ec22df0-c2f6-44b5-bad3-e29131ed0417"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_特別解析単価"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_product",
+                        "ColumnName": "special_gurantee_price",
+                        "GUID": "98a753bf-13c8-448a-b9f2-c1313d8d988e"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_特別保証単価"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_product",
+                        "ColumnName": "special_impjudge_gurantee_price",
+                        "GUID": "ee068c00-5bbd-42cb-804d-5c82648083b5"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_特別改良判定保証単価"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_product",
+                        "ColumnName": "special_base_price",
+                        "GUID": "9b71ae9f-2d14-41f2-b25d-6a586994d61b"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_特別基礎単価"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_product",
+                        "ColumnName": "last_updated_label",
+                        "GUID": "c5394e29-f35c-4ff1-a717-6376063922ff"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=最終更新ラベル"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "ID": "e32c4aad-9041-4843-8c20-b74933ad62a0"
+            },
+            {
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "m_group_product",
+                  "ShowConfirm": false,
+                  "RowsToUpdate": 1,
+                  "RowsToUpdateCondition": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "m_group_product",
+                      "ColumnName": "group_product_id",
+                      "GUID": "24c2e740-82aa-4a28-bbd5-dcf4cfc6d0d9"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_グループ商品ID"
+                    }
+                  },
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_product",
+                        "ColumnName": "group_id",
+                        "GUID": "fea6f496-0bda-4f4a-a14b-dd46056aaab1"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_グループID"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_product",
+                        "ColumnName": "order_type_id",
+                        "GUID": "edf1020a-1a13-4813-b16b-f52869d45065"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_申込タイプID"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_product",
+                        "ColumnName": "product_id",
+                        "GUID": "dc37856c-021f-40b2-bfb0-9a640b1f508b"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_商品ID"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_product",
+                        "ColumnName": "original_product_name",
+                        "GUID": "b843b992-8f0d-4417-88fe-5d3f8af0c93a"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_独自商品名"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_product",
+                        "ColumnName": "original_billing_product_name",
+                        "GUID": "957493d8-4d18-4978-a6f3-5c089ff5f83f"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_独自請求品名"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_product",
+                        "ColumnName": "original_special_note",
+                        "GUID": "969f5ccd-c905-4f0b-bc0e-e1904eb96210"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_独自商品注釈"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_product",
+                        "ColumnName": "special_price",
+                        "GUID": "e026ec64-6666-45e4-8128-d2c8e63555d7"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_特別単価"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_product",
+                        "ColumnName": "special_survey_price",
+                        "GUID": "c5a0ed81-20c0-4566-bc70-e148f76e5882"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_特別調査単価"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_product",
+                        "ColumnName": "special_analysis_price",
+                        "GUID": "c6ecaeb5-b696-4c55-9ffe-ffbbad6dc27d"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_特別解析単価"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_product",
+                        "ColumnName": "special_gurantee_price",
+                        "GUID": "badf6259-a3bb-47b9-a5b6-b30ddce03ba8"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_特別保証単価"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_product",
+                        "ColumnName": "special_impjudge_gurantee_price",
+                        "GUID": "36e7ab63-7089-4cb9-bd93-0afeea5946dc"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_特別改良判定保証単価"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_product",
+                        "ColumnName": "special_base_price",
+                        "GUID": "5e0b1240-76e9-474a-8b8c-8a1d8a2d1366"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_特別基礎単価"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_group_product",
+                        "ColumnName": "last_updated_label",
+                        "GUID": "2836f24a-7f73-492e-83a2-01b8eeb9530d"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=最終更新ラベル"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "ID": "b3c64fe0-7a5b-4e93-85da-b0cdbc897146"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

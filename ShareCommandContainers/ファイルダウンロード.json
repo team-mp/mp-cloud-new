@@ -1,0 +1,71 @@
+{
+  "ID": "5cba79c4-fb6b-4b01-a5ad-16a0d1ba9c86",
+  "Name": "ファイルダウンロード",
+  "Params": [
+    {
+      "ID": "85c41492-3ab7-462d-9022-0fe6e1d8d6b3",
+      "Name": "P_添付ID"
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
+      "LoadingText": "お待ちください",
+      "LoadingTextColor": "Background 1 0"
+    },
+    {
+      "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+      "ServerCommandName": "ファイルダウンロード処理",
+      "Parameters": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_添付ID",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_添付ID"
+          }
+        }
+      ],
+      "ResultErrorCodeTo": {
+        "SerializeProperty": "リターンコード"
+      },
+      "ResultMessageTo": {
+        "SerializeProperty": "リターンメッセージ"
+      },
+      "CheckDataValidation": false
+    },
+    {
+      "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=リターンコード"
+                }
+              ]
+            },
+            "value": "0",
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+              "MessageFormula": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=リターンメッセージ"
+              }
+            }
+          ],
+          "ID": "d9e4a953-1a26-44c9-9ebc-48008cd5cc5e"
+        }
+      ]
+    }
+  ]
+}

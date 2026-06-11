@@ -1,0 +1,120 @@
+{
+  "ID": "0195ae15-9a35-4e38-9df4-6f9e1e964baa",
+  "Name": "工事見積重複工法チェック",
+  "Params": [
+    {
+      "ID": "29996ca8-fb49-4b3a-96a4-e718dd757d52",
+      "Name": "P_工事見積ID"
+    },
+    {
+      "ID": "e87f7937-8b97-42a0-a5f4-d2676b7ad81d",
+      "Name": "P_申込ID"
+    },
+    {
+      "ID": "ff3be0e9-a1f0-42c1-b7f0-f10e2c605655",
+      "Name": "P_工事会社ID"
+    },
+    {
+      "ID": "11347653-3133-40e7-be99-3e3ceabb9095",
+      "Name": "P_工法ID"
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "重複工法カウント",
+      "TableValue": {
+        "TableName": "t_object_construction_estimate",
+        "TableValueType": 3,
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_construction_estimate",
+                "ColumnName": "object_order_id",
+                "GUID": "b0e72c82-8c9a-4785-84e8-5b3ff4ba00be"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_申込ID"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "CompareType": 1,
+              "ColumnBindingInfo": {
+                "TableName": "t_object_construction_estimate",
+                "ColumnName": "construction_estimate_id",
+                "GUID": "110105f9-15cc-4ba9-9c66-590281b251e0"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_工事見積ID"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_construction_estimate",
+                "ColumnName": "construction_customer_id",
+                "GUID": "0e951795-1a36-4701-878d-9cb8794cb820"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_工事会社ID"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_construction_estimate",
+                "ColumnName": "construction_method_id",
+                "GUID": "cdddbddb-9c5e-43da-9e46-098ebfc2c341"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_工法ID"
+              }
+            }
+          ]
+        },
+        "NullFormulaValueQueryPolicy": 0
+      },
+      "ID": "1e46530be1cb4565b04cd0419eb94cd9"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=重複工法カウント"
+                }
+              ]
+            },
+            "value": "0",
+            "compareType": 2
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+              "MessageFormula": "同一工事会社で同一工法が登録されています。\r\n重複された工法を登録することはできません。"
+            },
+            {
+              "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+              "JavaScript": "return false;",
+              "ID": "adaeb9ab414a4902a96897b5b3f7b340"
+            }
+          ],
+          "ID": "a3b66bd2-1be7-4ac3-8b5e-6d11822ede62"
+        }
+      ]
+    }
+  ]
+}

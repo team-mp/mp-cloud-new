@@ -1,0 +1,27 @@
+{
+  "Name": "v_warranty_check_customer",
+  "Columns": [
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "対象事業者ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    }
+  ],
+  "ExternalDatabaseInfo": {
+    "DataBaseType": "6db454c0-531c-4395-9122-921a18942902",
+    "AllowModifySchema": true,
+    "ConnectionId": "PostgreSQL1",
+    "SourceTableName": "v_warranty_check_customer",
+    "SourceTableSchema": "public",
+    "CreateViewSql": " SELECT \"対象事業者ID\"\n   FROM ( SELECT\n                CASE\n                    WHEN (a.group_type_id = 2) THEN a.order_customer_id\n                    ELSE a.builder_id\n                END AS \"対象事業者ID\"\n           FROM ((((t_object_order a\n             JOIN m_group b ON ((a.group_id = b.group_id)))\n             JOIN m_customer_default c ON ((a.builder_id = c.customer_id)))\n             JOIN m_order_status d ON ((a.order_status_id = d.order_status_id)))\n             JOIN t_object_warranty e ON ((a.latest_warranty_id = e.warranty_id)))\n          WHERE ((a.active_flg = 1) AND (d.warranty_confirm_flg = 1) AND (b.warranty_check_unnecessary_flg = 0) AND (c.warranty_check_unnecessary_flg = 0) AND ((e.next_warranty_check_date <= CURRENT_DATE) OR (e.next_warranty_check_date IS NULL)))) main\n  GROUP BY \"対象事業者ID\";",
+    "ViewInfo": {
+      "ViewName": "v_warranty_check_customer",
+      "QueryColumns": [
+        "対象事業者ID"
+      ]
+    }
+  },
+  "Indexes": []
+}

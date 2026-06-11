@@ -1,0 +1,277 @@
+{
+  "Name": "ファイルダウンロード処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_添付ID",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "添付情報",
+      "TableValue": {
+        "TableName": "t_object_attachment",
+        "TableValueType": 1,
+        "BindingInfos": [
+          {
+            "GUID": "b0c4616b-361a-47ec-96f3-4d8405050c2b",
+            "BindingInfo": {
+              "TableName": "t_object_attachment",
+              "ColumnName": "object_order_id",
+              "GUID": "4a697335-0234-481c-9bce-0212de452651",
+              "RelationBinding": {
+                "RelatedTable": "t_object_order",
+                "RelatedColumn": "object_order_id",
+                "DisplayColumn": "object_id",
+                "NextRelationBinding": {
+                  "RelatedTable": "t_object",
+                  "RelatedColumn": "object_id",
+                  "DisplayColumn": "物件番号"
+                }
+              }
+            },
+            "ColumnName": "物件番号"
+          },
+          {
+            "GUID": "8a8fcc3f-a127-4040-90df-d45a14b2ba30",
+            "BindingInfo": {
+              "TableName": "t_object_attachment",
+              "ColumnName": "object_order_id",
+              "GUID": "2698c9a8-a78f-450e-aef5-bb1d4b4f630b",
+              "RelationBinding": {
+                "RelatedTable": "t_object_order",
+                "RelatedColumn": "object_order_id",
+                "DisplayColumn": "object_id",
+                "NextRelationBinding": {
+                  "RelatedTable": "t_object",
+                  "RelatedColumn": "object_id",
+                  "DisplayColumn": "物件名"
+                }
+              }
+            },
+            "ColumnName": "物件名"
+          },
+          {
+            "GUID": "037c938c-0ab8-46b0-9f05-90ea58e7962a",
+            "BindingInfo": {
+              "TableName": "t_object_attachment",
+              "ColumnName": "display_file_name",
+              "GUID": "6506a690-42f9-48de-bac8-64f4653d6915"
+            },
+            "ColumnName": "表示ファイル名"
+          },
+          {
+            "GUID": "10be5b46-9a5e-486b-9bc8-819b52f2c53a",
+            "BindingInfo": {
+              "TableName": "t_object_attachment",
+              "ColumnName": "file_path_name",
+              "GUID": "9f460326-a4be-47bf-8137-0fe4f396400f"
+            },
+            "ColumnName": "ファイルパス名"
+          },
+          {
+            "GUID": "7d407aba-e276-4863-8d72-a7088ea72313",
+            "BindingInfo": {
+              "TableName": "t_object_attachment",
+              "ColumnName": "save_file_name",
+              "GUID": "3e29842a-b822-41bd-94e1-bea4b63fe243"
+            },
+            "ColumnName": "保存ファイル名"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "t_object_attachment",
+            "ColumnName": "attachment_id",
+            "GUID": "8a92b55c-7d8e-4921-a154-03e7275d22bf"
+          },
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_添付ID"
+          }
+        }
+      },
+      "ID": "36a4ef5578c74c9288f4d7ebfe14f4bf"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "保存ファイルフルパス名",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=添付情報.ファイルパス名&添付情報.保存ファイル名"
+      },
+      "ID": "b593fe7deb2d4f2484001eb05a9f587a"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "保存先サーバーパス名",
+      "ParameterValue": "C:\\inetpub\\wwwroot\\private\\",
+      "ID": "85e2976c5fe249f8830da88d675f0e0a"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "個人フォルダ名",
+      "ParameterValue": "%CurrentUser.user_id%",
+      "ID": "8257b8c346604081adce3f67392bafbb"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "個人フォルダフルパス名",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=保存先サーバーパス名&個人フォルダ名&\"\\\""
+      },
+      "ID": "7278d32b979f4076bae3f1ade61d424a"
+    },
+    {
+      "$type": "OperateFilesCommand.CreateFolderCommand, OperateFilesCommand",
+      "FolderPath": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=個人フォルダフルパス名"
+      },
+      "Comments": "個人フォルダ作成"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "DropBoxフルパス名",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=SUBSTITUTE(保存ファイルフルパス名,\"C:\\MP-Cloud\\Dropbox\",\"\")"
+      },
+      "ID": "0644b76f32c943b5897e17f8baa6f037"
+    },
+    {
+      "$type": "OperateFilesCommand.GetFileInformation, OperateFilesCommand",
+      "FilePath": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=保存ファイルフルパス名"
+      },
+      "FileInfomationType": 5,
+      "ToParameterName": "ファイル有無"
+    },
+    {
+      "$type": "OperateFilesCommand.GetFileInformation, OperateFilesCommand",
+      "FilePath": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=保存ファイルフルパス名"
+      },
+      "ToParameterName": "ファイル名"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=ファイル有無"
+              }
+            },
+            "value": "True"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.CatchExceptionCommand, ServerDesignerCommon",
+              "TryCommandPart": {
+                "CommandList": [
+                  {
+                    "$type": "OperateFilesCommand.CloudStorage.DownloadCloudFileToServer, OperateFilesCommand",
+                    "FilePath": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=DropBoxフルパス名"
+                    },
+                    "LocalFolderPath": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=個人フォルダフルパス名"
+                    },
+                    "Type": "DropboxStrage"
+                  }
+                ]
+              },
+              "CatchCommandPart": {
+                "CommandList": [
+                  {
+                    "$type": "OperateFilesCommand.CopyFileCommand, OperateFilesCommand",
+                    "FilePath": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=保存ファイルフルパス名"
+                    },
+                    "TargetFolderPath": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=個人フォルダフルパス名"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "ダウンロードファイル名",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=添付情報.表示ファイル名"
+              },
+              "ID": "ae8811cb6c174f64b88a8de485ea6314"
+            },
+            {
+              "$type": "OperateFilesCommand.DownloadFileCommand, OperateFilesCommand",
+              "FilePath": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=個人フォルダフルパス名&ファイル名"
+              },
+              "DownloadFileName": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=ダウンロードファイル名"
+              }
+            },
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": "0"
+            }
+          ],
+          "ID": "9288a93e-a0f4-4552-b270-d2cbd648cda0"
+        },
+        {
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": "100",
+              "Message": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=\"「\"&添付情報.表示ファイル名&\"」は存在しませんでした\"&CHAR(10)&\"システム管理者へお問合せ下さい\""
+              }
+            }
+          ],
+          "ID": "e53b88e4-d4dd-4f22-8e2f-2a908f1e55d6"
+        }
+      ]
+    }
+  ]
+}

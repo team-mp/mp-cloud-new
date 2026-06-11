@@ -1,0 +1,127 @@
+{
+  "ID": "d35d0285-5da2-4a49-9818-8c4fec1c7767",
+  "Name": "工事見積依頼詳細ページ一括表示",
+  "Params": [
+    {
+      "ID": "07832102-f3f9-4cd0-bc49-e198ed1f4ef5",
+      "Name": "P_工事見積IDs"
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "対象件数",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=LEN(P_工事見積IDs)-LEN(SUBSTITUTE(P_工事見積IDs,\",\",\"\"))+1"
+      },
+      "ID": "d5aa3fc1475a495abf948bf98e7b3144"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=対象件数"
+                }
+              ]
+            },
+            "value": "20",
+            "compareType": 2
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+              "MessageFormula": "一括表示は最大20件までです"
+            },
+            {
+              "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+              "JavaScript": "return false;",
+              "ID": "4245a305aaa04a2d96fda5f0eff41b46"
+            }
+          ],
+          "ID": "199f976b-e61f-4bf9-a3e4-36c8d4a8e79b"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "文字列変数",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=P_工事見積IDs"
+      },
+      "ID": "d19b60cd04994ff9a87dcd459b4f8d70"
+    },
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=対象件数"
+        },
+        "LoopItemParamName": "Item"
+      },
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "カンマ文字位置",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=IFERROR(FIND(\",\",文字列変数,1),0)"
+          },
+          "ID": "b8325888fd4d4fc1b88eb1a3e2d41d4d"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "取得工事見積ID",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=IF(カンマ文字位置>0,LEFT(文字列変数,カンマ文字位置-1),文字列変数)"
+          },
+          "ID": "4ad1110f69614fe5b63c49e47323cd37"
+        },
+        {
+          "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
+          "ShareCommandContainerRefer": {
+            "ShareCommandContainerID": "f2e2e5aa-158b-471e-b427-8310350a9b95"
+          },
+          "Params": [
+            {
+              "ParamReferObject": {
+                "ParamID": "d674f3ff-0930-470f-9693-e050d91f8eb9",
+                "ShareCommandContainerReferObject": {
+                  "ShareCommandContainerID": "f2e2e5aa-158b-471e-b427-8310350a9b95"
+                }
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=取得工事見積ID"
+              }
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "時間待機（1秒）",
+          "CheckDataValidation": false
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "文字列変数",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=MID(文字列変数,カンマ文字位置+1,1000000)"
+          },
+          "ID": "7a531c9874f34d4b80573bbe46e0cf7e"
+        }
+      ]
+    }
+  ]
+}

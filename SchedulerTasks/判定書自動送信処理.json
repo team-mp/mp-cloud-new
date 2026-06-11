@@ -1,0 +1,203 @@
+{
+  "Name": "判定書自動送信処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.ScheduleTriggerSaveData, ServerDesignerCommon",
+      "Interval": 10.0,
+      "TimeUnit": 1,
+      "StartDateTime": 46154.0,
+      "ScheduleRunInDebugServer": false
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "解析情報",
+      "TableValue": {
+        "TableName": "t_object_analysis",
+        "BindingInfos": [
+          {
+            "GUID": "58ba635a-7d86-4e19-940b-16fa3d914a6e",
+            "BindingInfo": {
+              "TableName": "t_object_analysis",
+              "ColumnName": "analysis_id",
+              "GUID": "27e753c4-26bc-4160-af77-b1a566ac87e7"
+            },
+            "ColumnName": "解析ID"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_analysis",
+                "ColumnName": "analysis_status_id",
+                "GUID": "b0d35b2d-57d1-4476-81fc-3c2419b4ef3e",
+                "RelationBinding": {
+                  "RelatedTable": "m_analysis_status",
+                  "RelatedColumn": "analysis_status_id",
+                  "DisplayColumn": "auto_send_wait_flg"
+                }
+              },
+              "Value": "1"
+            },
+            {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "SubConditions": [
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "autojob_error_id",
+                    "GUID": "00ef79e1-3c63-49fa-bde0-bf398b2700c1"
+                  },
+                  "Value": "%Null%",
+                  "LeftBracket": 1
+                },
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "autojob_error_id",
+                    "GUID": "8db55c1f-c7d3-42d9-9869-bf70b5e52f81",
+                    "RelationBinding": {
+                      "RelatedTable": "t_autojob_error",
+                      "RelatedColumn": "autojob_error_id",
+                      "DisplayColumn": "error_content"
+                    }
+                  },
+                  "Value": "データベースの操作に失敗しました。",
+                  "RightBracket": 1
+                }
+              ],
+              "RelationType": 1
+            }
+          ]
+        }
+      },
+      "ID": "68677dca5b3549d0b8f2508074e9ed16"
+    },
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=解析情報"
+        },
+        "LoopItemParamName": "Item"
+      },
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "判定書自動送信処理",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_解析ID",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=Item.解析ID"
+              }
+            }
+          ],
+          "ResultErrorCodeTo": {
+            "SerializeProperty": "リターンコード"
+          },
+          "ResultMessageTo": {
+            "SerializeProperty": "リターンメッセージ"
+          },
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=リターンコード"
+                  }
+                },
+                "value": "0",
+                "compareType": 1
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "t_autojob_error",
+                  "UpdateType": "add",
+                  "ShowConfirm": false,
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_autojob_error",
+                        "ColumnName": "error_content",
+                        "GUID": "20578ca4-1ebd-4b5f-b3e4-6423a782ebdc"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=リターンメッセージ"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_autojob_error",
+                        "ColumnName": "error_datetime",
+                        "GUID": "b6a79ac1-f3b0-487d-b8ef-9a63ef7ba4af"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=NOW()"
+                      }
+                    }
+                  ],
+                  "ParamNameToSaveNewRowValue": "New自動処理"
+                },
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "t_object_analysis",
+                  "ShowConfirm": false,
+                  "RowsToUpdate": 1,
+                  "RowsToUpdateCondition": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_analysis",
+                      "ColumnName": "analysis_id",
+                      "GUID": "edd9cc1f-a208-4ba1-b6ae-164ef36af07c"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=Item.解析ID"
+                    }
+                  },
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_object_analysis",
+                        "ColumnName": "autojob_error_id",
+                        "GUID": "d243a931-5b23-4c31-aa5f-9c0f0d546299"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=New自動処理.自動処理エラーID"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "ID": "af7511a9-093a-4f4a-b6bb-a242e985faa2"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

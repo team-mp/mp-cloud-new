@@ -1,0 +1,200 @@
+{
+  "Name": "祝日取得（銀行休業日）",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_対象年",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": "30",
+        "LoopIndexParamName": "カウンター",
+        "LoopItemParamName": "Item"
+      },
+      "CommandList": [
+        {
+          "$type": "PostDataToWebApi.PostDataCommand, PostDataToWebApi",
+          "PostData": {
+            "DataItemType": 1,
+            "Data": {
+              "$type": "PostDataToWebApi.ObjectData, PostDataToWebApi",
+              "Data": [
+                {
+                  "Name": "year",
+                  "DataItemType": 0,
+                  "Data": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_対象年"
+                  }
+                },
+                {
+                  "Name": "line",
+                  "DataItemType": 0,
+                  "Data": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=カウンター"
+                  }
+                }
+              ]
+            }
+          },
+          "WebUrl": "https://api.excelapi.org/datetime/holiday-list",
+          "Method": "GET",
+          "SuccessCallback": "// レスポンスデータは「result」変数に格納されます。\r\n// 「result」変数を使用して、リクエストが成功したコールバック関数を実装します。\r\n//console.log(result);",
+          "ErrorCallback": "// エラーデータは「error」変数に格納されます。\r\n// 例外処理には「error」変数を使用してください。\r\nconsole.error(error);",
+          "NewParameter": "日付",
+          "Header": [],
+          "Timeout": 100.0,
+          "Comments": "EXCEL APIを使用（祝日を取得）"
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=日付"
+                  }
+                },
+                "value": "0",
+                "compareType": 2
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "登録済みカウント",
+                  "TableValue": {
+                    "TableName": "m_bank_holiday",
+                    "TableValueType": 3,
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_bank_holiday",
+                        "ColumnName": "holiday",
+                        "GUID": "58cf6d25-786a-4a72-8f3e-7dbd95df51fd"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=日付"
+                      }
+                    }
+                  },
+                  "ID": "66f4aad71c5346fea52a8f8297c05ae5"
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=登録済みカウント"
+                          }
+                        },
+                        "value": "0"
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "PostDataToWebApi.PostDataCommand, PostDataToWebApi",
+                          "PostData": {
+                            "DataItemType": 1,
+                            "Data": {
+                              "$type": "PostDataToWebApi.ObjectData, PostDataToWebApi",
+                              "Data": [
+                                {
+                                  "Name": "date",
+                                  "DataItemType": 0,
+                                  "Data": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=日付"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          "WebUrl": "https://api.excelapi.org/datetime/holiday",
+                          "Method": "GET",
+                          "SuccessCallback": "// レスポンスデータは「result」変数に格納されます。\r\n// 「result」変数を使用して、リクエストが成功したコールバック関数を実装します。\r\n//console.log(result);",
+                          "ErrorCallback": "// エラーデータは「error」変数に格納されます。\r\n// 例外処理には「error」変数を使用してください。\r\nconsole.error(error);",
+                          "NewParameter": "祝日の名称",
+                          "Header": [],
+                          "Timeout": 100.0,
+                          "Comments": "EXCEL APIを使用（祝日名を取得）"
+                        },
+                        {
+                          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                          "TableName": "m_bank_holiday",
+                          "UpdateType": "add",
+                          "ShowConfirm": false,
+                          "UpdateBindingValues": [
+                            {
+                              "BindingInfo": {
+                                "TableName": "m_bank_holiday",
+                                "ColumnName": "holiday",
+                                "GUID": "f12c0028-8fe7-4236-a31c-3a0e1ab288b1"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=日付"
+                              }
+                            },
+                            {
+                              "BindingInfo": {
+                                "TableName": "m_bank_holiday",
+                                "ColumnName": "notes",
+                                "GUID": "a6971bd2-22a1-4d19-83f3-3a89d7171507"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=祝日の名称"
+                              }
+                            }
+                          ]
+                        }
+                      ],
+                      "ID": "b9df3142-ecd8-4a88-b446-d00041e6d5f6"
+                    }
+                  ]
+                }
+              ],
+              "ID": "68bd96b0-47fe-4a4c-a756-c1424feb56e5"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

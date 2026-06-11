@@ -1,0 +1,232 @@
+{
+  "ID": "334af106-f3b5-494e-a091-cf0255084774",
+  "Name": "工事メールアドレスチェック",
+  "Params": [
+    {
+      "ID": "26ad8128-1899-47c2-bca4-6441a70fad93",
+      "Name": "P_工事会社ID"
+    },
+    {
+      "ID": "0357c931-50df-4f38-8cad-4615737cdb98",
+      "Name": "P_工事会社略称名"
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=P_工事会社ID"
+                }
+              ]
+            },
+            "value": "%Null%"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+              "MessageFormula": "工事会社が登録されていないため送信できません\r\n工事会社を選択後、更新ボタンを押してください"
+            },
+            {
+              "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+              "JavaScript": "return false;",
+              "ID": "b3a91690bc384c588c60a95dab4c1c2f"
+            }
+          ],
+          "ID": "230ff22a-61dc-4044-99a3-b36c5b81a48f"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "メールタイプNO",
+      "TableValue": {
+        "TableName": "m_mail_type",
+        "OnlyGetValue": true,
+        "TableValueType": 0,
+        "BindingInfos": [
+          {
+            "GUID": "c8c30087-8f22-4db8-963a-dd6fce59e16f",
+            "BindingInfo": {
+              "TableName": "m_mail_type",
+              "ColumnName": "mail_type_no",
+              "GUID": "a020d12b-4e7d-4fb1-a078-e85ffb329cba"
+            },
+            "ColumnName": "mail_type_no"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "m_mail_type",
+            "ColumnName": "construction_flg",
+            "GUID": "82c82d9a-d35e-46fe-892f-6f9010e8b9fb"
+          },
+          "Value": "1"
+        }
+      },
+      "ID": "a7b0b410546345259e0455b8980f98db"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "工事宛先TO件数",
+      "TableValue": {
+        "TableName": "m_customer_mail",
+        "TableValueType": 3,
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_customer_mail",
+                "ColumnName": "customer_id",
+                "GUID": "6afd3d3a-39b9-45e3-8f59-08c96b6f4cbc"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_工事会社ID"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_customer_mail",
+                "ColumnName": "send_type",
+                "GUID": "9b5135b1-81ae-493f-8d07-a9a1640da1c3"
+              },
+              "Value": "1"
+            },
+            {
+              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+              "CompareType": 6,
+              "ColumnBindingInfo": {
+                "TableName": "m_customer_mail",
+                "ColumnName": "mail_type_nos",
+                "GUID": "de3876e6-3c8a-407c-8059-48d976c242c1"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=メールタイプNO"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_customer_mail",
+                "ColumnName": "user_id",
+                "GUID": "bae7c6ea-9201-48e3-80b0-5109350512e5",
+                "RelationBinding": {
+                  "RelatedTable": "m_user",
+                  "RelatedColumn": "user_id",
+                  "DisplayColumn": "active_flg"
+                }
+              },
+              "Value": "1"
+            }
+          ]
+        }
+      },
+      "ID": "eba4b5d8daca444e9a4c5e26f34abbdc"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=工事宛先TO件数"
+                }
+              ]
+            },
+            "value": "0"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "ConfirmDialogSettings": {
+                    "Title": "確認",
+                    "FormulaText": "この工事会社は工事見積依頼のメールアドレスが設定されていません。\r\nメールアドレスの登録画面に遷移します。よろしいですか？",
+                    "YesButtonText": "はい",
+                    "NoButtonText": "いいえ",
+                    "ConfirmIcon": 4
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
+                      "ShareCommandContainerRefer": {
+                        "ShareCommandContainerID": "30b77a2a-3bbe-4dfc-ad1e-379d7a20b12d"
+                      },
+                      "Params": [
+                        {
+                          "ParamReferObject": {
+                            "ParamID": "4cfcf938-3d44-4ff5-88b5-7e3948728bae",
+                            "ShareCommandContainerReferObject": {
+                              "ShareCommandContainerID": "30b77a2a-3bbe-4dfc-ad1e-379d7a20b12d"
+                            }
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_工事会社ID"
+                          }
+                        },
+                        {
+                          "ParamReferObject": {
+                            "ParamID": "d5ceb5de-3705-4384-9bcb-ef9bae461e19",
+                            "ShareCommandContainerReferObject": {
+                              "ShareCommandContainerID": "30b77a2a-3bbe-4dfc-ad1e-379d7a20b12d"
+                            }
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_工事会社略称名"
+                          }
+                        },
+                        {
+                          "ParamReferObject": {
+                            "ParamID": "739dbe7f-2972-4ba5-be96-ccfdc7cf9499",
+                            "ShareCommandContainerReferObject": {
+                              "ShareCommandContainerID": "30b77a2a-3bbe-4dfc-ad1e-379d7a20b12d"
+                            }
+                          },
+                          "Value": "7"
+                        }
+                      ]
+                    }
+                  ],
+                  "ID": "5adb684d-1d56-47eb-a328-fba4c2e59fea"
+                },
+                {
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                      "JavaScript": "return false;",
+                      "ID": "00b8a3882188457bbdfb019b190029d4"
+                    },
+                    {
+                      "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
+                    }
+                  ],
+                  "ID": "477e550e-977b-47c1-b49e-f8ab29212ae8"
+                }
+              ]
+            }
+          ],
+          "ID": "ce057bdd-5d53-4782-8b14-efe8c7bf2e50"
+        }
+      ]
+    }
+  ]
+}

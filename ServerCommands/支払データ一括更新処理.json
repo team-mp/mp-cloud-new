@@ -1,0 +1,163 @@
+{
+  "Name": "支払データ一括更新処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_仕入IDs",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_支払日",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_支払済みフラグ",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_支払解除フラグ",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_支払済みフラグ"
+                  }
+                },
+                "value": "1"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "t_purchase",
+                  "ShowConfirm": false,
+                  "RowsToUpdate": 1,
+                  "RowsToUpdateCondition": {
+                    "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                    "CompareType": 8,
+                    "ColumnBindingInfo": {
+                      "TableName": "t_purchase",
+                      "ColumnName": "purchase_id",
+                      "GUID": "82ba48f8-139a-4c2b-a825-33609e9a63bb"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_仕入IDs"
+                    }
+                  },
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_purchase",
+                        "ColumnName": "payment_date",
+                        "GUID": "a95215a0-78dd-476a-8e58-2ae4bd1ecaf7"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_支払日"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_purchase",
+                        "ColumnName": "payment_flg",
+                        "GUID": "d568e2fe-ad4b-448d-9cf2-e47c0654458e"
+                      },
+                      "Value": "1"
+                    }
+                  ]
+                }
+              ],
+              "ID": "989d523f-d095-4b2c-bcbb-f5f7466f14f6"
+            },
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_支払解除フラグ"
+                  }
+                },
+                "value": "1"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "t_purchase",
+                  "ShowConfirm": false,
+                  "RowsToUpdate": 1,
+                  "RowsToUpdateCondition": {
+                    "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                    "CompareType": 8,
+                    "ColumnBindingInfo": {
+                      "TableName": "t_purchase",
+                      "ColumnName": "purchase_id",
+                      "GUID": "c40a3ae3-59de-4b6e-a18c-59fb502f0ea5"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_仕入IDs"
+                    }
+                  },
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_purchase",
+                        "ColumnName": "payment_date",
+                        "GUID": "7df855dc-23d5-48fd-8d64-ada09a7e21c2"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_purchase",
+                        "ColumnName": "payment_flg",
+                        "GUID": "91b746e2-0599-4675-b1c0-01ec4a77b7c3"
+                      },
+                      "Value": "0"
+                    }
+                  ]
+                }
+              ],
+              "ID": "72186561-7956-401b-b634-1dd826f3370b"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
