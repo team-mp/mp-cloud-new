@@ -2,9 +2,6 @@
   "PageType": 0,
   "ColumnCount": 63,
   "RowCount": 32,
-  "Formulas": {
-    "20,49": "ODATA(\"t_object_analysis/$count?$filter=object_order_id eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)&\" and analysis_id ne \"&IF(ISBLANK(AX15),\"null\",AX15))"
-  },
   "CustomNames": [
     {
       "Name": "解析更新ボタン",
@@ -24,15 +21,15 @@
     },
     {
       "Name": "住宅事業者ID",
-      "Formula": "解析登録フレーム!$AX$9"
+      "Formula": "解析登録フレーム!$AX$6"
     },
     {
       "Name": "住宅事業者名",
-      "Formula": "解析登録フレーム!$AX$12"
+      "Formula": "解析登録フレーム!$AX$9"
     },
     {
-      "Name": "グループID",
-      "Formula": "解析登録フレーム!$AX$6"
+      "Name": "前回解析ID",
+      "Formula": "解析登録フレーム!$AX$21"
     }
   ]
 }

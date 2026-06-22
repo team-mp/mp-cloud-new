@@ -51,6 +51,13 @@
       "ColumnType": "System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
     },
     {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "timestamp without time zone",
+      "MaxLength": -1,
+      "Name": "最新工事日",
+      "ColumnType": "System.DateTime, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
       "$type": "Forguncy.SaveLoad.StatisticColumnSaveData, ServerDesignerCommon",
       "BindingInfo": {
         "TableName": "v_construction_company_group",
@@ -102,6 +109,18 @@
       "DataColumnName": "工法ID",
       "Name": "採用工法名s",
       "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.StatisticColumnSaveData, ServerDesignerCommon",
+      "BindingInfo": {
+        "TableName": "v_construction_company_group",
+        "ColumnName": "最新工事日",
+        "GUID": "fdff3acf-611e-4ad2-8199-3875a393dd4f"
+      },
+      "AggregateFunction": 2,
+      "DataColumnName": "最新工事日",
+      "Name": "最終工事実施日",
+      "ColumnType": "System.DateTime, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
     }
   ],
   "ExternalDatabaseInfo": {
@@ -109,7 +128,7 @@
     "ConnectionId": "PostgreSQL1",
     "SourceTableName": "v_construction_company_group",
     "SourceTableSchema": "public",
-    "CreateViewSql": " SELECT a.object_order_id AS \"申込ID\",\n    a.construction_customer_id AS \"工事会社ID\",\n    d.construction_method_id AS \"工法ID\",\n    sum(b.estimate_amount) AS \"見積金額\",\n    max(b.external_user_design_review_request_flag) AS \"外部ユーザー設計審査依頼フラグ\",\n    max(e.external_user_construction_review_request_flag) AS \"外部ユーザー施工審査依頼フラグ\",\n    max(\n        CASE\n            WHEN (f.construction_complete_flg = 1) THEN 1\n            ELSE 0\n        END) AS \"工事完了フラグ\"\n   FROM (((((t_object_construction_estimate a\n     JOIN t_object_construction_estimate_ext b ON ((a.construction_estimate_id = b.construction_estimate_id)))\n     JOIN t_object_order c ON ((a.object_order_id = c.object_order_id)))\n     LEFT JOIN t_object_construction d ON ((b.construction_id = d.construction_id)))\n     LEFT JOIN t_object_construction_ext e ON ((d.construction_id = e.construction_id)))\n     LEFT JOIN m_construction_status f ON ((d.construction_status_id = f.construction_status_id)))\n  WHERE (c.order_customer_id <> a.construction_customer_id)\n  GROUP BY a.object_order_id, a.construction_customer_id, d.construction_method_id\n  ORDER BY a.object_order_id;",
+    "CreateViewSql": " SELECT a.object_order_id AS \"申込ID\",\n    a.construction_customer_id AS \"工事会社ID\",\n    d.construction_method_id AS \"工法ID\",\n    sum(b.estimate_amount) AS \"見積金額\",\n    max(b.external_user_design_review_request_flag) AS \"外部ユーザー設計審査依頼フラグ\",\n    max(e.external_user_construction_review_request_flag) AS \"外部ユーザー施工審査依頼フラグ\",\n    max(\n        CASE\n            WHEN (f.construction_complete_flg = 1) THEN 1\n            ELSE 0\n        END) AS \"工事完了フラグ\",\n    max(d.construction_enforcement_enddate) AS \"最新工事日\"\n   FROM (((((t_object_construction_estimate a\n     JOIN t_object_construction_estimate_ext b ON ((a.construction_estimate_id = b.construction_estimate_id)))\n     JOIN t_object_order c ON ((a.object_order_id = c.object_order_id)))\n     LEFT JOIN t_object_construction d ON ((b.construction_id = d.construction_id)))\n     LEFT JOIN t_object_construction_ext e ON ((d.construction_id = e.construction_id)))\n     LEFT JOIN m_construction_status f ON ((d.construction_status_id = f.construction_status_id)))\n  WHERE ((c.order_customer_id IS NULL) OR (c.order_customer_id <> a.construction_customer_id))\n  GROUP BY a.object_order_id, a.construction_customer_id, d.construction_method_id\n  ORDER BY a.object_order_id;",
     "ViewInfo": {
       "ViewName": "v_construction_company_group",
       "IsUpdatable": true,

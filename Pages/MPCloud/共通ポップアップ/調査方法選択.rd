@@ -1,19 +1,19 @@
 {
   "PageType": 0,
-  "ColumnCount": 29,
-  "RowCount": 15,
+  "ColumnCount": 27,
+  "RowCount": 16,
   "Formulas": {
-    "2,23": "IF(調査方法ID=Y3,1,0)",
-    "13,23": "COUNTIF(X3,1)"
+    "14,21": "COUNTIF(V4,1)",
+    "3,21": "IF(調査方法ID=W4,1,0)"
   },
   "CustomNames": [
     {
       "Name": "調査方法ID",
-      "Formula": "調査方法選択!$X$9"
+      "Formula": "調査方法選択!$V$10"
     },
     {
       "Name": "調査方法名",
-      "Formula": "調査方法選択!$X$11"
+      "Formula": "調査方法選択!$V$12"
     }
   ]
 }

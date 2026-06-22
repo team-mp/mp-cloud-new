@@ -8,7 +8,7 @@
     "19,113": "DJ28",
     "16,126": "DM28",
     "13,126": "DL28",
-    "28,126": "DQ28",
+    "28,126": "IF(DQ28>\"0\",DQ28,\"\")",
     "25,126": "TEXTJOIN(\",\",TRUE,DJ37)",
     "22,126": "DO28",
     "31,113": "IFERROR(ODATA(\"m_group?$select=builder_notice_flg&$filter=group_id eq \"&IF(ISBLANK(DO28),\"null\",DO28)),0)",

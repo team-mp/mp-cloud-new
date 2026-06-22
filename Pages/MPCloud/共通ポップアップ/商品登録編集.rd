@@ -16,8 +16,8 @@
     "5,80": "住宅タイプ"
   },
   "ArrayFormulas": {
-    "2,104,1,6": "ODATA(\"m_product?$select=quantity_need_flg,amount_fix_flg,quantity_minimum,over_or_surpass,quantity_calc,lessthan_basic_price_flg&$filter=product_id eq \"&IF(ISBLANK(U4),\"null\",U4))",
-    "5,104,1,4": "ODATA(\"v_customer_product?$select=販売単価,調査単価,解析単価,基礎単価&$filter=顧客ID eq \"&IF(ISBLANK(CC3),\"null\",CC3)&\" and グループID eq \"&IF(ISBLANK(CC9),\"null\",CC9)&\" and 申込タイプID eq \"&IF(ISBLANK(CC12),\"null\",CC12)&\" and 商品ID eq \"&IF(ISBLANK(U4),\"null\",U4))"
+    "2,104,1,6": "IFERROR(ODATA(\"m_product?$select=quantity_need_flg,amount_fix_flg,quantity_minimum,over_or_surpass,quantity_calc,lessthan_basic_price_flg&$filter=product_id eq \"&IF(ISBLANK(U4),\"null\",U4)),\"\")",
+    "5,104,1,4": "IFERROR(ODATA(\"v_customer_product?$select=販売単価,調査単価,解析単価,基礎単価&$filter=顧客ID eq \"&IF(ISBLANK(CC3),\"null\",CC3)&\" and グループID eq \"&IF(ISBLANK(CC9),\"null\",CC9)&\" and 申込タイプID eq \"&IF(ISBLANK(CC12),\"null\",CC12)&\" and 商品ID eq \"&IF(ISBLANK(U4),\"null\",U4)),\"\")"
   },
   "CustomNames": [
     {

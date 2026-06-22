@@ -1,11 +1,11 @@
 {
   "PageType": 0,
-  "ColumnCount": 27,
+  "ColumnCount": 28,
   "RowCount": 21,
   "CustomNames": [
     {
       "Name": "編集確定フラグ",
-      "Formula": "ファイル属性マスタ!$T$3"
+      "Formula": "ファイル属性マスタ!$U$3"
     }
   ]
 }

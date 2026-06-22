@@ -1,7 +1,7 @@
 {
   "PageType": 0,
   "ColumnCount": 162,
-  "RowCount": 211,
+  "RowCount": 215,
   "Formulas": {
     "4,138": "IFERROR(IF(AE8>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(AE8),\"null\",AE8)),\"\"),\"\")",
     "145,100": "EH147",
@@ -60,7 +60,7 @@
     "29,138": "IFERROR(IF(BK34>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(BK34),\"null\",BK34)),\"\"),\"\")",
     "7,139": "IF(EI8=0,\"\",EI8)",
     "7,125": "IF(AE4=\"\",0,AE4)",
-    "202,125": "\"申込タイプの追加を受付いたしました。\"&CHAR(10)&\"弊社クラウドサービスよりお申込みいただき、誠にありがとうございます。\"&CHAR(10)&EA79",
+    "206,125": "\"申込タイプの追加を受付いたしました。\"&CHAR(10)&\"弊社クラウドサービスよりお申込みいただき、誠にありがとうございます。\"&CHAR(10)&EA79",
     "114,6": "IF(VALUE(ED12)=1,DV113,\"\")",
     "65,131": "IF(AND(EC79=1,ED79=1,DX63=0,DZ63=0),1,0)",
     "45,125": "IF(DW46=申込タイプID,1,0)",
@@ -88,7 +88,7 @@
     "25,139": "IF(EI26=0,\"\",EI26)",
     "8,142": "IFERROR(参照顧客既定グループID,\"\")",
     "161,142": "IF(ED162=\"\",\"\",IF(EB162=0,EA162,IF(AND(EB162=1,EC162=1),EA162,IF(OR(AND(EG162=1,EF162>ED162),AND(EG162=2,EF162>=ED162)),IF(EJ162=1,EI162+EN162+EO162,0),EI162+EN162+EO162+((ROUNDUP((ED162-EF162)/EH162,0)+IF(AND(EG162=1,MOD((ED162-EF162),EH162)=0),1,0))*EA162)))))",
-    "199,125": "\"新規物件の登録を受付いたしました。\"&CHAR(10)&\"弊社クラウドサービスよりお申込みいただき、誠にありがとうございます。\"&CHAR(10)&EA79",
+    "203,125": "\"新規物件の登録を受付いたしました。\"&CHAR(10)&\"弊社クラウドサービスよりお申込みいただき、誠にありがとうございます。\"&CHAR(10)&EA79",
     "21,129": "IF(DZ18<>\"\",ODATA(\"m_order_type?$select=order_type_calss_id&$filter=order_type_id eq \"&IF(ISBLANK(DZ18),\"null\",DZ18)),\"\")",
     "40,131": "IF(AE18>0,IFERROR(ODATA(\"m_customer_settings?$select=aida_flow_flg&$filter=customer_id eq \"&IF(ISBLANK(AE18),\"null\",AE18)),0),\"\")",
     "99,140": "IF(S74=2,COUNTIF(EP94,\"<>\"&受付商品ID),0)",
@@ -105,7 +105,7 @@
     "148,52": "EY150",
     "149,154": "IF(EV150<>\"\",EV150,EJ150)",
     "180,134": "IFERROR(ODATA(\"v_customer_order_type?$select=特記事項&$filter=顧客ID eq \"&IF(ISBLANK(AE18),\"null\",AE18)&\" and グループID eq \"&IF(ISBLANK(AE4),\"null\",AE4)&\" and 申込タイプID eq \"&IF(ISBLANK(申込タイプID),\"null\",申込タイプID)),\"\")",
-    "200,18": "IF(EE181=0,\"\",EE181)",
+    "204,18": "IF(EE181=0,\"\",EE181)",
     "163,96": "AF164+BL164",
     "145,52": "EY147",
     "124,141": "IF(ED125=\"\",\"\",IF(EB125=0,EA125,IF(AND(EB125=1,EC125=1),EA125,IF(OR(AND(EG125=1,EF125>ED125),AND(EG125=2,EF125>=ED125)),IF(EJ125=1,EI125+EN125+EO125,0),EI125+EN125+EO125+((ROUNDUP((ED125-EF125)/EH125,0)+IF(AND(EG125=1,MOD((ED125-EF125),EH125)=0),1,0))*EA125)))))",
@@ -121,7 +121,7 @@
     "124,125": "IF(DW125=受付商品ID,1,0)",
     "146,128": "IFERROR(IF(EN36>0,EN36,\"\"),\"\")",
     "149,128": "IFERROR(IF(EO36>0,EO36,\"\"),\"\")",
-    "190,125": "\"※17時までのご依頼の場合、2営業日中（土日祝は休業）の\"&IF(EE79=1,\"判定\",IF(EF79=1,\"審査\",\"\"))&\"となります。納期内にて優先対応いたします。\"",
+    "194,125": "\"※17時までのご依頼の場合、2営業日中（土日祝は休業）の\"&IF(EE79=1,\"判定\",IF(EF79=1,\"審査\",\"\"))&\"となります。納期内にて優先対応いたします。\"",
     "128,92": "IF(DX121>0,DX121,\"\")",
     "99,137": "COUNTIF(EK94,\"\")",
     "70,129": "IFERROR(IF(AND(DV79=0,EC79=1,ED79=1),1,0),0)",
@@ -235,19 +235,19 @@
     },
     {
       "Name": "登録ボタン",
-      "Formula": "新規申込!$DV$208"
+      "Formula": "新規申込!$DV$212"
     },
     {
       "Name": "登録継続フラグ",
-      "Formula": "新規申込!$EF$208"
+      "Formula": "新規申込!$EF$212"
     },
     {
       "Name": "登録実行フラグ",
-      "Formula": "新規申込!$EH$208"
+      "Formula": "新規申込!$EH$212"
     },
     {
       "Name": "入力数量チェックボタン",
-      "Formula": "新規申込!$DZ$208"
+      "Formula": "新規申込!$DZ$212"
     },
     {
       "Name": "販売単価",
@@ -279,7 +279,7 @@
     },
     {
       "Name": "連棟物件チェックボタン",
-      "Formula": "新規申込!$EC$208"
+      "Formula": "新規申込!$EC$212"
     },
     {
       "Name": "数量上限値",
