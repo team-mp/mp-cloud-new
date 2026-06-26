@@ -1,0 +1,400 @@
+{
+  "Name": "判定書自動送信非対応チェック",
+  "Description": "自動発行可能かをチェックし同時に保証ステータスを返却する",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.InvokeTriggerSaveData, ServerDesignerCommon",
+      "Parameters": [
+        {
+          "Name": "P_申込ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_解析ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_グループID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_住宅事業者ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_用途区分",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_業務対応必要フラグ",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+            "SubConditions": [
+              {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_用途区分"
+                  }
+                },
+                "value": "2"
+              },
+              {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_業務対応必要フラグ"
+                  }
+                },
+                "value": "1"
+              }
+            ],
+            "RelationType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "解析ST",
+              "TableValue": {
+                "TableName": "m_analysis_status",
+                "TableValueType": 1,
+                "BindingInfos": [
+                  {
+                    "GUID": "4225e344-9d24-4c5e-b3c7-6815c1dc442c",
+                    "BindingInfo": {
+                      "TableName": "m_analysis_status",
+                      "ColumnName": "analysis_status_id",
+                      "GUID": "9765646d-1ea4-4dbb-91f2-609315f622f5"
+                    },
+                    "ColumnName": "解析ステータスID"
+                  }
+                ],
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "m_analysis_status",
+                    "ColumnName": "office_work_flg",
+                    "GUID": "afc34770-66b3-40a1-a007-580be2313eb6"
+                  },
+                  "Value": "1"
+                }
+              },
+              "ID": "4526a62a73334589982b17c063f74d16",
+              "Comments": "業務対応中"
+            },
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": "0",
+              "CustomReturns": [
+                {
+                  "ReturnPropertyName": "R_解析ステータスID",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=解析ST.解析ステータスID"
+                  }
+                }
+              ]
+            }
+          ],
+          "ID": "6e1ba757-ad4f-4b7b-be80-66f52e6b138f"
+        },
+        {
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "グループ顧客既定値",
+              "TableValue": {
+                "TableName": "v_group_customer_default",
+                "TableValueType": 1,
+                "BindingInfos": [
+                  {
+                    "GUID": "c55906e3-2159-4880-bdee-eacc69c9d909",
+                    "BindingInfo": {
+                      "TableName": "v_group_customer_default",
+                      "ColumnName": "判定書自動送信非対応フラグ",
+                      "GUID": "6bf206ba-d07b-4271-9910-713c5a9cdf25"
+                    },
+                    "ColumnName": "判定書自動送信非対応フラグ"
+                  }
+                ],
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                  "SubConditions": [
+                    {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "v_group_customer_default",
+                        "ColumnName": "グループID",
+                        "GUID": "862f3565-c2ca-48d7-af60-84261043f709"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_グループID"
+                      }
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "v_group_customer_default",
+                        "ColumnName": "顧客ID",
+                        "GUID": "8b70af09-2696-4574-b18b-49476c34aaa0"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_住宅事業者ID"
+                      }
+                    }
+                  ]
+                },
+                "NullFormulaValueQueryPolicy": 0
+              },
+              "ID": "895c965876f44e9b83e8c06a18d1efd8"
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=グループ顧客既定値.判定書自動送信非対応フラグ"
+                      }
+                    },
+                    "value": "1"
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "解析ST",
+                      "TableValue": {
+                        "TableName": "m_analysis_status",
+                        "TableValueType": 1,
+                        "BindingInfos": [
+                          {
+                            "GUID": "80c752eb-7d35-4d11-b259-ba89d2fafeae",
+                            "BindingInfo": {
+                              "TableName": "m_analysis_status",
+                              "ColumnName": "analysis_status_id",
+                              "GUID": "78283bae-a223-4f9f-a615-a5a372164db5"
+                            },
+                            "ColumnName": "解析ステータスID"
+                          }
+                        ],
+                        "SqlCondition": {
+                          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                          "ColumnBindingInfo": {
+                            "TableName": "m_analysis_status",
+                            "ColumnName": "office_work_flg",
+                            "GUID": "e1e629b6-7192-4cda-b322-838ce863a76a"
+                          },
+                          "Value": "1"
+                        }
+                      },
+                      "ID": "1d879817cb3b43db8f7b5f368714b44d",
+                      "Comments": "業務対応中"
+                    },
+                    {
+                      "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                      "ErrorCode": "0",
+                      "CustomReturns": [
+                        {
+                          "ReturnPropertyName": "R_解析ステータスID",
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=解析ST.解析ステータスID"
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "ID": "39fb8733-afaa-4a4f-b4db-dfd65da3e38c"
+                },
+                {
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "以前解析カウント",
+                      "TableValue": {
+                        "TableName": "t_object_analysis",
+                        "TableValueType": 3,
+                        "SqlCondition": {
+                          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                          "SubConditions": [
+                            {
+                              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                              "ColumnBindingInfo": {
+                                "TableName": "t_object_analysis",
+                                "ColumnName": "object_order_id",
+                                "GUID": "f24fd256-5ebb-4640-940a-c9412c79aa72"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_申込ID"
+                              }
+                            },
+                            {
+                              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                              "CompareType": 4,
+                              "ColumnBindingInfo": {
+                                "TableName": "t_object_analysis",
+                                "ColumnName": "analysis_id",
+                                "GUID": "1b93cfab-c4a2-4fe4-964e-c9de16d97969"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_解析ID"
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      "ID": "525fb4e41ed04a048044e1768b394dcc"
+                    },
+                    {
+                      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                      "ConditionAndCommandPairList": [
+                        {
+                          "Condition": {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=以前解析カウント"
+                              }
+                            },
+                            "value": "0",
+                            "compareType": 2
+                          },
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                              "ParameterName": "解析ST",
+                              "TableValue": {
+                                "TableName": "m_analysis_status",
+                                "TableValueType": 1,
+                                "BindingInfos": [
+                                  {
+                                    "GUID": "13b65bfe-c342-44fe-9d6d-ab33fa5b3496",
+                                    "BindingInfo": {
+                                      "TableName": "m_analysis_status",
+                                      "ColumnName": "analysis_status_id",
+                                      "GUID": "1d0634c4-f465-4e5c-8d4f-930b12a7e4e9"
+                                    },
+                                    "ColumnName": "解析ステータスID"
+                                  }
+                                ],
+                                "SqlCondition": {
+                                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                  "ColumnBindingInfo": {
+                                    "TableName": "m_analysis_status",
+                                    "ColumnName": "office_work_flg",
+                                    "GUID": "cca50137-d9dc-4144-8b46-ffd0f623ce96"
+                                  },
+                                  "Value": "1"
+                                }
+                              },
+                              "ID": "da02f70dd28e48aba9be6b8a19f26c76",
+                              "Comments": "業務対応中"
+                            },
+                            {
+                              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                              "ErrorCode": "0",
+                              "CustomReturns": [
+                                {
+                                  "ReturnPropertyName": "R_解析ステータスID",
+                                  "Value": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=解析ST.解析ステータスID"
+                                  }
+                                }
+                              ]
+                            }
+                          ],
+                          "ID": "499964de-260f-4717-9d87-414722b0cdd9"
+                        },
+                        {
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                              "ParameterName": "解析ST",
+                              "TableValue": {
+                                "TableName": "m_analysis_status",
+                                "TableValueType": 1,
+                                "BindingInfos": [
+                                  {
+                                    "GUID": "c590d493-f58e-4ac3-b61c-45c5ae229fc6",
+                                    "BindingInfo": {
+                                      "TableName": "m_analysis_status",
+                                      "ColumnName": "analysis_status_id",
+                                      "GUID": "750f1082-dd3d-4593-b143-45bfa716b438"
+                                    },
+                                    "ColumnName": "解析ステータスID"
+                                  }
+                                ],
+                                "SqlCondition": {
+                                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                  "ColumnBindingInfo": {
+                                    "TableName": "m_analysis_status",
+                                    "ColumnName": "auto_send_wait_flg",
+                                    "GUID": "6559ff1a-06d0-49e7-a65d-3700f8ac3716"
+                                  },
+                                  "Value": "1"
+                                }
+                              },
+                              "ID": "6a536fdc61704b10bc03f4ce8eb0504c",
+                              "Comments": "自動送信待ち"
+                            },
+                            {
+                              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                              "ErrorCode": "0",
+                              "CustomReturns": [
+                                {
+                                  "ReturnPropertyName": "R_解析ステータスID",
+                                  "Value": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=解析ST.解析ステータスID"
+                                  }
+                                }
+                              ]
+                            }
+                          ],
+                          "ID": "3401eaa1-f9b0-46f9-a40a-a0f67cc87a69"
+                        }
+                      ]
+                    }
+                  ],
+                  "ID": "2a72cd3f-b18f-488e-8fa7-9f672d85ac72"
+                }
+              ]
+            }
+          ],
+          "ID": "d500daee-2c2a-4bb4-9ebe-0445b2c55578"
+        }
+      ]
+    }
+  ],
+  "ReturnProperties": [
+    {
+      "Name": "R_解析ステータスID"
+    }
+  ]
+}

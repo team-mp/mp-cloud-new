@@ -1,7 +1,7 @@
 {
   "PageType": 0,
   "ColumnCount": 138,
-  "RowCount": 76,
+  "RowCount": 85,
   "Formulas": {
     "24,122": "IF(DQ25=0,\"\",DQ25)",
     "24,97": "IF(CR25=0,\"\",CR25)",
@@ -22,8 +22,8 @@
     "22,97": "IF(CR23=0,\"\",CR23)",
     "22,95": "IFERROR(IF(CC23>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(CC23),\"null\",CC23)),\"\"),\"\")",
     "21,97": "IF(CR22=0,\"\",CR22)",
-    "55,100": "COUNTIF(CC57,\"<>\")",
-    "43,21": "V40&AT40&V42",
+    "57,100": "COUNTIF(CC59,\"<>\")",
+    "45,21": "V42&AT42&V44",
     "21,95": "IFERROR(IF(CC22>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(CC22),\"null\",CC22)),\"\"),\"\")",
     "20,97": "IF(CR21=0,\"\",CR21)",
     "20,120": "IFERROR(IF(DB21>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(DB21),\"null\",DB21)),\"\"),\"\")",
@@ -42,22 +42,22 @@
     "17,120": "IF(DB16>0,IFERROR(ODATA(\"m_user?$select=連絡先番号&$filter=user_id eq \"&IF(ISBLANK(DB16),\"null\",DB16)),\"\"),\"\")",
     "17,122": "IF(DQ18=0,\"\",DQ18)",
     "11,126": "IF(AND(DL10=1,DW6=0,DZ6=1,EA6=1),1,0)",
-    "52,90": "ODATA(\"m_product?$select=housing_type&$filter=product_id eq \"&IF(ISBLANK(CC53),\"null\",CC53))",
-    "64,80": "IF(AND(元_保証確認区分>0,DZ6=1,EA6=1,CI65=0,CO65=0),1,0)",
-    "61,80": "IF(S62=1,1,IF(N64=1,2,IF(BA65=1,3,IF(BK65=1,4,IF(N66=1,5,IF(S63=1,6,\"\"))))))"
+    "54,90": "ODATA(\"m_product?$select=housing_type&$filter=product_id eq \"&IF(ISBLANK(CC55),\"null\",CC55))",
+    "66,80": "IF(AND(元_保証確認区分>0,DZ6=1,EA6=1,CI67=0,CO67=0),1,0)",
+    "63,80": "IF(S64=1,1,IF(N66=1,2,IF(BA67=1,3,IF(BK67=1,4,IF(N68=1,5,IF(S65=1,6,\"\"))))))"
   },
   "ArrayFormulas": {
-    "5,126,1,5": "IFERROR(ODATA(\"m_order_type?$select=groud_survey_flg,site_survey_flg,object_overview_display_flg,analyze_flg,warranty_flg&$filter=order_type_id eq \"&IF(ISBLANK(CC6),\"null\",CC6)),0)",
+    "5,126,1,6": "IFERROR(ODATA(\"m_order_type?$select=groud_survey_flg,site_survey_flg,object_overview_display_flg,analyze_flg,warranty_flg,warranty_type_id&$filter=order_type_id eq \"&IF(ISBLANK(CC6),\"null\",CC6)),0)",
     "24,126,1,2": "IFERROR(ODATA(\"m_customer_default?$select=warranty_period_specify_flg,specify_warranty_period&$filter=customer_id eq \"&IF(ISBLANK(CR12),\"null\",CR12)),\"\")"
   },
   "CustomNames": [
     {
       "Name": "元_お客様管理番号",
-      "Formula": "申込内容_詳細_申込事業者用!$CM$42"
+      "Formula": "申込内容_詳細_申込事業者用!$CM$44"
     },
     {
       "Name": "元_緯度",
-      "Formula": "申込内容_詳細_申込事業者用!$CC$42"
+      "Formula": "申込内容_詳細_申込事業者用!$CC$44"
     },
     {
       "Name": "元_営業担当者ID",
@@ -65,15 +65,15 @@
     },
     {
       "Name": "元_解析保証調査実施日",
-      "Formula": "申込内容_詳細_申込事業者用!$CR$42"
+      "Formula": "申込内容_詳細_申込事業者用!$CR$44"
     },
     {
       "Name": "元_区割名",
-      "Formula": "申込内容_詳細_申込事業者用!$CM$38"
+      "Formula": "申込内容_詳細_申込事業者用!$CM$40"
     },
     {
       "Name": "元_経度",
-      "Formula": "申込内容_詳細_申込事業者用!$CH$42"
+      "Formula": "申込内容_詳細_申込事業者用!$CH$44"
     },
     {
       "Name": "元_工務担当者ID",
@@ -81,11 +81,11 @@
     },
     {
       "Name": "元_市区郡名",
-      "Formula": "申込内容_詳細_申込事業者用!$CH$40"
+      "Formula": "申込内容_詳細_申込事業者用!$CH$42"
     },
     {
       "Name": "元_受付商品ID",
-      "Formula": "申込内容_詳細_申込事業者用!$CH$53"
+      "Formula": "申込内容_詳細_申込事業者用!$CH$55"
     },
     {
       "Name": "元_住宅タイプ",
@@ -113,15 +113,15 @@
     },
     {
       "Name": "元_申込基礎形状ID",
-      "Formula": "申込内容_詳細_申込事業者用!$CM$47"
+      "Formula": "申込内容_詳細_申込事業者用!$CM$49"
     },
     {
       "Name": "元_申込建物構造ID",
-      "Formula": "申込内容_詳細_申込事業者用!$CM$46"
+      "Formula": "申込内容_詳細_申込事業者用!$CM$48"
     },
     {
       "Name": "元_申込設計接地圧",
-      "Formula": "申込内容_詳細_申込事業者用!$CM$48"
+      "Formula": "申込内容_詳細_申込事業者用!$CM$50"
     },
     {
       "Name": "元_申込担当者ID",
@@ -161,19 +161,19 @@
     },
     {
       "Name": "元_町名番地",
-      "Formula": "申込内容_詳細_申込事業者用!$CM$40"
+      "Formula": "申込内容_詳細_申込事業者用!$CM$42"
     },
     {
       "Name": "元_都道府県名",
-      "Formula": "申込内容_詳細_申込事業者用!$CC$40"
+      "Formula": "申込内容_詳細_申込事業者用!$CC$42"
     },
     {
       "Name": "元_棟番号",
-      "Formula": "申込内容_詳細_申込事業者用!$CH$38"
+      "Formula": "申込内容_詳細_申込事業者用!$CH$40"
     },
     {
       "Name": "元_物件元名",
-      "Formula": "申込内容_詳細_申込事業者用!$CC$38"
+      "Formula": "申込内容_詳細_申込事業者用!$CC$40"
     },
     {
       "Name": "元_物件担当者ID",
@@ -205,7 +205,7 @@
     },
     {
       "Name": "元_物件名カナ",
-      "Formula": "申込内容_詳細_申込事業者用!$CR$38"
+      "Formula": "申込内容_詳細_申込事業者用!$CR$40"
     },
     {
       "Name": "表示制御ボタン",
@@ -213,7 +213,7 @@
     },
     {
       "Name": "申込タイプ変更フラグ",
-      "Formula": "申込内容_詳細_申込事業者用!$CC$71"
+      "Formula": "申込内容_詳細_申込事業者用!$CC$80"
     },
     {
       "Name": "グループ表示制御ボタン",
@@ -221,7 +221,7 @@
     },
     {
       "Name": "物件更新ボタン",
-      "Formula": "申込内容_詳細_申込事業者用!$CU$71"
+      "Formula": "申込内容_詳細_申込事業者用!$CU$80"
     },
     {
       "Name": "編集モード",
@@ -229,11 +229,15 @@
     },
     {
       "Name": "元_保証確認区分",
-      "Formula": "申込内容_詳細_申込事業者用!$CI$62"
+      "Formula": "申込内容_詳細_申込事業者用!$CI$64"
     },
     {
       "Name": "変更追跡フラグリセットボタン",
-      "Formula": "申込内容_詳細_申込事業者用!$DZ$18"
+      "Formula": "申込内容_詳細_申込事業者用!$DZ$19"
+    },
+    {
+      "Name": "見積納期表示制御ボタン",
+      "Formula": "申込内容_詳細_申込事業者用!$DZ$23"
     }
   ]
 }

@@ -1,0 +1,100 @@
+{
+  "ID": "8338779b-d467-4d14-a931-2e75c5c0d852",
+  "Name": "見積金額チェックダイアログ",
+  "Params": [
+    {
+      "ID": "e612d44f-57a9-4da3-ab32-f49e7435fd58",
+      "Name": "P_見積金額"
+    }
+  ],
+  "Returns": [
+    {
+      "ID": "2734840d-2ae7-444a-9d3e-9b720bd0ad3a",
+      "Name": "R_チェックOKフラグ",
+      "Remark": "0:NG 1:OK"
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "チェックOKフラグ",
+      "ParameterValue": "1",
+      "ID": "0c1924c3fe264d1cb93303c2988d81e1"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=P_見積金額"
+                }
+              ]
+            },
+            "value": "100000",
+            "compareType": 5
+          },
+          "CommandList": [
+            {
+              "$type": "ElementUI.Commands.ShowMessageBox, ElementUI",
+              "Title": "お見積金額の確認",
+              "Message": "見積金額については、申込事業者様へも共有されます。そのため、実際の見積金額として認識される可能性がございます。認識の齟齬があった場合のトラブルについては、当社では責任を負いかねます。お間違いなければ処理を継続します。",
+              "Type": "info",
+              "ConfirmButtonText": "同意して継続する",
+              "ShowCancelButton": true,
+              "CancelButtonText": "キャンセルして戻る",
+              "DialogResult": "確認結果",
+              "AdvancedSettings": {}
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                      "cellLocations": [
+                        {
+                          "SerializeProperty": "=確認結果"
+                        }
+                      ]
+                    },
+                    "value": "confirm",
+                    "compareType": 1
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "チェックOKフラグ",
+                      "ParameterValue": "0",
+                      "ID": "f2ac8d8cc87649428f00e2d50950e029"
+                    }
+                  ],
+                  "ID": "332a4885-d4ba-4398-a7da-f5f1eedae566"
+                }
+              ]
+            }
+          ],
+          "ID": "8f382a87-0221-4845-9865-a1f983010185"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+      "CustomReturns": [
+        {
+          "ReturnPropertyName": "R_チェックOKフラグ",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=チェックOKフラグ"
+          }
+        }
+      ]
+    }
+  ]
+}

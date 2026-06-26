@@ -1,6 +1,6 @@
 {
   "PageType": 0,
-  "ColumnCount": 52,
+  "ColumnCount": 55,
   "RowCount": 195,
   "Formulas": {
     "23,13": "SUBSTITUTE(N23,C24,G24)",
@@ -436,7 +436,7 @@
     "117,6": "IF(F117=1,IF(G31<>\"\",G31,\"\"),IF(G43<>\"\",G43,\"\"))",
     "118,9": "SUBSTITUTE(J118,C119,G119)",
     "117,13": "SUBSTITUTE(N117,C118,G118)",
-    "92,6": "IF(F93=1,\"※本判定結果は、仮判定となります。\",\"\")",
+    "92,6": "IF(F93=1,解析結果追加注釈1,\"\")",
     "142,9": "SUBSTITUTE(J142,C143,G143)",
     "63,9": "SUBSTITUTE(J63,C64,G64)",
     "116,6": "IF(F117=1,G29,G42)",
@@ -458,7 +458,7 @@
     "42,9": "SUBSTITUTE(J42,C43,G43)",
     "63,11": "SUBSTITUTE(L63,C64,G64)",
     "40,9": "SUBSTITUTE(J40,C41,G41)",
-    "93,6": "IF(F94=1,\"※本判定結果は、保証不可となります。\",\"\")",
+    "93,6": "IF(F94=1,解析結果追加注釈2,\"\")",
     "165,11": "SUBSTITUTE(L165,C166,G166)",
     "83,9": "SUBSTITUTE(J83,C84,G84)",
     "48,11": "SUBSTITUTE(L48,C49,G49)",
@@ -518,7 +518,7 @@
     "42,11": "SUBSTITUTE(L42,C43,G43)",
     "165,6": "IFERROR(IF(請求先担当者名=0,\"\",請求先担当者名),\"\")",
     "97,9": "SUBSTITUTE(J97,C98,G98)",
-    "95,6": "IF(OR(D95=2,D95=4,D95=5),\"\",IF(AND(E96=1,F96=\"なし\",F93=0,F94=0),\"※改良工事の見積手配につきましては、基礎図が必要になります。\"&CHAR(10)&\"つきしては、本メールにて基礎図のご送付をお願い致します。\",\"\"))",
+    "95,6": "IF(OR(D95=2,D95=4,D95=5),\"\",IF(AND(E96=1,F96=\"なし\",F93=0,F94=0),\"\",\"\"))",
     "98,9": "SUBSTITUTE(J98,C99,G99)",
     "127,6": "IF(F128<>\"\",TEXT(F128,\"yyyy/mm/dd\"),\"\")",
     "87,13": "SUBSTITUTE(N87,C88,G88)",
@@ -555,7 +555,7 @@
     "168,9": "J166",
     "102,13": "SUBSTITUTE(N102,C103,G103)",
     "148,13": "SUBSTITUTE(N148,C149,G149)",
-    "96,6": "IF(OR(D95=2,D95=4,D95=5),\"\",IF(AND(E96=1,F97=0),\"※お見積りは無料です。貴社指定または当社推奨の改良工事会社よりお見積書をご送付いたします。\"&CHAR(10)&\"なお、事前調査物件や仮判定物件の場合は対象外とさせていただきます。\",\"\"))",
+    "96,6": "IF(OR(D95=2,D95=4,D95=5),\"\",IF(AND(E96=1,F97=0),IF(OR(D97>1,E97>1),解析結果追加注釈5,解析結果追加注釈4),\"\"))",
     "140,13": "SUBSTITUTE(N140,C141,G141)",
     "60,13": "SUBSTITUTE(N60,C61,G61)",
     "60,11": "SUBSTITUTE(L60,C61,G61)",
@@ -622,7 +622,7 @@
     "158,9": "SUBSTITUTE(J158,C159,G159)",
     "107,9": "SUBSTITUTE(J107,C108,G108)",
     "161,9": "SUBSTITUTE(J161,C162,G162)",
-    "94,6": "IF(OR(D95=2,D95=4,D95=5),\"\",IF(F95=1,\"※地業転圧工事の設計書を添付しております。\"&CHAR(10)&\"お見積りにつきましては後日ご送付いたします。\",\"\"))",
+    "94,6": "IF(OR(D95=2,D95=4,D95=5),\"\",IF(F95=1,解析結果追加注釈3,\"\"))",
     "151,11": "SUBSTITUTE(L151,C152,G152)",
     "159,9": "SUBSTITUTE(J159,C160,G160)",
     "91,6": "IF(F92<>\"\",F92,\"なし\")",
@@ -645,7 +645,7 @@
     "70,13": "SUBSTITUTE(N70,C71,G71)"
   },
   "ArrayFormulas": {
-    "3,42,1,4": "ODATA(\"m_environment?$select=application_url,mailsender_address,survey_notes,surveying_notes&$filter=environment_id eq 1\")",
+    "3,42,1,9": "ODATA(\"m_environment?$select=application_url,mailsender_address,survey_notes,surveying_notes,analysis_result_addnotes1,analysis_result_addnotes2,analysis_result_addnotes3,analysis_result_addnotes4,analysis_result_addnotes5&$filter=environment_id eq 1\")",
     "11,42,1,2": "ODATA(\"m_customer?$select=customer_name,phone&$filter=customer_id eq \"&IF(ISBLANK(AR8),\"null\",AR8))",
     "7,42,1,3": "ODATA(\"m_user?$select=user_name,customer_id,company_phone&$filter=user_id eq \"&IF(ISBLANK(R3),\"null\",R3))"
   },
@@ -749,6 +749,26 @@
     {
       "Name": "差出人既定値フラグ",
       "Formula": "メールテンプレート!$AU$170"
+    },
+    {
+      "Name": "解析結果追加注釈1",
+      "Formula": "メールテンプレート!$AU$4"
+    },
+    {
+      "Name": "解析結果追加注釈2",
+      "Formula": "メールテンプレート!$AV$4"
+    },
+    {
+      "Name": "解析結果追加注釈3",
+      "Formula": "メールテンプレート!$AW$4"
+    },
+    {
+      "Name": "解析結果追加注釈4",
+      "Formula": "メールテンプレート!$AX$4"
+    },
+    {
+      "Name": "解析結果追加注釈5",
+      "Formula": "メールテンプレート!$AY$4"
     }
   ]
 }
