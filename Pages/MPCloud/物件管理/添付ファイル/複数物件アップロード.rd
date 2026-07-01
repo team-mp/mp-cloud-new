@@ -1,6 +1,6 @@
 {
   "PageType": 0,
-  "ColumnCount": 219,
+  "ColumnCount": 245,
   "RowCount": 40,
   "Formulas": {
     "21,126": "IF(AND(COUNTIF(DW14,\"<>\")>0,ファイル分類ID=\"\"),1,0)",

@@ -1,0 +1,213 @@
+{
+  "Name": "自動工事終了処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.DailyScheduleTriggerSaveData, ServerDesignerCommon",
+      "StartDateTime": 46160.9375,
+      "ScheduleRunInDebugServer": false
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "V_2年前日付",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=EDATE(TODAY(),-24)"
+      },
+      "ID": "17d8ca249045406fbb5c530e17721d75"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "申込情報",
+      "TableValue": {
+        "TableName": "t_object_order",
+        "BindingInfos": [
+          {
+            "GUID": "58ba5370-6927-43f1-85c2-95c3617ccc3f",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "object_order_id",
+              "GUID": "10ec7232-6830-42a2-965e-81decf3682bf"
+            },
+            "ColumnName": "申込ID"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "SubConditions": [
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_order",
+                    "ColumnName": "latest_construction_id",
+                    "GUID": "4d0fbe1a-b5a5-4408-ab38-480045a3f570",
+                    "RelationBinding": {
+                      "RelatedTable": "t_object_construction",
+                      "RelatedColumn": "construction_id",
+                      "DisplayColumn": "construction_status_id",
+                      "NextRelationBinding": {
+                        "RelatedTable": "m_construction_status",
+                        "RelatedColumn": "construction_status_id",
+                        "DisplayColumn": "order_wait_flg"
+                      }
+                    }
+                  },
+                  "Value": "1",
+                  "LeftBracket": 1
+                },
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_order",
+                    "ColumnName": "latest_construction_id",
+                    "GUID": "9c12064a-df71-46e2-bbb6-cb39f53dccc0",
+                    "RelationBinding": {
+                      "RelatedTable": "t_object_construction",
+                      "RelatedColumn": "construction_id",
+                      "DisplayColumn": "construction_status_id",
+                      "NextRelationBinding": {
+                        "RelatedTable": "m_construction_status",
+                        "RelatedColumn": "construction_status_id",
+                        "DisplayColumn": "construction_check_flg"
+                      }
+                    }
+                  },
+                  "Value": "1",
+                  "RightBracket": 1
+                }
+              ],
+              "RelationType": 1
+            },
+            {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "SubConditions": [
+                {
+                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                  "SubConditions": [
+                    {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 5,
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_order",
+                        "ColumnName": "latest_analysis_id",
+                        "GUID": "9199c9d4-e6f5-4132-86f9-01beef78efb8",
+                        "RelationBinding": {
+                          "RelatedTable": "t_object_analysis",
+                          "RelatedColumn": "analysis_id",
+                          "DisplayColumn": "analysis_complete_date"
+                        }
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=V_2年前日付"
+                      },
+                      "LeftBracket": 2
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 1,
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_order",
+                        "ColumnName": "latest_analysis_id",
+                        "GUID": "3d3a2e99-1b85-4c42-ad2b-ada0a1d61855"
+                      },
+                      "Value": "%Null%",
+                      "RightBracket": 1
+                    }
+                  ]
+                },
+                {
+                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                  "SubConditions": [
+                    {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 5,
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_order",
+                        "ColumnName": "latest_construction_id",
+                        "GUID": "8e1bf074-070c-40ba-9025-f0e9e3e8800e",
+                        "RelationBinding": {
+                          "RelatedTable": "t_object_construction",
+                          "RelatedColumn": "construction_id",
+                          "DisplayColumn": "design_approval_date"
+                        }
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=V_2年前日付"
+                      },
+                      "LeftBracket": 1
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 1,
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_order",
+                        "ColumnName": "latest_construction_id",
+                        "GUID": "828e9687-9b65-425e-891e-24cfc5d5bdd1"
+                      },
+                      "Value": "%Null%",
+                      "RightBracket": 2
+                    }
+                  ]
+                }
+              ],
+              "RelationType": 1
+            }
+          ]
+        }
+      },
+      "ID": "cc5db37356cf444aa7b636dd2829b8cd"
+    },
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=申込情報"
+        },
+        "LoopItemParamName": "Item"
+      },
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "処理終了登録処理",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_申込IDs",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=Item.申込ID"
+              }
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_処理終了理由",
+              "Value": "工事規定による自動終了"
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_外部ユーザーフラグ",
+              "Value": "0"
+            }
+          ],
+          "ResultErrorCodeTo": {
+            "SerializeProperty": "リターンコード"
+          },
+          "ResultMessageTo": {
+            "SerializeProperty": "リターンメッセージ"
+          },
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        }
+      ]
+    }
+  ]
+}

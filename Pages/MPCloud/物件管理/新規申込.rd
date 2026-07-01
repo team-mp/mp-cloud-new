@@ -133,7 +133,8 @@
     "155,153": "IFERROR(IF(EM156<>0,EM156,EA156),\"\")",
     "158,153": "IFERROR(IF(EM159<>0,EM159,EA159),\"\")",
     "146,129": "SUM(DV148)",
-    "216,18": "IF(EE193=0,\"\",EE193)"
+    "216,18": "IF(EE193=0,\"\",EE193)",
+    "115,125": "BI99-AM99+1"
   },
   "ArrayFormulas": {
     "161,150,1,3": "IF(DY162>0,IFERROR(ODATA(\"v_customer_product?$select=商品名,商品注釈,販売単価&$filter=顧客ID eq \"&IF(ISBLANK(AE18),\"null\",AE18)&\" and グループID eq \"&IF(ISBLANK(AE4),\"null\",AE4)&\" and 申込タイプID eq \"&IF(ISBLANK(EA48),\"null\",EA48)&\" and 商品ID eq \"&IF(ISBLANK(DY162),\"null\",DY162)),\"\"),\"\")",

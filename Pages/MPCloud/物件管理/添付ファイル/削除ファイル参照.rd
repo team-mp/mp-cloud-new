@@ -1,12 +1,12 @@
 {
   "PageType": 0,
-  "ColumnCount": 94,
+  "ColumnCount": 98,
   "RowCount": 24,
   "Formulas": {
     "16,68": "TEXTJOINIF(\",\",TRUE,BQ9,1,BR9)",
     "13,68": "COUNTIF(BQ9,1)",
-    "8,79": "BW9/1000",
-    "8,78": "TEXT(BX9,\"yyyy/mm/dd hh:mm\")&\" \"&BZ9&\" \"&BY9"
+    "8,81": "BY9/1000",
+    "8,80": "TEXT(BZ9,\"yyyy/mm/dd hh:mm\")&\" \"&CB9&\" \"&CA9"
   },
   "CustomNames": [
     {
@@ -15,43 +15,43 @@
     },
     {
       "Name": "調査ID",
-      "Formula": "削除ファイル参照!$CE$9"
+      "Formula": "削除ファイル参照!$CI$9"
     },
     {
       "Name": "測量ID",
-      "Formula": "削除ファイル参照!$CE$12"
+      "Formula": "削除ファイル参照!$CI$12"
     },
     {
       "Name": "解析ID",
-      "Formula": "削除ファイル参照!$CE$15"
+      "Formula": "削除ファイル参照!$CI$15"
     },
     {
       "Name": "転圧ID",
-      "Formula": "削除ファイル参照!$CE$18"
+      "Formula": "削除ファイル参照!$CI$18"
     },
     {
       "Name": "工事ID",
-      "Formula": "削除ファイル参照!$CJ$9"
+      "Formula": "削除ファイル参照!$CN$9"
     },
     {
       "Name": "保証ID",
-      "Formula": "削除ファイル参照!$CJ$12"
+      "Formula": "削除ファイル参照!$CN$12"
     },
     {
       "Name": "付保ID",
-      "Formula": "削除ファイル参照!$CJ$15"
+      "Formula": "削除ファイル参照!$CN$15"
     },
     {
       "Name": "外販ID",
-      "Formula": "削除ファイル参照!$CJ$18"
+      "Formula": "削除ファイル参照!$CN$18"
     },
     {
       "Name": "工事見積ID",
-      "Formula": "削除ファイル参照!$CE$21"
+      "Formula": "削除ファイル参照!$CI$21"
     },
     {
       "Name": "ファイル属性ID",
-      "Formula": "削除ファイル参照!$CE$5"
+      "Formula": "削除ファイル参照!$CI$5"
     }
   ]
 }

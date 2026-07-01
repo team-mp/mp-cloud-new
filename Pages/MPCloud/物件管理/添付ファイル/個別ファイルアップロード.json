@@ -685,8 +685,8 @@
     "25,120": "{=IFERROR(ODATA(\"m_file_attirbute?$select=file_attibute_name,file_class_id,no_multiple_attached_flg&$filter=file_attribute_id eq \"&IF(ISBLANK(ファイル属性ID),\"null\",ファイル属性ID)),0)}",
     "25,121": "{=IFERROR(ODATA(\"m_file_attirbute?$select=file_class_id,no_multiple_attached_flg&$filter=file_attribute_id eq \"&IF(ISBLANK(ファイル属性ID),\"null\",ファイル属性ID)),0)}",
     "26,3": "個別ファイル付属更新情報",
-    "27,105": "▼アップロードチェックボタン",
     "27,120": "▼アップロード数カウント",
+    "28,105": "▼アップロードチェックボタン",
     "29,48": "ファイル属性",
     "29,89": "アップロードする"
   },
@@ -769,7 +769,7 @@
                     ]
                   }
                 ],
-                "ID": "08ddb18c-353d-4c90-802d-bdc75996da15"
+                "ID": "21192c07-484b-4363-980d-76f36dd2fea1"
               }
             ]
           },
@@ -1286,7 +1286,7 @@
                         "WithinLoop": true
                       }
                     ],
-                    "ID": "526cb0c6-86fd-46d7-99d0-25d6546dd8f1"
+                    "ID": "d944eb01-fc71-4f98-ab03-1858e540b7bd"
                   }
                 ]
               }
@@ -1629,7 +1629,7 @@
                             ]
                           }
                         ],
-                        "ID": "c7d84dd4-f705-4784-8f29-6f4a10f35c02"
+                        "ID": "982510f5-6f37-4639-9256-d24b120b3b3f"
                       },
                       {
                         "CommandList": [
@@ -1644,12 +1644,12 @@
                             }
                           }
                         ],
-                        "ID": "bc3a4d37-cbe3-49c1-86e7-33ee7c524d78"
+                        "ID": "34ffdd03-e395-406a-82af-798558d0d4ea"
                       }
                     ]
                   }
                 ],
-                "ID": "68db14b4-8d33-43e4-b696-42b574872f29"
+                "ID": "18b4d8e9-0415-4fa7-b71a-64371673fbcb"
               }
             ]
           }
@@ -1697,7 +1697,7 @@
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "bb10ffcc-9d3d-495e-841b-5182f3a556d8"
+                "ID": "8bcd8083-cdc4-43c9-bf56-4d209161ef88"
               }
             ]
           },
@@ -1733,7 +1733,96 @@
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "9380a255-2f9c-42cf-a83a-301e86b0d3d3"
+                "ID": "491caffa-19cc-4b09-beaf-a78dda3aaa0b"
+              }
+            ]
+          },
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=個別ファイルアップロード!解析ID"
+                      }
+                    ]
+                  },
+                  "value": "%Null%",
+                  "compareType": 1
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                    "ParameterName": "解析済みカウント",
+                    "TableValue": {
+                      "TableName": "t_object_analysis",
+                      "TableValueType": 3,
+                      "SqlCondition": {
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "SubConditions": [
+                          {
+                            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                            "ColumnBindingInfo": {
+                              "TableName": "t_object_analysis",
+                              "ColumnName": "analysis_id",
+                              "GUID": "8c4fad40-fbf6-4c48-8001-356f48b30b67"
+                            },
+                            "Value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=個別ファイルアップロード!解析ID"
+                            }
+                          },
+                          {
+                            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                            "ColumnBindingInfo": {
+                              "TableName": "t_object_analysis",
+                              "ColumnName": "analysis_done_flg",
+                              "GUID": "538828e9-d872-448a-80a8-e42fa84dde65"
+                            },
+                            "Value": "1"
+                          }
+                        ]
+                      }
+                    },
+                    "ID": "63a1462b58a141dab95e43329bf4b6b8"
+                  },
+                  {
+                    "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                    "ConditionAndCommandPairList": [
+                      {
+                        "Condition": {
+                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                          "param": {
+                            "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                            "cellLocations": [
+                              {
+                                "SerializeProperty": "=解析済みカウント"
+                              }
+                            ]
+                          },
+                          "value": "0",
+                          "compareType": 2
+                        },
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                            "MessageFormula": "すでに解析済みのため、ファイルアップロードはできません。\r\nアップロードが必要な場合は、解析済みを解除してください。"
+                          },
+                          {
+                            "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
+                          }
+                        ],
+                        "ID": "6e10140d-c6ac-44f3-b437-3045264bf854"
+                      }
+                    ]
+                  }
+                ],
+                "Comments": "解析済みチェック",
+                "ID": "0bbb888f-5276-4557-b8e7-bceb96a340c0"
               }
             ]
           },
@@ -1769,7 +1858,7 @@
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                           "SerializeProperty": "=LEN(個別ファイルアップロード!$FR$21)-LEN(SUBSTITUTE(個別ファイルアップロード!$FR$21,\"|\",\"\"))"
                         },
-                        "ID": "90b4a9c5fc1d42f9a9cf7adef2f35570"
+                        "ID": "65389b77895644a7a4f47bc27d34cd11"
                       },
                       {
                         "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -1924,7 +2013,7 @@
                             ]
                           }
                         },
-                        "ID": "21384d8f88ca41c6ba9d7f901a73c07a"
+                        "ID": "d3bd50977f6f4f01bed07c9a40faa7a6"
                       },
                       {
                         "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -1934,7 +2023,7 @@
                           "TableValueType": 1,
                           "BindingInfos": [
                             {
-                              "GUID": "188d9b1e-5c5b-4452-a78e-2386e9236006",
+                              "GUID": "a8f03d52-ccd3-4902-ba2f-2c5ceb33293c",
                               "BindingInfo": {
                                 "TableName": "m_file_attribute",
                                 "ColumnName": "no_multiple_attached_flg",
@@ -1943,7 +2032,7 @@
                               "ColumnName": "複数添付不可フラグ"
                             },
                             {
-                              "GUID": "25730bcf-33c9-4ba5-9820-b8aa54d20aa9",
+                              "GUID": "44176c93-f320-474b-a126-0254b206f829",
                               "BindingInfo": {
                                 "TableName": "m_file_attribute",
                                 "ColumnName": "survey_report_update_flg",
@@ -1952,7 +2041,7 @@
                               "ColumnName": "調査報告書更新フラグ"
                             },
                             {
-                              "GUID": "6309c1d0-63a9-4419-9602-69cbf192b06e",
+                              "GUID": "04a3cb76-cf6e-456c-8cc8-e7cb49c70519",
                               "BindingInfo": {
                                 "TableName": "m_file_attribute",
                                 "ColumnName": "surveying_report_update_flg",
@@ -1961,7 +2050,7 @@
                               "ColumnName": "測量報告書更新フラグ"
                             },
                             {
-                              "GUID": "862b1bcd-e4ac-49eb-8231-ad5498e7d425",
+                              "GUID": "f706d8fb-77b7-40d5-9843-664a798b193a",
                               "BindingInfo": {
                                 "TableName": "m_file_attribute",
                                 "ColumnName": "compaction_design_update_flg",
@@ -1970,7 +2059,7 @@
                               "ColumnName": "転圧設計図更新フラグ"
                             },
                             {
-                              "GUID": "a8a2fd07-69fd-4220-8d36-e5cf88c6cc61",
+                              "GUID": "bbd150df-7274-4dd3-a855-b15af334d8e8",
                               "BindingInfo": {
                                 "TableName": "m_file_attribute",
                                 "ColumnName": "compaction_report_update_flg",
@@ -1979,7 +2068,7 @@
                               "ColumnName": "転圧報告書更新フラグ"
                             },
                             {
-                              "GUID": "700afb51-a40a-490d-a922-6bd8ba556aa2",
+                              "GUID": "d3de57a8-d146-400f-a1c3-91b17887b63c",
                               "BindingInfo": {
                                 "TableName": "m_file_attribute",
                                 "ColumnName": "construction_report_update_flg",
@@ -2001,7 +2090,7 @@
                             }
                           }
                         },
-                        "ID": "33bf3673f0344382837b04ba86a676bc"
+                        "ID": "be46c70786cc45f1844c41486534d987"
                       },
                       {
                         "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -2106,7 +2195,7 @@
                                 "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                               }
                             ],
-                            "ID": "1b5ae940-7277-4555-894d-b974bf9c2b2c"
+                            "ID": "2f45784f-ac30-4ff6-bda7-0ebf72c84e11"
                           }
                         ]
                       },
@@ -2200,7 +2289,7 @@
                                 "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                               }
                             ],
-                            "ID": "6b8602ad-ecf5-4878-a081-7d5c15e09151"
+                            "ID": "2b26b541-38b8-4459-b09d-df424a489fe2"
                           }
                         ]
                       },
@@ -2253,7 +2342,7 @@
                                 "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                               }
                             ],
-                            "ID": "520207e6-46e0-42fd-91ea-e579f5d180bb"
+                            "ID": "864d7d7f-62eb-4b99-96b5-69b6cc2b948b"
                           }
                         ]
                       },
@@ -2318,7 +2407,7 @@
                                 "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                               }
                             ],
-                            "ID": "a2345885-1ea4-4d92-a693-dc850e523426"
+                            "ID": "5ad85f1c-7b5d-4ed6-b407-02d80139806f"
                           }
                         ]
                       },
@@ -2383,7 +2472,7 @@
                                 "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                               }
                             ],
-                            "ID": "795f78f6-3eae-4b2f-b887-c8014c3b6820"
+                            "ID": "69b21729-11db-4638-9864-d092576f0546"
                           }
                         ]
                       },
@@ -2436,7 +2525,7 @@
                                 "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                               }
                             ],
-                            "ID": "ea6a835d-1b8d-4240-a316-93336af6a0dc"
+                            "ID": "8b325d69-48be-48b5-b05f-ef07361d5646"
                           }
                         ]
                       },
@@ -2489,7 +2578,7 @@
                                 "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                               }
                             ],
-                            "ID": "f54320e1-1b8d-4825-bdc0-dabfa3cf351f"
+                            "ID": "4b1de390-ad7f-4ebc-8185-d2cb72e6e194"
                           }
                         ]
                       },
@@ -2542,7 +2631,7 @@
                                 "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                               }
                             ],
-                            "ID": "16e67130-c35b-4baf-88cf-c59f61926964"
+                            "ID": "842f8458-8a82-4b5e-af9d-838f34c0eb84"
                           }
                         ]
                       },
@@ -2595,7 +2684,7 @@
                                 "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                               }
                             ],
-                            "ID": "887a8910-769c-4fbd-88e4-b506a5ed45a2"
+                            "ID": "a96625b8-8f1c-44d1-8d42-93368ceaba3a"
                           }
                         ]
                       },
@@ -2648,7 +2737,7 @@
                                 "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                               }
                             ],
-                            "ID": "63813257-27ee-4267-bd7c-62ba2834fbe6"
+                            "ID": "12560a2d-a791-4985-958d-083fc008f91c"
                           }
                         ]
                       },
@@ -2701,12 +2790,12 @@
                                 "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                               }
                             ],
-                            "ID": "3bc80f5c-160c-4b98-aaed-d50fc448c26a"
+                            "ID": "8965a0f7-4880-4d96-90d0-070864f88b3a"
                           }
                         ]
                       }
                     ],
-                    "ID": "a15fb888-17f5-485c-b668-ca1dcecf8f06"
+                    "ID": "cdff5dec-d8de-4b45-94dc-ceed3eb2d665"
                   }
                 ]
               }
@@ -3715,6 +3804,7 @@
       "27,129": 2,
       "27,130": 2,
       "28,47": 2,
+      "28,105": 2,
       "28,120": 2,
       "28,121": 2,
       "28,122": 2,
@@ -4086,7 +4176,7 @@
                 ]
               }
             ],
-            "ID": "bcb0d2c3-c0de-4645-baf9-79fd54042b7a"
+            "ID": "ca17c9c2-64ca-40fd-81da-e9149d4abacc"
           }
         ]
       },
@@ -4167,7 +4257,7 @@
                 ]
               }
             ],
-            "ID": "588501d3-60b9-4f64-9840-ab2bba136367"
+            "ID": "0e5b1ada-2f41-4c6b-a155-4c0b4f21e27f"
           }
         ]
       },
@@ -4248,7 +4338,7 @@
                 ]
               }
             ],
-            "ID": "01a47fc4-8603-4804-bb41-178bcaff73c0"
+            "ID": "f3384ac1-6424-4d32-a7e3-1ef1b58f2f0f"
           }
         ]
       },
@@ -4329,7 +4419,7 @@
                 ]
               }
             ],
-            "ID": "a6c9866d-6f5a-497c-848c-151c0c85f48d"
+            "ID": "704e2ed3-fc4a-4fd7-a6e9-5cc0b5ba2d6d"
           }
         ]
       },
@@ -4410,7 +4500,7 @@
                 ]
               }
             ],
-            "ID": "05d2cf7d-dafc-45eb-822a-75f7c10d2058"
+            "ID": "092d1a6e-d527-4399-9439-fe1f51b3129d"
           }
         ]
       },
@@ -4491,7 +4581,7 @@
                 ]
               }
             ],
-            "ID": "a8c6cf73-1b0d-488b-8b7f-0e82d57010c8"
+            "ID": "8092c877-bee7-4c90-9427-26d8fe6e982e"
           }
         ]
       },
@@ -4591,7 +4681,7 @@
                 ]
               }
             ],
-            "ID": "1c203a17-9eab-44c4-9467-4eae216d32e3"
+            "ID": "12f9e5a2-5068-47ba-b3ba-39aa97bfeee4"
           }
         ]
       },
@@ -4672,7 +4762,7 @@
                 ]
               }
             ],
-            "ID": "8e25a163-5ae0-4caa-b3d3-4da6e058df23"
+            "ID": "ba494b03-7d7f-4c66-82e2-b4c9ec5b228d"
           }
         ]
       }
@@ -4817,4 +4907,4 @@
       "Formula": "個別ファイルアップロード!$DB$30"
     }
   ]
-}//Wqh2/UZUJNhne7cJFrkHFsESdmh8ZpozdzBjVK9Kcv+UQKUI/4BrXSw/7gSUfBUjQw3UZk31D5Z3/8Rz1UN1tMbms/JU2M3EMmZ81fpmWdaB8EQao2Iz0INv/J1theNts/5MpWXcAXqxZBPF36AVbs9rOXbV4NzVdxMkDa0+IiKVCGBnjGGbPsYLHCI9R8L83mAGyhUUhgcbijPvFTsOkQOAyKfz6A4fKQo2/F1agepLHET3YBQMIVm8L7oduyxWlJNEpGePQCoBwbMB5E0nRLz/wNXn60/EJZ5mjNTQtJjCo+x8zHQ4LoMRELXM2Gw6R9szgkJDvxHszoRl1y/ns8IbBQbfJ/w6q3pMhbqjUiO1DIH/hjkMNMRa05NYX+i11SkSjXP8Fd7ZlQP4pgH02hdxENuyv0w3vQ8wDbgqJ7VLRr9bewdXP0ZGTf9j+wJqSprMeVWk1IdD0QUQCK5/5T2LLs0jv58IpNhGN7P6os+czDc7TwlUNvQACo6UUeRzSpIdXNdG8ny05OtXHKiKXnZEydaMNewg17ZRGBNRvwvKJ4ySyOTp3G6KS6tJI0/oRHwbNcdRC6zCCH9eZ+uA95Qs2+nRBHpYpx9DVabQL2R57jycag++k+E5l5l6rOD+iZN2pYAxDYiYQKJwdCRZ9WQCfyEdnYC5I1Ge271wz8CAqHAGSe5rwc1Tm+2dVl8Yz6GV8eIhTPsyIpWeaVIL52mq+LCEiZ+htXXG/mN4cd8YK0MBdXiRFI9eP2CqyLp16lNrzd1CxWwSxLHs6dZNUCNykU2xeTgRbxjbBlouf7yzur9y1MljmjSZiuEqPbQvAQv0ML5Hvz3tHzarKj/zAhe+TCRYwRa+J4U9SDjyDyPR/SGE4/fE4wgTc6SbOyIjW4dHzwV/akcHUUPzb51kVw==|920
+}//+k+g+BWiwtFKI6P6PvthbrFLfWU7vVTL6D3eXfA7GJZQWwI4qc4MZ1Y8qN9Qp4O1RL2CGF43zol8FSC5tpmM0C1DBkd4fHZfgHs6FZ4p3dNcK3RgP6Uvay7o8tyrOMdQQ0qHHXuA6DQUO3LS64Qja2WjIIZeZMZWcVzQD63fv/KHT890QIfYcS4EAg+oE2gHpxZwhyOgvoCtqCSHjOGq6rO+EJ2NwaJDXeVBSnwaB529Bml1UjkBYjpoUmlDz1XQFSAL2tlrtHoesyUX8r7f38aHsUddj10iiujvvgl7tfcgbmaF2r4LRC1bWB0n/TajK48T6xX0fG17gTK9LYnW6QjszvhFZ547beU2Rngtfk0zgKb34cODsTImkHPkeac5j4yeobCFFPWZ0pNigdICzcdPOi/mYrEkhUhguvHKM9AUCSF85a6J+GsFIrWxbbfrXyFEKxJf98OSy/VoJhE24ErL4np/sfWIa2esiRNh36FPzKyAVUeQdBB9zHN9frYXt5nonIIzBHfCKD7deMa1YRoZV1LKMcv/JOklpeAPcC599Nhpfsw6rndHriC2/Jpjhz2PHYtySkNJ5G/etBvAdoW5z5PZ/dVaoTnbDv2k0JCCH8x7LpAM88E6KpSxPKimpLTYhSl+1fwIOlGvTsCvliv/aShmqJufk5hlhHnyXumPRKIdrqgzLSQTb1rRTXbr28guFZ3eUFFJhnGR7iDomFtnv3LljMREZ+qF7G4s71sAq//IZyRgQ/tyZ5es7+bilcUMpQ/+atOX+AcZYuYCOVz3yv28qFbEZYjSN5vW2UmaX0FgMe30AaU92bQ4e4O3NM+CoYvfXfTGVtl75SIV7sdRKpjIl1ZDn36Lw7FZmJstla4rWcA7aJi/cYulKnpVHg5t3g6QI8a+am2qOV7fww==|920
