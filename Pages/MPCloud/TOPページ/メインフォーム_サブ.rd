@@ -79,7 +79,8 @@
     "48,83": "SUM(CS43)",
     "49,83": "SUM(CT43)",
     "50,83": "SUM(CU43)",
-    "67,83": "SUM(CM69)"
+    "67,83": "SUM(CM69)",
+    "43,126": "TEXTJOIN(\",\",TRUE,DN45)"
   },
   "ArrayFormulas": {
     "23,113,1,3": "ODATA(\"m_user?$select=customer_id,user_authority_id,user_group_keys&$filter=user_id eq \"&IF(ISBLANK(DJ17),\"null\",DJ17))",
@@ -485,6 +486,10 @@
     {
       "Name": "保証_自動発行待ち件数",
       "Formula": "メインフォーム_サブ!$CF$68"
+    },
+    {
+      "Name": "参照管理グループ下顧客IDs",
+      "Formula": "メインフォーム_サブ!$DW$44"
     }
   ]
 }

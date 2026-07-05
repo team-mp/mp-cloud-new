@@ -453,22 +453,27 @@
     "16,251": "▼区切り位置",
     "19,243": "▼参照管理グループIDs",
     "19,251": "▼検索ワード1",
+    "19,258": "▼参照グループ区分s",
     "22,243": "▼参照管理顧客IDs",
     "22,251": "▼検索ワード2",
-    "25,243": "▼参照顧客IDs",
-    "25,251": "▼抽出カウント"
+    "22,258": "▼参照グループIDs",
+    "25,243": "▼参照管理グループ下顧客IDs",
+    "25,251": "▼抽出カウント",
+    "25,258": "▼参照顧客IDs"
   },
   "Formulas": {
-    "14,258": "SUM(IY10)",
-    "26,251": "COUNT(GT9)",
     "23,251": "IF(IR18>0,MID(IR15,IR18+1,1000),\"\")",
-    "26,243": "IF(OR(参照顧客本社フラグ=1,参照顧客代理店フラグ=1,参照顧客取次店フラグ=1,参照管理グループIDs<>\"\"),\"\",TEXTJOIN(\",\",TRUE,参照顧客ID,参照管理顧客IDs))",
     "20,251": "IF(IR18>0,LEFT(IR15,IR18-1),IF(IR15<>\"\",IR15,\"\"))",
+    "14,251": "TRIM(E6)",
+    "14,258": "SUM(IY10)",
+    "26,258": "IF(OR(参照顧客本社フラグ=1,参照顧客代理店フラグ=1,参照顧客取次店フラグ=1),\"\",TEXTJOIN(\",\",TRUE,参照顧客ID,参照管理顧客IDs,参照管理グループ下顧客IDs))",
     "17,251": "IF(IFERROR(FIND(\"　\",IR15),0)>0,FIND(\"　\",IR15),IF(IFERROR(FIND(\" \",IR15),0)>0,FIND(\" \",IR15),0))",
     "3,67": "IY15",
-    "14,251": "TRIM(E6)",
+    "26,251": "COUNT(GT9)",
     "30,4": "\"表データ件数：\"&TEXT(IR27,\"#,##0\")",
-    "8,145": "IF(HG9<>\"\",HG9,IF(HS9<>\"\",HS9,\"\"))"
+    "8,145": "IF(HG9<>\"\",HG9,IF(HS9<>\"\",HS9,\"\"))",
+    "20,258": "IF(参照顧客本社フラグ=1,\"\",IF(OR(参照顧客代理店フラグ=1,参照顧客取次店フラグ=1),\"2,3\",\"1,3\"))",
+    "23,258": "IF(OR(参照顧客代理店フラグ=1,参照顧客取次店フラグ=1),参照管理グループIDs,\"\")"
   },
   "AttachInfos": {
     "1,4": {
@@ -581,10 +586,19 @@
                               {
                                 "Source": {
                                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                  "SerializeProperty": "=地盤保証物件レポート!参照管理グループIDs"
+                                  "SerializeProperty": "=地盤保証物件レポート!参照グループ区分s"
                                 },
                                 "TargetCell": {
-                                  "SerializeProperty": "=地盤保証物件レポート_ダウンロード!参照管理グループIDs"
+                                  "SerializeProperty": "=地盤保証物件レポート_ダウンロード!参照グループ区分s"
+                                }
+                              },
+                              {
+                                "Source": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=地盤保証物件レポート!参照グループIDs"
+                                },
+                                "TargetCell": {
+                                  "SerializeProperty": "=地盤保証物件レポート_ダウンロード!参照グループIDs"
                                 }
                               },
                               {
@@ -617,12 +631,12 @@
                             ]
                           }
                         ],
-                        "ID": "8dfadab2-e8b0-4d2d-8189-173d843c19ae"
+                        "ID": "d5fffd20-e149-4cdc-93dd-4e7d1f57c51e"
                       }
                     ]
                   }
                 ],
-                "ID": "bd1d1f02-f654-4ee9-b9b4-616fd015fd6c"
+                "ID": "4722d06b-0d39-49c7-8d09-46168a2dd392"
               }
             ]
           }
@@ -653,7 +667,7 @@
               "ColumnBindingInfo": {
                 "TableName": "t_object_order",
                 "ColumnName": "active_flg",
-                "GUID": "9010f63d-2b31-46c1-9caf-77ff90cfc335"
+                "GUID": "199f38e5-24ef-4f4b-8b13-5ec0ca76ca13"
               },
               "Value": "1"
             },
@@ -662,7 +676,7 @@
               "ColumnBindingInfo": {
                 "TableName": "t_object_order",
                 "ColumnName": "latest_warranty_id",
-                "GUID": "6a89b72a-9cfc-4cef-a02d-46e019268ee4",
+                "GUID": "e70c519b-5187-4c87-887a-1715f15903c6",
                 "RelationBinding": {
                   "RelatedTable": "t_object_warranty",
                   "RelatedColumn": "warranty_id",
@@ -681,12 +695,25 @@
               "CompareType": 8,
               "ColumnBindingInfo": {
                 "TableName": "t_object_order",
-                "ColumnName": "group_id",
-                "GUID": "ec5ab7e7-f25f-415f-b0dc-6ebcf4223f2c"
+                "ColumnName": "group_type_id",
+                "GUID": "6375fa96-fe44-4d6f-a30b-af9434e8d5e8"
               },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=地盤保証物件レポート!参照管理グループIDs"
+                "SerializeProperty": "=地盤保証物件レポート!参照グループ区分s"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+              "CompareType": 8,
+              "ColumnBindingInfo": {
+                "TableName": "t_object_order",
+                "ColumnName": "group_id",
+                "GUID": "3f2da01b-6e3c-4b93-961e-f316aa49a5db"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=地盤保証物件レポート!参照グループIDs"
               }
             },
             {
@@ -695,7 +722,7 @@
               "ColumnBindingInfo": {
                 "TableName": "t_object_order",
                 "ColumnName": "builder_id",
-                "GUID": "fb537a13-9cee-4d06-9866-a543fbc9906b"
+                "GUID": "4d3b4483-10ab-4236-9278-41104923765a"
               },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -711,7 +738,7 @@
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "object_id",
-                    "GUID": "387e1609-4d4d-4a51-89cc-ef20dd785cd0",
+                    "GUID": "88cc9864-6fd5-4cd4-bd28-5b2b87807e81",
                     "RelationBinding": {
                       "RelatedTable": "t_object",
                       "RelatedColumn": "object_id",
@@ -730,7 +757,7 @@
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "builder_id",
-                    "GUID": "c18f03e0-a69f-4fad-b4bd-0576eb7d0a91",
+                    "GUID": "df271c20-0610-46c2-b10b-da4db27f967f",
                     "RelationBinding": {
                       "RelatedTable": "m_customer",
                       "RelatedColumn": "customer_id",
@@ -748,7 +775,7 @@
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "order_type_id",
-                    "GUID": "2d8bf5c2-bacd-4e9a-a13d-19f85eec8d01",
+                    "GUID": "430f1916-0417-45fb-8e5b-ec8dd8c9406c",
                     "RelationBinding": {
                       "RelatedTable": "m_order_type",
                       "RelatedColumn": "order_type_id",
@@ -766,7 +793,7 @@
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "latest_warranty_id",
-                    "GUID": "21363bcc-b0c0-4c28-b15c-9ab46c241eec",
+                    "GUID": "b4a56713-71a0-4680-81fb-7174f58f3328",
                     "RelationBinding": {
                       "RelatedTable": "t_object_warranty",
                       "RelatedColumn": "warranty_id",
@@ -784,7 +811,7 @@
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "latest_warranty_id",
-                    "GUID": "798370be-84ce-47fb-b6eb-603706b72cad",
+                    "GUID": "c518dfc7-731a-4530-9c4f-2251d83e5508",
                     "RelationBinding": {
                       "RelatedTable": "t_object_warranty",
                       "RelatedColumn": "warranty_id",
@@ -809,7 +836,7 @@
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "object_id",
-                    "GUID": "0ece27bc-0140-42d0-b3bd-dea1d1459ea4",
+                    "GUID": "b4e0ab8e-36d4-4716-8944-d9b14eaa9528",
                     "RelationBinding": {
                       "RelatedTable": "t_object",
                       "RelatedColumn": "object_id",
@@ -828,7 +855,7 @@
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "builder_id",
-                    "GUID": "f525115f-c462-4f7c-a069-212926278548",
+                    "GUID": "9d5aa97c-2133-447e-99df-ce44a8a54346",
                     "RelationBinding": {
                       "RelatedTable": "m_customer",
                       "RelatedColumn": "customer_id",
@@ -846,7 +873,7 @@
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "order_type_id",
-                    "GUID": "6774d04e-a689-41d9-aef8-d8734f608074",
+                    "GUID": "551a5eb4-fcc1-4e2f-b8ae-663c6de26bf5",
                     "RelationBinding": {
                       "RelatedTable": "m_order_type",
                       "RelatedColumn": "order_type_id",
@@ -864,7 +891,7 @@
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "latest_warranty_id",
-                    "GUID": "c8c96907-701c-4af1-858e-2f9eb3675f61",
+                    "GUID": "e2742809-1940-4f44-bdc3-2be14f107236",
                     "RelationBinding": {
                       "RelatedTable": "t_object_warranty",
                       "RelatedColumn": "warranty_id",
@@ -882,7 +909,7 @@
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "latest_warranty_id",
-                    "GUID": "52004b71-3a1e-4b04-bb1b-a8352103a940",
+                    "GUID": "35aa257f-8e26-450c-b918-5856ca845987",
                     "RelationBinding": {
                       "RelatedTable": "t_object_warranty",
                       "RelatedColumn": "warranty_id",
@@ -906,7 +933,7 @@
               "ColumnBindingInfo": {
                 "TableName": "t_object_order",
                 "ColumnName": "latest_warranty_id",
-                "GUID": "3ea7acfb-06f5-4af8-9e9c-fa2147bfd420",
+                "GUID": "a83d1eb8-f17a-474a-889e-960f3b71b0a3",
                 "RelationBinding": {
                   "RelatedTable": "t_object_warranty",
                   "RelatedColumn": "warranty_id",
@@ -919,7 +946,7 @@
               "ColumnBindingInfo": {
                 "TableName": "t_object_order",
                 "ColumnName": "object_order_id",
-                "GUID": "0f78e6aa-88a5-44f4-af83-bbf76106e178"
+                "GUID": "3706d904-4250-47fd-b8fb-f450a1f7b8da"
               },
               "Order": 1
             }
@@ -1023,7 +1050,7 @@
                     ]
                   }
                 ],
-                "ID": "2b713e9d-5ad0-45c8-a3a8-be0d6f0bfa79"
+                "ID": "d01762ed-6a42-4a6c-9d87-9cd610b3f339"
               },
               {
                 "CommandList": [
@@ -1068,7 +1095,7 @@
                     ]
                   }
                 ],
-                "ID": "df34062a-dd5b-42f9-b35a-003e29be0ec8"
+                "ID": "c1c16716-e0ef-411d-8d99-d0f18b533218"
               }
             ]
           }
@@ -1267,7 +1294,7 @@
               "ColumnBindingInfo": {
                 "TableName": "t_object_order",
                 "ColumnName": "active_flg",
-                "GUID": "4bf9b984-5730-43b7-8849-c32a6d9df966"
+                "GUID": "92e07667-d5e9-41ab-b660-fbe4bdcf200d"
               },
               "Value": "1"
             },
@@ -1276,7 +1303,7 @@
               "ColumnBindingInfo": {
                 "TableName": "t_object_order",
                 "ColumnName": "latest_warranty_id",
-                "GUID": "5fc40af9-40fd-4e68-93cb-f5ad55d146ff",
+                "GUID": "bba94c2b-9e3c-4cc8-b520-c79cc8f9a52f",
                 "RelationBinding": {
                   "RelatedTable": "t_object_warranty",
                   "RelatedColumn": "warranty_id",
@@ -1295,12 +1322,25 @@
               "CompareType": 8,
               "ColumnBindingInfo": {
                 "TableName": "t_object_order",
-                "ColumnName": "group_id",
-                "GUID": "567ad80e-4bf7-46b9-9aa6-df9a5c787c23"
+                "ColumnName": "group_type_id",
+                "GUID": "e07cb1c1-e5fe-47a6-b245-578bfdd14fe6"
               },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=地盤保証物件レポート!参照管理グループIDs"
+                "SerializeProperty": "=地盤保証物件レポート!参照グループ区分s"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+              "CompareType": 8,
+              "ColumnBindingInfo": {
+                "TableName": "t_object_order",
+                "ColumnName": "group_id",
+                "GUID": "edb77e1c-5612-4b09-9055-585b4d5a7987"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=地盤保証物件レポート!参照グループIDs"
               }
             },
             {
@@ -1309,7 +1349,7 @@
               "ColumnBindingInfo": {
                 "TableName": "t_object_order",
                 "ColumnName": "builder_id",
-                "GUID": "7e70dba5-eda7-4fa3-9cc1-b7a15f76fb5c"
+                "GUID": "3478af74-acb9-4ac2-b089-3890c7faf5cb"
               },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1821,12 +1861,18 @@
       "19,251": 9,
       "19,252": 0,
       "19,253": 0,
+      "19,258": 9,
+      "19,259": 0,
+      "19,260": 0,
       "20,243": 17,
       "20,244": 0,
       "20,245": 0,
       "20,251": 18,
       "20,252": 0,
       "20,253": 0,
+      "20,258": 18,
+      "20,259": 0,
+      "20,260": 0,
       "21,243": 0,
       "21,244": 0,
       "21,245": 0,
@@ -1839,22 +1885,34 @@
       "22,251": 9,
       "22,252": 0,
       "22,253": 0,
+      "22,258": 9,
+      "22,259": 0,
+      "22,260": 0,
       "23,243": 17,
       "23,244": 0,
       "23,245": 0,
       "23,251": 18,
       "23,252": 0,
       "23,253": 0,
+      "23,258": 18,
+      "23,259": 0,
+      "23,260": 0,
       "24,243": 0,
       "24,244": 0,
       "24,245": 0,
       "25,243": 0,
       "25,244": 0,
       "25,245": 0,
-      "26,243": 18,
+      "25,258": 0,
+      "25,259": 0,
+      "25,260": 0,
+      "26,243": 17,
       "26,244": 0,
       "26,245": 0,
       "26,251": 19,
+      "26,258": 18,
+      "26,259": 0,
+      "26,260": 0,
       "30,4": 7,
       "30,103": 20
     },
@@ -1889,7 +1947,6 @@
     "17,243,1,3",
     "20,243,1,3",
     "23,243,1,3",
-    "26,243,1,3",
     "30,103,1,22",
     "8,189,1,12",
     "7,189,1,12",
@@ -1919,7 +1976,11 @@
     "8,214,1,12",
     "7,214,1,12",
     "8,145,1,12",
-    "7,145,1,12"
+    "7,145,1,12",
+    "26,243,1,3",
+    "26,258,1,3",
+    "23,258,1,3",
+    "20,258,1,3"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -2034,7 +2095,7 @@
     },
     {
       "Name": "参照顧客IDs",
-      "Formula": "地盤保証物件レポート!$IJ$27"
+      "Formula": "地盤保証物件レポート!$IY$27"
     },
     {
       "Name": "ロケーションURL",
@@ -2047,6 +2108,18 @@
     {
       "Name": "検索ワード2",
       "Formula": "地盤保証物件レポート!$IR$24"
+    },
+    {
+      "Name": "参照管理グループ下顧客IDs",
+      "Formula": "地盤保証物件レポート!$IJ$27"
+    },
+    {
+      "Name": "参照グループIDs",
+      "Formula": "地盤保証物件レポート!$IY$24"
+    },
+    {
+      "Name": "参照グループ区分s",
+      "Formula": "地盤保証物件レポート!$IY$21"
     }
   ]
-}//oJ5DzDn2DhF7Qh6Bo5H3bnscvWsubYE7zbJgkxgM1zaPvQ9b8VnBl5aXHyqbPd8L/uiqiEBJBARdV8+q636KWwVf6qfVzecahn8/FfWqOQ+scNE9hknDCxdx5tbrUGAK2kjz3TFiAh2c62SDZayXwCqw1FTRJSDhqgSBX8Lq/BlhcJEAdTLAcI9imC7EyNXpTSTVR9DS52QSqt3s/dHfToO7zsbLuRTQ4zZJL1FnULyc6TpioDi8sWWwJ+kfwcOVjdt7XeLJST8Jed2gZPtHNdaPPYi+9fV8eP9GfFzcugyLVnI7A4x6rZA1yjWJ3P9IDR9vwxZP/XszMn3BVT3gCZT43svb5Z3GJN/TmhZcrRkkFK7s1CcqAV50FeVRr4yXUFXfy6Yta51zztFXSgIfA+dILvOsbq6cf8pOICB2uGKsBEC8oUjGYUnWxeUBJM97C8069uFur/zWrPNuSlgFLNXV3ENyr4cZzFAzFgOkGhL+C7iMAUH0OfoKcWMWwmRHN4l8rfiiJsxpEq0tXJwRy8pf0NLFzb2gt6h0kLIo1XxdU5uvQR8BgsMG/cMszKB7Ge7dLRGOJg7iLDr6sIeK9wXDc8nBKYGHFncJv3YEzWYSrkGSYjSlnXz9iE5X9i3XYyH4dOxEIKDBNDmMx0sXZHpuVWFBiur54EV3XOtO1FzlkZIbxakl7yPe19x2ntMsqliSHSOvFj5xMoRnC7f2GqrU3Y7JNfdrREJpEJrMKX3YxKP8bRmohV4wg35xjzLwrK8Myz/6+BdJfvJDlSoaOMUUmlZJDFix1c1LHjAkAaDhN24K5PxUFxDhmxsRvQS12AZkDmoDL7e9sWeVQVjmM2O+lotv4LFr4HlFAb0ON+2kN3KXOAr//Wk6orl59OvM3o+9fwjDN8GTCtrmrrr0Wg==|920
+}//gruW2CJCL7pnbr/9Dzba1hBpzqErFjb1gALUGqe8Nwp7wrLU2ojC5uA1GZ6VRLEnahR8KFlaz2ENIbKCO5wgfE6B/Y02Du5zERs2wV/sMxfUqmQCZRLKMF6Jua1C/G0/exxdFIV6ub61r2H78dU3710BmD6O2mm3KOY47F+86jkwU+XUxGTYj5dcnYF8doK9LbJPJJfuLk8uZw1fcfgWgZgniOZDWSwVNORAuDAKT/nWERkOMMDgqCSfabYJlFp3f5HOQXJgX2mkfDH77xd9FAoq8YqEDfrjUfMaooZaIO3jKRVs0AvmohnsHkJ6gR5Axi/DjFj+YL7zSnA2yIn49t/WuGTaBcUzsAdTtHyyJMglN4iXPvxC965HXV+4OM+mATW858lTASPVG5hG2IY8VYV8tVTxjLaA22NmsB9ilwS7904edqGeSQw4lPosdeA9kjvH2ZUAprrRc27UTXmZ83hnzduPDV7XkW7Ep29u4BgWtbgpfxrZNk0ERRBSUDT0cJlgS8Ar5wyL5NrYUJcbCUJJZn9i6PXI84PCDhls+VvulVxmSK0EuiujaoPB5UaUwNSt+Zz+OcAHjU1Tm1JeW8IGSVxPTOybXIKNrkOiIYSin/2+UxsscIwBHo7s19mY0QQa1LPuh11NyY+oGXCIXpgTm3J47z+Hf6z1GNlsNMdFUW6maCZGI4hIU5jvA9E6wJ3DLwKox1Q6dQh1sKfsn3JuLf4+v0ui4+OAUPfvaqmTD0dkZeiPL7u8Wus023ugBgXXOJnWXS3ZB4oibaNYah0cj0mAk6oK6jCWvTGLQXCy0+B0MDujh++7zg8GTsePjJz7mTUgoxNlSiisYmsIeDWSwJfcd657IejR396p9DuJH4C2h8lkUaH88Q8T5BB9w2Vy/P3PeUt+/2HU61JtzA==|920
