@@ -235,6 +235,7 @@
     "1,35": "新規メール通知する",
     "3,1": "※赤字の場合は、メール送信エラーとなっています",
     "3,47": "▼申込ID",
+    "3,54": "▼申込KEY",
     "4,1": "送信日時／送信者",
     "4,19": "件名",
     "4,40": "再送",
@@ -331,6 +332,13 @@
         "TableName": "t_object_order",
         "ColumnName": "object_order_id",
         "GUID": "d32caad1-ef4e-4d6b-aed8-f820fbd9892b"
+      }
+    },
+    "4,54": {
+      "BindingInfo": {
+        "TableName": "t_object_order",
+        "ColumnName": "object_order_key",
+        "GUID": "a78bc281-843f-4a09-891a-07357000d4d4"
       }
     },
     "5,1": {
@@ -612,24 +620,44 @@
         "RowCount": 4,
         "ColumnCount": 23,
         "SqlCondition": {
-          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-          "ColumnBindingInfo": {
-            "TableName": "t_mail_history",
-            "ColumnName": "object_order_id",
-            "GUID": "4f1ea345-ef59-4ad9-9fa8-42a05fa5b536"
-          },
-          "Value": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=物件詳細_メール!AV5"
-          }
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_mail_history",
+                "ColumnName": "object_order_id",
+                "GUID": "16cb112e-5f89-4e81-a34a-6ccd0fa01dd7"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=物件詳細_メール!AV5"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+              "CompareType": 6,
+              "ColumnBindingInfo": {
+                "TableName": "t_mail_history",
+                "ColumnName": "object_order_keys",
+                "GUID": "22c2b0a9-ff0b-4c43-aa20-f0aa457bb428"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=物件詳細_メール!BC5"
+              }
+            }
+          ],
+          "RelationType": 1
         },
+        "NullFormulaValueQueryPolicy": 0,
         "OrderByCondition": {
           "OrderByColumns": [
             {
               "ColumnBindingInfo": {
                 "TableName": "t_mail_history",
                 "ColumnName": "mail_history_id",
-                "GUID": "6d6799ef-8887-4e76-8774-9f23fecc3bbb"
+                "GUID": "8f15bef3-0b63-447f-bfb9-6c9f6376db80"
               },
               "Order": 1
             }
@@ -993,6 +1021,9 @@
       "3,51": 8,
       "3,52": 8,
       "3,53": 8,
+      "3,54": 7,
+      "3,55": 8,
+      "3,56": 8,
       "4,1": 9,
       "4,18": 10,
       "4,19": 11,
@@ -1004,6 +1035,7 @@
       "4,51": 8,
       "4,52": 8,
       "4,53": 8,
+      "4,54": 12,
       "5,1": 13,
       "6,1": 8,
       "6,2": 8,
@@ -1853,7 +1885,8 @@
     "4,19,1,21",
     "4,1,1,18",
     "18,47,2,23",
-    "7,60,1,3"
+    "7,60,1,3",
+    "4,54,1,3"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -1878,11 +1911,11 @@
     },
     "RowBreakLines": [],
     "RepeatRangeSettings": [],
-    "RelatedDataTableName": "t_mail_history",
+    "RelatedDataTableName": "t_object_order",
     "PageResponsiveMode": 2
   },
   "PrintInfo": {
     "PaperSize": {},
     "Margin": {}
   }
-}//LOMSAo1igbQmVQndHuQEB6LWYV57RKj/GIspm+F3127wf65ZilHovae2Im7VgQ1TJpfHmAkyH5EPzTahAkba1gl5S1QCV9LXToG5FcoymakCpZAtSdl4d/yhEpTInIpyHbEIMhzc9tnbFL08sTKO2EF0AHjPD9f38Ab+7kBLpO7J32FxhGUcR1mzNBPnBNeeEoQhqZnMw98iCEN1UJ6ZeXVOiAbJZCjUpuWgT53uouuqJLG6cloN6hTBReYweRWou3nIUsf6IeL8sFxkZd3SRmyoGxu3MjmErKK+L+LhIy29+B8uODsctI5A4vdpXVYVp/XNLLCRnAdRDpdR6rL0NkuaPUNjXw5zxzG584wNU4K9wDGtvt2sFbplBZ6okUdQOBywaxkMmbA/599fWxyjnbW8kE8DBulrwaxUUDxK1ksbpVpsKCcEEJ1V9Eno0s4fzbP58kcJZi71FmvSukq+cPTqAd1HGfRp7SwClIDo5vDvxXXhOsa20zdFEdBh2zLDZqTPn+jOxBFXgf7jYNqDf47UgOVPb0iLaAELebvc7vZE8hZ63DWZ5jjpeM5AKuuH8A9LSkNknwHyP9syJX98/FQ3+eRJa7wvlrXQJOGrwFroityHkPcIhRfdWq37Pu1uVDY6iH7s1prD9GLXCk96GlcVAx0PCnveqC9tT4bSHyCbPWDPq4+2DUihLOByUV+Y2BxHiRHhLpLmXFYGxLgP4Ur6WPGjraHaKARFYlbhaOvVOemRIv6DQcXimZyPHgrEBuYaz9IFPZwSKRis5NnGTDaMnkK/3rB+4TazqBi3t1HyIgtoUcfwfm0Hzwpde5OQiLQ4CfOSQkbKH1ZYapdH7eU1DYyjoOVL/1tprxAbwTB3vulhZPfoNJHKzL43YY8AumUuSkUANBGXYItP1cCq/Q==|920
+}//3fti4QgCNBr2AoyPXq9mVacPMEMJICH4CUr84H7wnwBgEcM5hO1Cn5cSif0x3d7/0JQx8tsoGSKxCbFKULGbEoAi0k+QcP8VmKh7nqGAvyfF38J9fH0e9i44d7C9NVBnh66tZQllzj016t0uguGNg6pMYf9slnp0tWHlh1kGZ8pUvEk+GYw16ty03gCqazFHnWeVKKpjD5gCuZ9PPSMgUFyHl4jJmPpcKHOc8uImxNWWDCB07KTp7C9TGOpbqOHqCebTzDJM+WdVUC8G6VXpHW5H/zjEUlaUmBMP0f2RExaX2lW0CxzYLMNNfHtXySnrVpXTJ+XAE/714m/UTMI5VEMDGYpEzjYggHTHKBopRDtgLO+YakqKWjx9az7weZ60emkAfl8bhhbz9zM5hSNWZmHSd624x3gNWJugsM8Bd5o8AdrlZ+6tseTW0iOrjK1V1ifxRu9y9LYaBCpjIUVuBSuJZ39CKesfXiniKHCTnV+Qi1D2ttOvS+xmkTfILH27XAoNYDquNzCu78dBWRKmeomopZ3wHco3HhA1RQ0K1xBiKXnBBmhnmr+55QMttDBee0475sGQAWG1iS/wclI6RU0Fx1EjwuoEardaDmxd7fScKjmmLCX+Z6lVnJJa6Le5LZp+24wIag/jc1ketki0PmQk5qvHDFt5deQAxs0r/TrNs3EXRQGx3PJg9rzhGHKOQtg4a4nVF3MNEaMlTJ812mV3EdX9aFpIW09eBRhIu+h3QVsx5d4ZX1aqEgfhd1umoZjexOlV/q6vwn6ChFO2VHFii2s2BVNAYdtfnAQwUYL09yk8FTLudGESKDqtq+J0+0RaWIecviCJ2zaQ7RZ6nyFsN6crEKi84AaUWIz6hYA3oumBVwhCSPPMN8edmf/TIIpEKISIDHFhGC5evcUvSA==|920

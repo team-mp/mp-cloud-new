@@ -71,6 +71,7 @@
     "7,14": "▼参照工事会社フラグ",
     "8,14": "=",
     "10,14": "▼顧客規定値",
+    "10,19": "▼外部既定",
     "13,14": "▼住宅事業者メニュー更新フラグ",
     "14,14": "0",
     "16,14": "▼参照管理顧客IDs",
@@ -84,7 +85,8 @@
     "5,14": "参照住宅事業者フラグ",
     "11,14": "ODATA(\"m_customer_settings?$select=analysis_report_public_flg&$filter=customer_id eq \"&IF(ISBLANK(O3),\"null\",O3))",
     "2,14": "参照顧客ID",
-    "20,14": "参照管理グループ顧客IDs"
+    "20,14": "参照管理グループ顧客IDs",
+    "11,19": "ODATA(\"m_customer_outrule?$select=construction_estimate_report_public_flg&$filter=customer_id eq \"&IF(ISBLANK(O3),\"null\",O3))"
   },
   "AttachInfos": {
     "0,0": {
@@ -462,7 +464,7 @@
                     "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
                     "ParameterName": "ページ名",
                     "ParameterValue": "工事物件検索リスト",
-                    "ID": "86d402de5b8941a1a810f75c4d18f7b1"
+                    "ID": "92ed38ea9c144eb1941c77318a84bd99"
                   },
                   {
                     "$type": "TabManager.TabOpenCommand, TabManager",
@@ -484,6 +486,49 @@
                           "SerializeProperty": "=メイン_住宅事業者メニュー!O24"
                         },
                         "Target": "参照顧客IDs"
+                      },
+                      {
+                        "Source": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=メイン_住宅事業者メニュー!ロケーションURL"
+                        },
+                        "Target": "ロケーションURL"
+                      }
+                    ]
+                  }
+                ],
+                "CanVisitRoleList": [
+                  "FGC_Anonymous"
+                ]
+              },
+              {
+                "Value": "工事見積進捗レポート",
+                "Text": "工事見積進捗レポート",
+                "IconPath": "Chart/374_dot_chart_1.svg",
+                "SelectedIconColor": "Background 1",
+                "SelectedIconColorUseItemColor": true,
+                "IconColorUseItemColor": true,
+                "IsOldMenuPath": false,
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                    "ParameterName": "ページ名",
+                    "ParameterValue": "協力会社工事見積進捗レポート",
+                    "ID": "bbccc4fe3e42435ba9271919a8a7cafb"
+                  },
+                  {
+                    "$type": "TabManager.TabOpenCommand, TabManager",
+                    "PageName": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=メイン_住宅事業者メニュー!ページ名"
+                    },
+                    "PassedValueList": [
+                      {
+                        "Source": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=メイン_住宅事業者メニュー!O3"
+                        },
+                        "Target": "参照顧客ID"
                       },
                       {
                         "Source": {
@@ -710,6 +755,11 @@
         "Comments": "解析レポート公開フラグ"
       }
     },
+    "11,19": {
+      "CellComment": {
+        "Comments": "工事進捗レポート公開フラグ"
+      }
+    },
     "14,14": {
       "CellType": {
         "$type": "Forguncy.TextCellType, ServerDesignerCommon",
@@ -762,7 +812,7 @@
                     }
                   }
                 ],
-                "ID": "7c067a69-4d18-492f-98b0-9e3501893a05"
+                "ID": "94f63f50-e8ed-46d7-be0a-a9c23128c010"
               },
               {
                 "CommandList": [
@@ -779,7 +829,7 @@
                     }
                   }
                 ],
-                "ID": "30bfdaf1-1584-418f-a689-49d3b10f9bbc"
+                "ID": "b635abba-f796-4db6-9b3d-1128e5d5cdd5"
               }
             ]
           },
@@ -813,7 +863,7 @@
                     }
                   }
                 ],
-                "ID": "ee92086c-92d0-4271-85ca-b57bfabd888d"
+                "ID": "72090890-fdc1-4b70-a23f-40a2b9179347"
               },
               {
                 "CommandList": [
@@ -830,7 +880,7 @@
                     }
                   }
                 ],
-                "ID": "9883ec72-037e-40a8-a262-7dcbb69f47cc"
+                "ID": "34dcd463-e1fc-4e2a-b419-d3d1be4c4a00"
               }
             ]
           },
@@ -839,16 +889,34 @@
             "ConditionAndCommandPairList": [
               {
                 "Condition": {
-                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                  "param": {
-                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                    "cellLocations": [
-                      {
-                        "SerializeProperty": "=メイン_住宅事業者メニュー!O9"
-                      }
-                    ]
-                  },
-                  "value": "1"
+                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                  "SubConditions": [
+                    {
+                      "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                      "param": {
+                        "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                        "cellLocations": [
+                          {
+                            "SerializeProperty": "=メイン_住宅事業者メニュー!O9"
+                          }
+                        ]
+                      },
+                      "value": "1"
+                    },
+                    {
+                      "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                      "param": {
+                        "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                        "cellLocations": [
+                          {
+                            "SerializeProperty": "=メイン_住宅事業者メニュー!T12"
+                          }
+                        ]
+                      },
+                      "value": "1"
+                    }
+                  ],
+                  "RelationType": 1
                 },
                 "CommandList": [
                   {
@@ -862,9 +930,60 @@
                     "ParameterValues": {
                       "items": "工事管理"
                     }
+                  },
+                  {
+                    "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                    "ConditionAndCommandPairList": [
+                      {
+                        "Condition": {
+                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                          "param": {
+                            "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                            "cellLocations": [
+                              {
+                                "SerializeProperty": "=メイン_住宅事業者メニュー!O9"
+                              }
+                            ]
+                          },
+                          "value": "1"
+                        },
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
+                            "TargetPageElement": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=メイン_住宅事業者メニュー!A1"
+                            },
+                            "TargetType": "Forguncy.CustomMenu.ForguncyMenuCellType, Forguncy.CustomMenu, Version=1.0.1.1, Culture=neutral, PublicKeyToken=null",
+                            "MethodName": "ShowItems",
+                            "ParameterValues": {
+                              "items": "見積依頼物件検索"
+                            }
+                          }
+                        ],
+                        "ID": "73f2afc2-ebe1-4476-bc54-1a98d33562e2"
+                      },
+                      {
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
+                            "TargetPageElement": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=メイン_住宅事業者メニュー!A1"
+                            },
+                            "TargetType": "Forguncy.CustomMenu.ForguncyMenuCellType, Forguncy.CustomMenu, Version=1.0.1.1, Culture=neutral, PublicKeyToken=null",
+                            "MethodName": "HideItems",
+                            "ParameterValues": {
+                              "items": "見積依頼物件検索"
+                            }
+                          }
+                        ],
+                        "ID": "cfd7ecc5-b064-49bf-966a-8f96a0972993"
+                      }
+                    ]
                   }
                 ],
-                "ID": "8bdd5439-38df-444e-b4cd-24c022991f47"
+                "ID": "97d817ad-98bd-4f63-8134-13a16472fdb3"
               },
               {
                 "CommandList": [
@@ -881,10 +1000,61 @@
                     }
                   }
                 ],
-                "ID": "ab430dc4-5ba3-48ac-b788-01486cb47907"
+                "ID": "b9cdd7a1-7829-4fc0-9df0-8e3c87b1e722"
               }
             ],
             "Comments": "工事会社の場合"
+          },
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=メイン_住宅事業者メニュー!T12"
+                      }
+                    ]
+                  },
+                  "value": "1"
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
+                    "TargetPageElement": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=メイン_住宅事業者メニュー!A1"
+                    },
+                    "TargetType": "Forguncy.CustomMenu.ForguncyMenuCellType, Forguncy.CustomMenu, Version=1.0.1.1, Culture=neutral, PublicKeyToken=null",
+                    "MethodName": "ShowItems",
+                    "ParameterValues": {
+                      "items": "工事見積進捗レポート"
+                    }
+                  }
+                ],
+                "ID": "4cb11fa7-083c-41aa-ac9f-e8cb2ca30391"
+              },
+              {
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
+                    "TargetPageElement": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=メイン_住宅事業者メニュー!A1"
+                    },
+                    "TargetType": "Forguncy.CustomMenu.ForguncyMenuCellType, Forguncy.CustomMenu, Version=1.0.1.1, Culture=neutral, PublicKeyToken=null",
+                    "MethodName": "HideItems",
+                    "ParameterValues": {
+                      "items": "工事見積進捗レポート"
+                    }
+                  }
+                ],
+                "ID": "0ce363dc-2522-400d-b8e6-b633fc3b76c2"
+              }
+            ]
           }
         ]
       }
@@ -913,6 +1083,9 @@
       {
         "Background": 4,
         "FontFamily": 1
+      },
+      {
+        "Background": 4
       },
       {
         "Background": 5,
@@ -981,261 +1154,262 @@
       "11,14": 4,
       "11,15": 2,
       "11,16": 2,
+      "11,19": 5,
       "12,14": 2,
       "12,15": 2,
       "12,16": 2,
       "13,14": 2,
       "13,15": 2,
       "13,16": 2,
-      "14,14": 5,
+      "14,14": 6,
       "16,14": 1,
       "16,15": 2,
       "16,16": 2,
-      "17,14": 6,
+      "17,14": 7,
       "17,15": 2,
       "17,16": 2,
       "19,14": 1,
       "19,15": 2,
       "19,16": 2,
-      "20,14": 6,
+      "20,14": 7,
       "20,15": 2,
       "20,16": 2,
       "22,14": 2,
       "22,15": 2,
       "22,16": 2,
-      "23,14": 7,
+      "23,14": 8,
       "23,15": 2,
       "23,16": 2,
-      "32,0": 8,
-      "32,1": 8,
-      "32,2": 8,
-      "32,3": 8,
-      "32,4": 8,
-      "32,5": 8,
-      "32,6": 8,
-      "32,7": 8,
-      "32,8": 8,
-      "32,9": 8,
-      "32,10": 8,
-      "32,11": 8,
-      "33,0": 8,
-      "33,1": 8,
-      "33,2": 8,
-      "33,3": 8,
-      "33,4": 8,
-      "33,5": 8,
-      "33,6": 8,
-      "33,7": 8,
-      "33,8": 8,
-      "33,9": 8,
-      "33,10": 8,
-      "33,11": 8,
-      "34,0": 8,
-      "34,1": 8,
-      "34,2": 8,
-      "34,3": 8,
-      "34,4": 8,
-      "34,5": 8,
-      "34,6": 8,
-      "34,7": 8,
-      "34,8": 8,
-      "34,9": 8,
-      "34,10": 8,
-      "34,11": 8,
-      "35,0": 8,
-      "35,1": 8,
-      "35,2": 8,
-      "35,3": 8,
-      "35,4": 8,
-      "35,5": 8,
-      "35,6": 8,
-      "35,7": 8,
-      "35,8": 8,
-      "35,9": 8,
-      "35,10": 8,
-      "35,11": 8,
-      "36,0": 8,
-      "36,1": 8,
-      "36,2": 8,
-      "36,3": 8,
-      "36,4": 8,
-      "36,5": 8,
-      "36,6": 8,
-      "36,7": 8,
-      "36,8": 8,
-      "36,9": 8,
-      "36,10": 8,
-      "36,11": 8,
-      "37,0": 8,
-      "37,1": 8,
-      "37,2": 8,
-      "37,3": 8,
-      "37,4": 8,
-      "37,5": 8,
-      "37,6": 8,
-      "37,7": 8,
-      "37,8": 8,
-      "37,9": 8,
-      "37,10": 8,
-      "37,11": 8,
-      "38,0": 8,
-      "38,1": 8,
-      "38,2": 8,
-      "38,3": 8,
-      "38,4": 8,
-      "38,5": 8,
-      "38,6": 8,
-      "38,7": 8,
-      "38,8": 8,
-      "38,9": 8,
-      "38,10": 8,
-      "38,11": 8,
-      "39,0": 8,
-      "39,1": 8,
-      "39,2": 8,
-      "39,3": 8,
-      "39,4": 8,
-      "39,5": 8,
-      "39,6": 8,
-      "39,7": 8,
-      "39,8": 8,
-      "39,9": 8,
-      "39,10": 8,
-      "39,11": 8,
-      "40,0": 8,
-      "40,1": 8,
-      "40,2": 8,
-      "40,3": 8,
-      "40,4": 8,
-      "40,5": 8,
-      "40,6": 8,
-      "40,7": 8,
-      "40,8": 8,
-      "40,9": 8,
-      "40,10": 8,
-      "40,11": 8,
-      "41,0": 8,
-      "41,1": 8,
-      "41,2": 8,
-      "41,3": 8,
-      "41,4": 8,
-      "41,5": 8,
-      "41,6": 8,
-      "41,7": 8,
-      "41,8": 8,
-      "41,9": 8,
-      "41,10": 8,
-      "41,11": 8,
-      "42,0": 8,
-      "42,1": 8,
-      "42,2": 8,
-      "42,3": 8,
-      "42,4": 8,
-      "42,5": 8,
-      "42,6": 8,
-      "42,7": 8,
-      "42,8": 8,
-      "42,9": 8,
-      "42,10": 8,
-      "42,11": 8,
-      "43,0": 8,
-      "43,1": 8,
-      "43,2": 8,
-      "43,3": 8,
-      "43,4": 8,
-      "43,5": 8,
-      "43,6": 8,
-      "43,7": 8,
-      "43,8": 8,
-      "43,9": 8,
-      "43,10": 8,
-      "43,11": 8,
-      "44,0": 8,
-      "44,1": 8,
-      "44,2": 8,
-      "44,3": 8,
-      "44,4": 8,
-      "44,5": 8,
-      "44,6": 8,
-      "44,7": 8,
-      "44,8": 8,
-      "44,9": 8,
-      "44,10": 8,
-      "44,11": 8,
-      "45,0": 8,
-      "45,1": 8,
-      "45,2": 8,
-      "45,3": 8,
-      "45,4": 8,
-      "45,5": 8,
-      "45,6": 8,
-      "45,7": 8,
-      "45,8": 8,
-      "45,9": 8,
-      "45,10": 8,
-      "45,11": 8,
-      "46,0": 8,
-      "46,1": 8,
-      "46,2": 8,
-      "46,3": 8,
-      "46,4": 8,
-      "46,5": 8,
-      "46,6": 8,
-      "46,7": 8,
-      "46,8": 8,
-      "46,9": 8,
-      "46,10": 8,
-      "46,11": 8,
-      "47,0": 8,
-      "47,1": 8,
-      "47,2": 8,
-      "47,3": 8,
-      "47,4": 8,
-      "47,5": 8,
-      "47,6": 8,
-      "47,7": 8,
-      "47,8": 8,
-      "47,9": 8,
-      "47,10": 8,
-      "47,11": 8,
-      "48,0": 8,
-      "48,1": 8,
-      "48,2": 8,
-      "48,3": 8,
-      "48,4": 8,
-      "48,5": 8,
-      "48,6": 8,
-      "48,7": 8,
-      "48,8": 8,
-      "48,9": 8,
-      "48,10": 8,
-      "48,11": 8
+      "32,0": 9,
+      "32,1": 9,
+      "32,2": 9,
+      "32,3": 9,
+      "32,4": 9,
+      "32,5": 9,
+      "32,6": 9,
+      "32,7": 9,
+      "32,8": 9,
+      "32,9": 9,
+      "32,10": 9,
+      "32,11": 9,
+      "33,0": 9,
+      "33,1": 9,
+      "33,2": 9,
+      "33,3": 9,
+      "33,4": 9,
+      "33,5": 9,
+      "33,6": 9,
+      "33,7": 9,
+      "33,8": 9,
+      "33,9": 9,
+      "33,10": 9,
+      "33,11": 9,
+      "34,0": 9,
+      "34,1": 9,
+      "34,2": 9,
+      "34,3": 9,
+      "34,4": 9,
+      "34,5": 9,
+      "34,6": 9,
+      "34,7": 9,
+      "34,8": 9,
+      "34,9": 9,
+      "34,10": 9,
+      "34,11": 9,
+      "35,0": 9,
+      "35,1": 9,
+      "35,2": 9,
+      "35,3": 9,
+      "35,4": 9,
+      "35,5": 9,
+      "35,6": 9,
+      "35,7": 9,
+      "35,8": 9,
+      "35,9": 9,
+      "35,10": 9,
+      "35,11": 9,
+      "36,0": 9,
+      "36,1": 9,
+      "36,2": 9,
+      "36,3": 9,
+      "36,4": 9,
+      "36,5": 9,
+      "36,6": 9,
+      "36,7": 9,
+      "36,8": 9,
+      "36,9": 9,
+      "36,10": 9,
+      "36,11": 9,
+      "37,0": 9,
+      "37,1": 9,
+      "37,2": 9,
+      "37,3": 9,
+      "37,4": 9,
+      "37,5": 9,
+      "37,6": 9,
+      "37,7": 9,
+      "37,8": 9,
+      "37,9": 9,
+      "37,10": 9,
+      "37,11": 9,
+      "38,0": 9,
+      "38,1": 9,
+      "38,2": 9,
+      "38,3": 9,
+      "38,4": 9,
+      "38,5": 9,
+      "38,6": 9,
+      "38,7": 9,
+      "38,8": 9,
+      "38,9": 9,
+      "38,10": 9,
+      "38,11": 9,
+      "39,0": 9,
+      "39,1": 9,
+      "39,2": 9,
+      "39,3": 9,
+      "39,4": 9,
+      "39,5": 9,
+      "39,6": 9,
+      "39,7": 9,
+      "39,8": 9,
+      "39,9": 9,
+      "39,10": 9,
+      "39,11": 9,
+      "40,0": 9,
+      "40,1": 9,
+      "40,2": 9,
+      "40,3": 9,
+      "40,4": 9,
+      "40,5": 9,
+      "40,6": 9,
+      "40,7": 9,
+      "40,8": 9,
+      "40,9": 9,
+      "40,10": 9,
+      "40,11": 9,
+      "41,0": 9,
+      "41,1": 9,
+      "41,2": 9,
+      "41,3": 9,
+      "41,4": 9,
+      "41,5": 9,
+      "41,6": 9,
+      "41,7": 9,
+      "41,8": 9,
+      "41,9": 9,
+      "41,10": 9,
+      "41,11": 9,
+      "42,0": 9,
+      "42,1": 9,
+      "42,2": 9,
+      "42,3": 9,
+      "42,4": 9,
+      "42,5": 9,
+      "42,6": 9,
+      "42,7": 9,
+      "42,8": 9,
+      "42,9": 9,
+      "42,10": 9,
+      "42,11": 9,
+      "43,0": 9,
+      "43,1": 9,
+      "43,2": 9,
+      "43,3": 9,
+      "43,4": 9,
+      "43,5": 9,
+      "43,6": 9,
+      "43,7": 9,
+      "43,8": 9,
+      "43,9": 9,
+      "43,10": 9,
+      "43,11": 9,
+      "44,0": 9,
+      "44,1": 9,
+      "44,2": 9,
+      "44,3": 9,
+      "44,4": 9,
+      "44,5": 9,
+      "44,6": 9,
+      "44,7": 9,
+      "44,8": 9,
+      "44,9": 9,
+      "44,10": 9,
+      "44,11": 9,
+      "45,0": 9,
+      "45,1": 9,
+      "45,2": 9,
+      "45,3": 9,
+      "45,4": 9,
+      "45,5": 9,
+      "45,6": 9,
+      "45,7": 9,
+      "45,8": 9,
+      "45,9": 9,
+      "45,10": 9,
+      "45,11": 9,
+      "46,0": 9,
+      "46,1": 9,
+      "46,2": 9,
+      "46,3": 9,
+      "46,4": 9,
+      "46,5": 9,
+      "46,6": 9,
+      "46,7": 9,
+      "46,8": 9,
+      "46,9": 9,
+      "46,10": 9,
+      "46,11": 9,
+      "47,0": 9,
+      "47,1": 9,
+      "47,2": 9,
+      "47,3": 9,
+      "47,4": 9,
+      "47,5": 9,
+      "47,6": 9,
+      "47,7": 9,
+      "47,8": 9,
+      "47,9": 9,
+      "47,10": 9,
+      "47,11": 9,
+      "48,0": 9,
+      "48,1": 9,
+      "48,2": 9,
+      "48,3": 9,
+      "48,4": 9,
+      "48,5": 9,
+      "48,6": 9,
+      "48,7": 9,
+      "48,8": 9,
+      "48,9": 9,
+      "48,10": 9,
+      "48,11": 9
     },
     "ColStyles": {
-      "0": 9,
-      "1": 9,
-      "2": 9,
-      "3": 9,
-      "4": 9,
-      "5": 9,
-      "6": 9,
-      "7": 9,
-      "8": 9,
-      "9": 9,
-      "10": 9,
-      "11": 9,
-      "12": 10,
-      "13": 10,
-      "14": 10,
-      "15": 10,
-      "16": 10,
-      "17": 10,
-      "18": 10,
-      "19": 10,
-      "20": 10,
-      "21": 10,
-      "22": 10,
-      "23": 10
+      "0": 10,
+      "1": 10,
+      "2": 10,
+      "3": 10,
+      "4": 10,
+      "5": 10,
+      "6": 10,
+      "7": 10,
+      "8": 10,
+      "9": 10,
+      "10": 10,
+      "11": 10,
+      "12": 11,
+      "13": 11,
+      "14": 11,
+      "15": 11,
+      "16": 11,
+      "17": 11,
+      "18": 11,
+      "19": 11,
+      "20": 11,
+      "21": 11,
+      "22": 11,
+      "23": 11
     },
     "SheetStyle": {
       "FontFamily": 1
@@ -1297,4 +1471,4 @@
       "Formula": "メイン_住宅事業者メニュー!$O$15"
     }
   ]
-}//6wqHGPhSV4IK7ioVdvPOyYgR3vR5D9k2BsyNbHgZIKSK5IVR/vK/NcZoJgBsRzxrIwRvqr0I+Z1gviwiZoIk7+IbvQjdMbKjpONeTVYoBDicbeJMUsOqD4qpmF8az6hrGX18ap+s+vrUaxWQXp+lltcnZqzFyJ+Z8dlMFSg+yIHFQ+cwl8izqR8KPPCwUBDzzOR3Xyyapv+PlWliuYZwi7tGi0HoRD/xXY5ttgjFLaJOQDpaCIXcRu8sqfDwEtz3bf6M2w7fKfODKRwj3QwEv7G5lCzAHLgWN4pvgUinDM5jbe+/eiiAQlZ/YS6JtNn1zxnNka5vGQnWx4dl7wWgcLSCDrcIIwteKDKAUHZR/HyfDVptY/pZ1URYiDEj/iN/V8OdTm1yn42NyKgsjQgCFmEdqt9M5xUgBVSilMirA9cR6IlxkE+vz5LqlV8rX80h84/q8g6OI+PB/hXx9FIvrUj2ddMEYW8Cci0YzLnhCYAG7d0vFtiw0sKouhbEpodiHY/uV2nxAzQzArdN86rGzyU0RSlb3QCzI8QylH1Zo9Lz49kLvbTrcBRBVz89c/IIcBs3R/SpVb8OJYPCvbxWPVSDr6GWcIK4mYorgKpMxMITcU8LNlAf7n6au8bOKQPOeWbYVr/Uoqf65glsNgbmS25fF/fbQ5jCf4OH8IJ06cOIUVyzpXfAUHVhE0DdHv25Qn2OicpX74jEXPWizK0+P0OcTVtXWp/BgEKloZBvBG/u2FvpolIWP0jG5mbZgUSZd1X80cXON4+Ki6c0EZSKm7kG+/mdPm/xPIY4+1SDFFENkKRD7VjY/8F6ylXybzFEoo7m7Z0rnDVSlSjWcP0136DZRFEmx/a4oL9n4bl7vTeS671kJ3KSykf8u8KfUGfk+ac1o3yhRF6wTixf12DZpw==|920
+}//48yw9Xh89DD3i4rtgt6aY7BQCXxSCqT3G+e2D096VCPiJhjZHQP7vDkR9ls8bFagtYcRUPc80beciQpXeB5asDO85D5Ybfja8apsPrkrp6T4h0E3ZZ+DN4p5V0bsbYFgXJCsK59C7xbGe/SnXzYWWlPSVudaxbsu+/lh+DjOQ57Df2znsTtAF++j8/Jx3GK9w7outvDyyo63Cqgln1QXn/Z8H68Ozezt6OCyOnkwMmf5i8B1jBYztAQzRYy7BnxiWJb3cNcbl8O7NpR5i5RMT8tSUYtqo++esjqkNWYaHmADcc1/8VgKc01v3CoTVSxKUeazmng9PXch3TESc7vcXa/Src92vpo96s+CL3HS6URT36eVxyVk86FIc4m865jlHzgAXueScsRFiVLulF9wr2Xy4E9hoL39twJY0guHFP3PoiWV5NMRKYvakTzwP1o3E1EGM74yl1PApBM/NXYf0pHjRqfbslleuOYrBKowvwqRLLhdhlg7npvqjB2CiMlmsN6MT61HHJ8HaV6NphrcA5rXfjISW6CrdHgE6oM9l2hPGWJAh+r0kWSKunw9UGDV6FTJbswzP/wvRpR6Ln1NBFCZF1CIeI7SUyyzXrianCg7eOX3Q+z1u5Y/6VjZa/StbNB4UQZm9rMpSsiMCmJNUyGwszlIZCz1guysu0Ag+KSdFRXjdTGF6YtWrTYTyTkgZl1oQ+980COqEcsytJgOroWTpQiC9aSiWFyjTWIsdMtSK6tHKeoaRihqxeTGQvI0w25PYOTAePYO07Pi0w4NP+UN52sFYgm1bBC4RSFNb5ZwJz0g3n9OohGbTvawQNlnaEEQNgkdG15XdHUztK6hInsrUJ5pFd5rfWo8HPm+5hItrc5aW1zbXoMMiXJQAbsXlXqLNJhioaG2CQ1hJyYmyQ==|920

@@ -1,36 +1,36 @@
 {
   "PageType": 0,
-  "ColumnCount": 287,
+  "ColumnCount": 312,
   "RowCount": 30,
   "Formulas": {
-    "21,260": "TEXTJOINIF(\",\",TRUE,IL7,1,GR7)",
-    "24,267": "TEXTJOINIF(\",\",TRUE,IL7,1,ID7)",
-    "6,260": "TRIM(V2)",
-    "29,1": "\"該当データ件数：\"&TEXT(JO16,\"#,##0\")&\"件　　表示データ件数：\"&TEXT(JH16,\"#,##0\")&\"件\"",
-    "15,260": "IF(JA10>0,MID(JA7,JA10+1,1000),\"\")",
-    "9,260": "IF(IFERROR(FIND(\"　\",JA7),0)>0,FIND(\"　\",JA7),IF(IFERROR(FIND(\" \",JA7),0)>0,FIND(\" \",JA7),0))",
-    "12,260": "IF(JA10>0,LEFT(JA7,JA10-1),IF(JA7<>\"\",JA7,\"\"))",
-    "15,274": "SUM(JO8)",
-    "18,267": "COUNTIF(IL7,1)",
-    "21,267": "JH16-JH19",
-    "15,267": "COUNT(GR7)"
+    "18,292": "COUNTIF(JK7,1)",
+    "21,285": "TEXTJOINIF(\",\",TRUE,JK7,1,HQ7)",
+    "12,285": "IF(JZ10>0,LEFT(JZ7,JZ10-1),IF(JZ7<>\"\",JZ7,\"\"))",
+    "29,1": "\"該当データ件数：\"&TEXT(KN16,\"#,##0\")&\"件　　表示データ件数：\"&TEXT(KG16,\"#,##0\")&\"件\"",
+    "6,285": "TRIM(V2)",
+    "15,292": "COUNT(HQ7)",
+    "21,292": "KG16-KG19",
+    "9,285": "IF(IFERROR(FIND(\"　\",JZ7),0)>0,FIND(\"　\",JZ7),IF(IFERROR(FIND(\" \",JZ7),0)>0,FIND(\" \",JZ7),0))",
+    "24,292": "TEXTJOINIF(\",\",TRUE,JK7,1,JC7)",
+    "15,285": "IF(JZ10>0,MID(JZ7,JZ10+1,1000),\"\")",
+    "15,299": "SUM(KN8)"
   },
   "CustomNames": [
     {
       "Name": "検索フラグ",
-      "Formula": "工事物件検索リスト!$JO$13"
+      "Formula": "工事物件検索リスト!$KN$13"
     },
     {
       "Name": "参照顧客IDs",
-      "Formula": "工事物件検索リスト!$JH$10"
+      "Formula": "工事物件検索リスト!$KG$10"
     },
     {
       "Name": "ロケーションURL",
-      "Formula": "工事物件検索リスト!$JH$13"
+      "Formula": "工事物件検索リスト!$KG$13"
     },
     {
       "Name": "参照顧客ID",
-      "Formula": "工事物件検索リスト!$JH$7"
+      "Formula": "工事物件検索リスト!$KG$7"
     }
   ]
 }

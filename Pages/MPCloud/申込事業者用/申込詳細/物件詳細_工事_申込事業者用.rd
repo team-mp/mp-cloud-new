@@ -1,6 +1,6 @@
 {
   "PageType": 0,
-  "ColumnCount": 130,
+  "ColumnCount": 140,
   "RowCount": 55,
   "Formulas": {
     "10,91": "IFERROR(ODATA(\"m_customer_specify_construction?$select=priority_type&$filter=customer_id eq \"&IF(ISBLANK(CM11),\"null\",CM11)&\" and construction_id eq \"&IF(ISBLANK(CJ11),\"null\",CJ11)),0)",

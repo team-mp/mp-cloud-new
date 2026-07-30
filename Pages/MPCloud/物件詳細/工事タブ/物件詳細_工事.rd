@@ -1,6 +1,6 @@
 {
   "PageType": 0,
-  "ColumnCount": 165,
+  "ColumnCount": 170,
   "RowCount": 88,
   "Formulas": {
     "23,131": "\"問合せ(\"&EA24&\")\"",

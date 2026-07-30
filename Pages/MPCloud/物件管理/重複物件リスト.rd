@@ -1,6 +1,6 @@
 {
   "PageType": 0,
-  "ColumnCount": 71,
+  "ColumnCount": 80,
   "RowCount": 25,
   "CustomNames": [
     {
@@ -30,6 +30,10 @@
     {
       "Name": "物件都道府県",
       "Formula": "重複物件リスト!$BN$9"
+    },
+    {
+      "Name": "ログイン者本社フラグ",
+      "Formula": "重複物件リスト!$BT$6"
     }
   ]
 }

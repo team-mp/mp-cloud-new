@@ -70,33 +70,55 @@
         },
         {
           "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-          "ParameterName": "対応待ST",
+          "ParameterName": "リクエストST",
           "TableValue": {
             "TableName": "m_request_status",
-            "OnlyGetValue": true,
-            "TableValueType": 0,
+            "TableValueType": 1,
             "BindingInfos": [
               {
-                "GUID": "c6d12c5e-bf6c-45b3-86ff-5ba6e7b242c3",
+                "GUID": "4e8ad1ea-4c87-49c6-9efc-c8db3c238d71",
                 "BindingInfo": {
                   "TableName": "m_request_status",
-                  "ColumnName": "request_status_id",
-                  "GUID": "b58e7c33-d1fc-4f01-ba12-d6afd26a98b1"
+                  "ColumnName": "not_supported_flg",
+                  "GUID": "8eeef8b7-6534-4e4b-b9e1-2659feb3be5a"
                 },
-                "ColumnName": "request_status_id"
+                "ColumnName": "対応待フラグ"
+              },
+              {
+                "GUID": "679ff3b2-33de-4c7e-8317-766598e46313",
+                "BindingInfo": {
+                  "TableName": "m_request_status",
+                  "ColumnName": "completed_flg",
+                  "GUID": "7fcb2dd5-cb17-41b4-ba4c-4da5154e5c74"
+                },
+                "ColumnName": "対応済フラグ"
               }
             ],
             "SqlCondition": {
               "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
               "ColumnBindingInfo": {
                 "TableName": "m_request_status",
-                "ColumnName": "not_supported_flg",
-                "GUID": "e690a2c8-8c86-43bf-b613-8c5410dd7699"
+                "ColumnName": "request_status_id",
+                "GUID": "de83e1f3-0d4c-4dd3-b292-ef781eb5066b"
               },
-              "Value": "1"
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_依頼ステータスID"
+              }
             }
           },
-          "ID": "3a17a6f70a7d44bba90b48fd1bddf9d6"
+          "ID": "38281e040c834f67aade8562c39befc0"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "V_最終対応ラベル",
+          "ID": "aebcd94bd1764f14a88308e98a6b33ef"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "V_保証依頼フラグ",
+          "ParameterValue": "0",
+          "ID": "4e3c5196cb534fcfbf730454b80cb854"
         },
         {
           "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -108,36 +130,51 @@
                   "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
                   "ParamObject": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=P_依頼ステータスID"
+                    "SerializeProperty": "=リクエストST.対応待フラグ"
                   }
                 },
-                "value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=対応待ST"
-                }
+                "value": "1",
+                "compareType": 1
               },
               "CommandList": [
                 {
                   "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-                  "ParameterName": "最終対応ラベル",
-                  "ID": "8e11418c9dc64b4da9591a6648464698"
-                }
-              ],
-              "ID": "cefec92c-705f-4ed2-a3ae-6d6d9acc7491"
-            },
-            {
-              "CommandList": [
-                {
-                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-                  "ParameterName": "最終対応ラベル",
+                  "ParameterName": "V_最終対応ラベル",
                   "ParameterValue": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                     "SerializeProperty": "=\"（対応者）\"&最終更新ラベル"
                   },
-                  "ID": "98eea4210d5748ddb4094502cedc595d"
+                  "ID": "86c4096bbcf049a7b2268fce2aa02a6e"
                 }
               ],
-              "ID": "158045ef-6cb5-4075-be69-e118db2a77a5"
+              "ID": "5e51d053-5b1a-46a3-bbce-970e82230310"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=リクエストST.対応済フラグ"
+                  }
+                },
+                "value": "1"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "V_保証依頼フラグ",
+                  "ParameterValue": "1",
+                  "ID": "506c4bbf88c742fe85d83dd7cec58750"
+                }
+              ],
+              "ID": "a8889b9f-9f39-497a-88ff-a899409c0a6d"
             }
           ]
         },
@@ -164,7 +201,7 @@
               "BindingInfo": {
                 "TableName": "t_object_notice",
                 "ColumnName": "request_status_id",
-                "GUID": "1aaf6bc9-d83e-4f4e-8f7d-3cc8dc9bbf86"
+                "GUID": "9b67410d-022e-4fe9-b2e8-952c2e24893f"
               },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -175,12 +212,103 @@
               "BindingInfo": {
                 "TableName": "t_object_notice",
                 "ColumnName": "last_response_label",
-                "GUID": "4aeb58fc-7948-4239-b13a-7f7418ffda39"
+                "GUID": "1746166a-1af1-48b7-978b-23ffa9a37966"
               },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=最終対応ラベル"
+                "SerializeProperty": "=V_最終対応ラベル"
               }
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "保証依頼リスト",
+          "TableValue": {
+            "TableName": "t_object_notice",
+            "BindingInfos": [
+              {
+                "GUID": "9d3bb0f6-bae8-45bd-875b-ddc619d5c80e",
+                "BindingInfo": {
+                  "TableName": "t_object_notice",
+                  "ColumnName": "warranty_request_id",
+                  "GUID": "a5869d6c-92b5-4c2d-8ca9-051ecd76d255"
+                },
+                "ColumnName": "保証依頼ID"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "SubConditions": [
+                {
+                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                  "CompareType": 8,
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_notice",
+                    "ColumnName": "notice_id",
+                    "GUID": "79421cfb-5398-4d51-9e87-e599ad8551ff"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_連絡IDs"
+                  }
+                },
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "CompareType": 1,
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_notice",
+                    "ColumnName": "warranty_request_id",
+                    "GUID": "c75a087f-604f-4d61-ac08-f79cd410aeae"
+                  },
+                  "Value": "%Null%"
+                }
+              ]
+            }
+          },
+          "ID": "b2a2de2b59a64566856e36252419de78"
+        },
+        {
+          "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+          "LoopInfo": {
+            "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+            "LoopCount": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=保証依頼リスト"
+            },
+            "LoopItemParamName": "Item"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_warranty_request",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "t_warranty_request",
+                  "ColumnName": "warranty_request_id",
+                  "GUID": "25112d70-6043-4e86-9bad-5357c60cd97a"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=Item.保証依頼ID"
+                }
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_warranty_request",
+                    "ColumnName": "warranty_request_flg",
+                    "GUID": "ee806c3f-4f1e-49c1-96d3-e7586edfa24a"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=V_保証依頼フラグ"
+                  }
+                }
+              ]
             }
           ]
         }
