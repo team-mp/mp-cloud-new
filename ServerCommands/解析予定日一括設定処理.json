@@ -30,7 +30,7 @@
         "TableName": "t_object_analysis",
         "BindingInfos": [
           {
-            "GUID": "8c339a7e-5d16-479f-9b1a-9fd52fc0d194",
+            "GUID": "76ed4703-8e73-4221-92be-4a85387fd89a",
             "BindingInfo": {
               "TableName": "t_object_analysis",
               "ColumnName": "analysis_id",
@@ -39,7 +39,16 @@
             "ColumnName": "解析ID"
           },
           {
-            "GUID": "d69ad0c0-2f35-4da8-849e-67c638d2f782",
+            "GUID": "9903b814-8440-411c-837a-17b1829d0ca3",
+            "BindingInfo": {
+              "TableName": "t_object_analysis",
+              "ColumnName": "object_order_id",
+              "GUID": "525bdc0f-e752-4b6e-9f06-f69df9caf549"
+            },
+            "ColumnName": "申込ID"
+          },
+          {
+            "GUID": "af200ad7-4c36-46aa-a08c-fd8f0e97a86e",
             "BindingInfo": {
               "TableName": "t_object_analysis",
               "ColumnName": "object_order_id",
@@ -58,7 +67,7 @@
             "ColumnName": "調査実施日"
           },
           {
-            "GUID": "a7a96f3c-fcfa-4097-bf87-26cfaed7f5cc",
+            "GUID": "1479e96d-7dfd-4aee-a0e5-8e8da54afceb",
             "BindingInfo": {
               "TableName": "t_object_analysis",
               "ColumnName": "object_order_id",
@@ -123,7 +132,7 @@
           ]
         }
       },
-      "ID": "e1c0d640310b4f27a814bce2734c0717"
+      "ID": "37178b673050447a82f9bf644d4f0602"
     },
     {
       "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
@@ -164,18 +173,86 @@
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                         "SerializeProperty": "=Item.調査実施日"
                       }
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_申込ID",
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=Item.申込ID"
+                      }
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_解析ID"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_新規解析フラグ",
+                      "Value": "1"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_調査後解析フラグ"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_再解析フラグ"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_保留後解析フラグ"
                     }
                   ],
+                  "ResultErrorCodeTo": {
+                    "SerializeProperty": "リターンコード"
+                  },
+                  "ResultMessageTo": {
+                    "SerializeProperty": "リターンメッセージ"
+                  },
                   "ReturnPropertiesTo": [
                     {
                       "ResultPropertyName": "R_解析予定日",
                       "ResultTo": {
-                        "SerializeProperty": "解析予定日"
+                        "SerializeProperty": "V_解析予定日"
                       }
                     }
                   ],
                   "RefreshAfterFinish": true,
                   "CheckDataValidation": true
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=リターンコード"
+                          }
+                        },
+                        "value": "0",
+                        "compareType": 1
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                          "ErrorCode": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=リターンコード"
+                          },
+                          "Message": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=リターンメッセージ"
+                          }
+                        }
+                      ],
+                      "ID": "d7aa8c15-27dc-449c-a502-448100136e12"
+                    }
+                  ]
                 },
                 {
                   "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
@@ -199,17 +276,17 @@
                       "BindingInfo": {
                         "TableName": "t_object_analysis",
                         "ColumnName": "analysis_planned_date",
-                        "GUID": "6edad1f2-b5ac-4d1e-86ab-da7089c32c13"
+                        "GUID": "d087c66a-4bcc-42bd-a3c8-37f0ed214deb"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=解析予定日"
+                        "SerializeProperty": "=V_解析予定日"
                       }
                     }
                   ]
                 }
               ],
-              "ID": "7d2da23b-4c6e-45fa-b5fd-48dcd2733641"
+              "ID": "574275c5-a45a-403c-86aa-98a37163ae3f"
             },
             {
               "Condition": {
@@ -236,18 +313,86 @@
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                         "SerializeProperty": "=Item.申込日"
                       }
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_申込ID",
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=Item.申込ID"
+                      }
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_解析ID"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_新規解析フラグ",
+                      "Value": "1"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_調査後解析フラグ"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_再解析フラグ"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_保留後解析フラグ"
                     }
                   ],
+                  "ResultErrorCodeTo": {
+                    "SerializeProperty": "リターンコード"
+                  },
+                  "ResultMessageTo": {
+                    "SerializeProperty": "リターンメッセージ"
+                  },
                   "ReturnPropertiesTo": [
                     {
                       "ResultPropertyName": "R_解析予定日",
                       "ResultTo": {
-                        "SerializeProperty": "解析予定日"
+                        "SerializeProperty": "V_解析予定日"
                       }
                     }
                   ],
                   "RefreshAfterFinish": true,
                   "CheckDataValidation": true
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=リターンコード"
+                          }
+                        },
+                        "value": "0",
+                        "compareType": 1
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                          "ErrorCode": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=リターンコード"
+                          },
+                          "Message": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=リターンメッセージ"
+                          }
+                        }
+                      ],
+                      "ID": "8c553e29-8002-4d38-a72c-f6c720336104"
+                    }
+                  ]
                 },
                 {
                   "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
@@ -271,17 +416,17 @@
                       "BindingInfo": {
                         "TableName": "t_object_analysis",
                         "ColumnName": "analysis_planned_date",
-                        "GUID": "54cdc2fa-3e14-4705-856f-20f01c6607e3"
+                        "GUID": "ba0c6648-183b-4fe9-bf7c-104535246451"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=解析予定日"
+                        "SerializeProperty": "=V_解析予定日"
                       }
                     }
                   ]
                 }
               ],
-              "ID": "b04648b2-417f-4f98-8311-1c86d8511ba3"
+              "ID": "69a1b454-8a37-4cbe-ae33-533c8c3190e1"
             }
           ]
         }

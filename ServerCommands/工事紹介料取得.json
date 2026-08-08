@@ -32,6 +32,10 @@
         {
           "Name": "P_工事会社ID",
           "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_工法ID",
+          "DataValidationInfo": {}
         }
       ]
     }
@@ -75,7 +79,7 @@
             }
           ],
           "Comments": "工事会社が無ければ終了",
-          "ID": "9b97f308-b2b2-4658-a833-1ed49efbccd8"
+          "ID": "c4b976a2-9cde-4831-9551-eadde8716d41"
         }
       ]
     },
@@ -118,7 +122,7 @@
             }
           ],
           "Comments": "工事委任でなければ終了",
-          "ID": "99754e04-4fb2-4c15-9ffa-2fd7e9fe0f4d"
+          "ID": "1e61d269-7e6c-4bc1-8e28-573f7def9222"
         }
       ]
     },
@@ -186,15 +190,32 @@
       "ConditionAndCommandPairList": [
         {
           "Condition": {
-            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-            "param": {
-              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
-              "ParamObject": {
-                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=工事会社既定値.工事紹介料フラグ"
+            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+            "SubConditions": [
+              {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=工事会社既定値.工事紹介料フラグ"
+                  }
+                },
+                "value": "0"
+              },
+              {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=工事会社既定値.紹介料単価設定フラグ"
+                  }
+                },
+                "value": "%Null%"
               }
-            },
-            "value": "0"
+            ],
+            "RelationType": 1
           },
           "CommandList": [
             {
@@ -219,7 +240,7 @@
               "Comments": "工事紹介料の既定が無ければ終了"
             }
           ],
-          "ID": "e0528903-57c8-4e0f-89a9-2e88c618d456"
+          "ID": "f51ad26b-06c1-44cb-9c7f-58bcf63e241b"
         }
       ]
     },
@@ -231,7 +252,7 @@
         "TableValueType": 1,
         "BindingInfos": [
           {
-            "GUID": "c3cbe0e6-8b67-4444-806f-f74e55e5418e",
+            "GUID": "82a9ab29-705a-4976-a05a-99ebfce0420c",
             "BindingInfo": {
               "TableName": "t_object_construction_estimate",
               "ColumnName": "estimate_requested_date",
@@ -269,6 +290,18 @@
             },
             {
               "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_construction_estimate",
+                "ColumnName": "construction_method_id",
+                "GUID": "cd642a3e-be7f-49bf-a084-be766e6f7949"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_工法ID"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
               "CompareType": 1,
               "ColumnBindingInfo": {
                 "TableName": "t_object_construction_estimate",
@@ -296,13 +329,13 @@
         },
         "TopCount": "1"
       },
-      "ID": "c7e60fbd7f79497a9557eb3313e2b906",
+      "ID": "48660677d82c41bdb9ac7c374ecd1dce",
       "Comments": "工事見積手配待ちを除く"
     },
     {
       "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
       "ParameterName": "V_見積依頼日",
-      "ID": "4657e4daaeab4745b566537c8d006971"
+      "ID": "119e1ef743dc438eb09adf1f74f3dbf1"
     },
     {
       "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -331,7 +364,7 @@
               "ID": "93eaa1105d0c43d8ade6d15988350e83"
             }
           ],
-          "ID": "21aa611e-32f3-4f14-a735-f05d3ea394eb"
+          "ID": "51bf7864-0665-4fa0-a273-069e2f2992e1"
         },
         {
           "CommandList": [
@@ -357,7 +390,7 @@
               "Comments": "工事見積に登録が無ければ終了"
             }
           ],
-          "ID": "f50263bf-5dc9-4fd0-96d2-fd7b9759b001"
+          "ID": "224361da-1a16-42ba-9a9a-8689757dff04"
         }
       ]
     },
@@ -403,7 +436,7 @@
               "Comments": "適用日に満たない場合は終了"
             }
           ],
-          "ID": "08c4ff08-ee62-4573-bd73-f6ec048cf9fd"
+          "ID": "c7a77dba-0c60-4d38-a11b-01a132d677ce"
         }
       ]
     },
@@ -652,7 +685,7 @@
                           ]
                         }
                       ],
-                      "ID": "2a1c0966-cb9a-43c4-a2af-cca7148efcb3"
+                      "ID": "8b6e24d7-4527-437d-8b61-001198da4b5d"
                     }
                   ]
                 }
@@ -681,7 +714,7 @@
             }
           ],
           "Comments": "申込事業者と工事会社が同じなら終了",
-          "ID": "e894d142-6da5-4eee-88a8-8d752cc588ca"
+          "ID": "66859a1f-0640-40b6-b6cd-5aba7332a075"
         }
       ]
     },
@@ -834,7 +867,7 @@
                   ]
                 }
               ],
-              "ID": "357ea411-f2f0-4aad-adca-f36aa0ad13b9"
+              "ID": "254a6976-c141-4463-9382-699812eef570"
             }
           ]
         }
@@ -1036,12 +1069,12 @@
                           ]
                         }
                       ],
-                      "ID": "aa71bb9f-398a-456f-9e5c-285c5dd13bdf"
+                      "ID": "8146343e-96c5-44fe-a310-18722b027ea3"
                     }
                   ]
                 }
               ],
-              "ID": "902740f9-59d7-41a1-83f7-8dcfa85eb11c"
+              "ID": "b12bf8ab-c99f-4352-99e2-32c53b31302d"
             }
           ]
         },
@@ -1145,12 +1178,12 @@
                           ]
                         }
                       ],
-                      "ID": "fce87332-c256-4c59-9234-1545910491b0"
+                      "ID": "f6865e63-05ae-448c-8339-475d16bfbd20"
                     }
                   ]
                 }
               ],
-              "ID": "1def8da7-8ee4-4e16-8c70-69ba2645865b"
+              "ID": "33817e0d-f47c-41d3-a115-c6d49323112c"
             }
           ]
         },
@@ -1254,12 +1287,12 @@
                           ]
                         }
                       ],
-                      "ID": "8a18259c-ce63-4e54-9ba9-b10d987005e0"
+                      "ID": "49e0baec-7a30-4cee-a9cc-3f0fe75dd3f6"
                     }
                   ]
                 }
               ],
-              "ID": "98b2156c-41af-42c0-8890-fe770980db8e"
+              "ID": "d681ab88-f711-45e9-ba79-223add9fc2d8"
             }
           ]
         }
@@ -1461,12 +1494,12 @@
                           ]
                         }
                       ],
-                      "ID": "9aa7286e-7ce2-4ed9-9a75-c414730c0e75"
+                      "ID": "76c06586-2ce3-4ee4-97aa-d8b9aa222db4"
                     }
                   ]
                 }
               ],
-              "ID": "fa8ffaa3-1446-498a-8c69-e266b065d4f2"
+              "ID": "138762bb-0164-454e-a77e-5464ea7c8111"
             }
           ]
         },
@@ -1570,12 +1603,12 @@
                           ]
                         }
                       ],
-                      "ID": "57a21064-fac4-4d8b-8c05-950a93d83c4c"
+                      "ID": "0c997de2-6e20-4fa2-bf15-cf927313019b"
                     }
                   ]
                 }
               ],
-              "ID": "53477c8c-3ee2-4720-b5dd-11b6e9bc94e2"
+              "ID": "038823d2-f123-4df7-9611-ce6264192ea2"
             }
           ]
         },
@@ -1679,12 +1712,12 @@
                           ]
                         }
                       ],
-                      "ID": "9a7bd1b2-5585-4827-a8be-65b80c25187b"
+                      "ID": "71e8d36d-5490-410d-aaed-29eb5cd67186"
                     }
                   ]
                 }
               ],
-              "ID": "69c9f5fd-ea77-48e6-95a2-00c43abe6710"
+              "ID": "0d4a03cf-8b82-42ea-b683-ca1e01a0b64e"
             }
           ]
         }
@@ -1873,12 +1906,12 @@
                           ]
                         }
                       ],
-                      "ID": "f60666c8-3f18-46c4-94eb-984e15d313a5"
+                      "ID": "439eaccd-866a-4f77-a53b-903e52e9b2fa"
                     }
                   ]
                 }
               ],
-              "ID": "3cf27b45-4e30-4453-a1b4-d2c019ca0b21"
+              "ID": "16f3c1c0-e617-424a-a33b-992fcc728e8c"
             }
           ]
         },
@@ -1978,12 +2011,12 @@
                           ]
                         }
                       ],
-                      "ID": "d1d26c73-1040-44aa-ac12-5c85273e58b2"
+                      "ID": "4e93d745-8a46-47b2-afe4-8b1196749939"
                     }
                   ]
                 }
               ],
-              "ID": "9be3f96f-556d-49d2-94c1-427ee7df36a7"
+              "ID": "1153acd9-e16d-4f5d-9dae-5cc482134cb4"
             }
           ]
         },
@@ -2042,7 +2075,7 @@
                     },
                     "NullFormulaValueQueryPolicy": 0
                   },
-                  "ID": "eddfb29299284e05b4ef3b69c6ee2d41"
+                  "ID": "562208d5ed814e5b908f9b1e062f8f4d"
                 },
                 {
                   "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -2083,12 +2116,12 @@
                           ]
                         }
                       ],
-                      "ID": "e4df6dca-63a0-45ae-bf48-411944d93cdb"
+                      "ID": "b87b80bd-0523-442e-b4b4-cdb12d354d96"
                     }
                   ]
                 }
               ],
-              "ID": "167067dc-9d35-45ab-80d4-ab83396473a9"
+              "ID": "c8839850-75b3-4fbf-b91b-8aa7224e8d7e"
             }
           ]
         }
@@ -2132,7 +2165,7 @@
               ]
             }
           ],
-          "ID": "bceff212-9301-41d7-a78c-c008586c02df"
+          "ID": "4eb85cf9-bf75-4a93-bba2-465e0f02e677"
         },
         {
           "CommandList": [
@@ -2162,7 +2195,7 @@
               ]
             }
           ],
-          "ID": "dc29d2a0-c768-42bd-a8da-020528338778"
+          "ID": "f7fa7393-069a-496e-b1d6-c4ac882cc008"
         }
       ]
     }

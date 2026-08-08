@@ -24,6 +24,30 @@
         {
           "Name": "P_依頼日",
           "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_申込ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_解析ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_新規解析フラグ",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_調査後解析フラグ",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_再解析フラグ",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_保留後解析フラグ",
+          "DataValidationInfo": {}
         }
       ]
     }
@@ -31,20 +55,73 @@
   "Commands": [
     {
       "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-      "ParameterName": "解析作業日数",
+      "ParameterName": "環境変数",
       "TableValue": {
         "TableName": "m_environment",
-        "OnlyGetValue": true,
-        "TableValueType": 0,
+        "TableValueType": 1,
         "BindingInfos": [
           {
-            "GUID": "1ecfcb5a-2600-48ed-80d0-0d633416ca75",
+            "GUID": "ecf9fe9b-cb90-4d0d-9852-8ff0d36a7ec8",
             "BindingInfo": {
               "TableName": "m_environment",
-              "ColumnName": "analysis_work_days",
-              "GUID": "1986e819-172c-4425-b2d1-b661784fb1f8"
+              "ColumnName": "analysis_survey_normal_day",
+              "GUID": "7a3f46d9-4a14-499a-8497-a4d0953c600a"
             },
-            "ColumnName": "analysis_work_days"
+            "ColumnName": "調査あり解析通常納品日数"
+          },
+          {
+            "GUID": "60bfd405-8144-4ddc-abf4-dbb5b00770cc",
+            "BindingInfo": {
+              "TableName": "m_environment",
+              "ColumnName": "analysis_no_survey_normal_day",
+              "GUID": "52816f42-842f-4e99-bcee-690058c9f7e9"
+            },
+            "ColumnName": "調査なし解析通常納品日数"
+          },
+          {
+            "GUID": "a873b7bb-507a-4759-9950-20869be49471",
+            "BindingInfo": {
+              "TableName": "m_environment",
+              "ColumnName": "analysis_survey_priority_day",
+              "GUID": "9ccc17e2-4d14-4e80-8a19-84e72ea5143a"
+            },
+            "ColumnName": "調査あり解析優先納品日数"
+          },
+          {
+            "GUID": "b38dee09-2f79-4746-8d23-abc100365783",
+            "BindingInfo": {
+              "TableName": "m_environment",
+              "ColumnName": "analysis_no_survey_priority_day",
+              "GUID": "4c106785-5efd-4a6d-b357-6f9c3ab72720"
+            },
+            "ColumnName": "調査なし解析優先納品日数"
+          },
+          {
+            "GUID": "cb02eb16-efa9-49eb-bc51-e9131950201c",
+            "BindingInfo": {
+              "TableName": "m_environment",
+              "ColumnName": "re_analysis_direct_judge_day",
+              "GUID": "4a9b301b-f625-45d9-ac82-6d6a99022029"
+            },
+            "ColumnName": "再解析直接基礎判定納品日数"
+          },
+          {
+            "GUID": "fdaef884-da10-480a-afa8-7feb319ac886",
+            "BindingInfo": {
+              "TableName": "m_environment",
+              "ColumnName": "re_analysis_improvement_judge_day",
+              "GUID": "cf9e433a-f783-43b6-9aad-a69013a286d7"
+            },
+            "ColumnName": "再解析地盤改良判定納品日数"
+          },
+          {
+            "GUID": "4edbc6bf-37fa-4a3b-9fd3-eac938b71c56",
+            "BindingInfo": {
+              "TableName": "m_environment",
+              "ColumnName": "analysis_release_from_hold_day",
+              "GUID": "f38f8eda-c09f-4d63-bfe0-387e0d47eeef"
+            },
+            "ColumnName": "解析保留解除後納品日数"
           }
         ],
         "SqlCondition": {
@@ -52,12 +129,633 @@
           "ColumnBindingInfo": {
             "TableName": "m_environment",
             "ColumnName": "environment_id",
-            "GUID": "51a5b915-bc28-46ea-bcc6-965f537a16fd"
+            "GUID": "509de5b7-03be-4d34-af2c-1832db6b2024"
           },
           "Value": "1"
-        }
+        },
+        "NullFormulaValueQueryPolicy": 0
       },
-      "ID": "0afbf95f379d41fbbe71bd37497d053d"
+      "ID": "dda6d37464734caa9ebeb94ccacb132e"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "申込情報",
+      "TableValue": {
+        "TableName": "t_object_order",
+        "TableValueType": 1,
+        "BindingInfos": [
+          {
+            "GUID": "8005ef23-a75d-46ce-a3ab-fccf0d1e8f9a",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "external_user_entry_flg",
+              "GUID": "8c264b38-3da5-444e-91a6-33ba9c0dcd41"
+            },
+            "ColumnName": "外部ユーザー登録フラグ"
+          },
+          {
+            "GUID": "969148a2-36bb-421b-b97a-1bd14772e581",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "order_type_id",
+              "GUID": "e0ad7b87-d655-4d0b-8374-4275afd1c560",
+              "RelationBinding": {
+                "RelatedTable": "m_order_type",
+                "RelatedColumn": "order_type_id",
+                "DisplayColumn": "groud_survey_flg"
+              }
+            },
+            "ColumnName": "調査フラグ"
+          },
+          {
+            "GUID": "de39b4b1-d9f9-471d-9f86-dc9183ac6382",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "group_id",
+              "GUID": "7f4ec32a-2e26-42d4-a909-f2b418f09f93",
+              "RelationBinding": {
+                "RelatedTable": "m_group",
+                "RelatedColumn": "group_id",
+                "DisplayColumn": "analysis_survey_special_day"
+              }
+            },
+            "ColumnName": "グループ_調査あり解析特別納品日数"
+          },
+          {
+            "GUID": "0a6a3109-b302-434f-a4b8-a95d56977e9d",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "group_id",
+              "GUID": "e96310fc-4da3-43e5-b3eb-dc3640f6ad8c",
+              "RelationBinding": {
+                "RelatedTable": "m_group",
+                "RelatedColumn": "group_id",
+                "DisplayColumn": "analysis_no_survey_special_day"
+              }
+            },
+            "ColumnName": "グループ_調査なし解析特別納品日数"
+          },
+          {
+            "GUID": "9f9c4a06-6d10-48a3-815f-2b714e66c282",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "builder_id",
+              "GUID": "5cf1befe-5ba4-45dd-bab9-53d06ca95677",
+              "RelationBinding": {
+                "RelatedTable": "m_customer",
+                "RelatedColumn": "customer_id",
+                "DisplayColumn": "customer_settings_id",
+                "NextRelationBinding": {
+                  "RelatedTable": "m_customer_settings",
+                  "RelatedColumn": "customer_settings_id",
+                  "DisplayColumn": "analysis_survey_special_day"
+                }
+              }
+            },
+            "ColumnName": "住宅事業者_調査あり解析特別納品日数"
+          },
+          {
+            "GUID": "341708c7-7bf6-400e-80b9-c218181fa44b",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "builder_id",
+              "GUID": "89eb58c6-b6eb-4095-a1d4-d18f80faecff",
+              "RelationBinding": {
+                "RelatedTable": "m_customer",
+                "RelatedColumn": "customer_id",
+                "DisplayColumn": "customer_settings_id",
+                "NextRelationBinding": {
+                  "RelatedTable": "m_customer_settings",
+                  "RelatedColumn": "customer_settings_id",
+                  "DisplayColumn": "analysis_no_survey_special_day"
+                }
+              }
+            },
+            "ColumnName": "住宅事業者_調査なし解析特別納品日数"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "t_object_order",
+            "ColumnName": "object_order_id",
+            "GUID": "b6997eda-f049-412b-9cdc-1e7494e664e1"
+          },
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_申込ID"
+          }
+        },
+        "NullFormulaValueQueryPolicy": 0
+      },
+      "ID": "3433ebfeab1d4c33861bb94e436155bd"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_新規解析フラグ"
+              }
+            },
+            "value": "1"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=申込情報.外部ユーザー登録フラグ"
+                      }
+                    },
+                    "value": "1"
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                      "ConditionAndCommandPairList": [
+                        {
+                          "Condition": {
+                            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                            "SubConditions": [
+                              {
+                                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                "param": {
+                                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                                  "ParamObject": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=申込情報.グループ_調査なし解析特別納品日数"
+                                  }
+                                },
+                                "value": "%Null%",
+                                "compareType": 1
+                              },
+                              {
+                                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                "param": {
+                                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                                  "ParamObject": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=申込情報.住宅事業者_調査なし解析特別納品日数"
+                                  }
+                                },
+                                "value": "%Null%",
+                                "compareType": 1
+                              }
+                            ],
+                            "RelationType": 1
+                          },
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                              "ParameterName": "解析作業日数",
+                              "ParameterValue": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=IF(申込情報.住宅事業者_調査なし解析特別納品日数<>\"\",申込情報.住宅事業者_調査なし解析特別納品日数,申込情報.グループ_調査なし解析特別納品日数)"
+                              },
+                              "ID": "49eabb55b36a4c1f9c8ffa28e685f73f"
+                            }
+                          ],
+                          "ID": "b74bce0f-18cb-437d-ad7a-4bee7aa518b2"
+                        },
+                        {
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                              "ParameterName": "解析作業日数",
+                              "ParameterValue": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=環境変数.調査なし解析優先納品日数"
+                              },
+                              "ID": "fef2cb28bd3848029de65e891c358f60"
+                            }
+                          ],
+                          "ID": "77315af7-9be4-42fa-b146-e57d9ad29bea"
+                        }
+                      ]
+                    }
+                  ],
+                  "ID": "dc6a5529-fd5d-4334-8dfa-3440b2cedb01"
+                },
+                {
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                      "ConditionAndCommandPairList": [
+                        {
+                          "Condition": {
+                            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                            "SubConditions": [
+                              {
+                                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                "param": {
+                                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                                  "ParamObject": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=申込情報.グループ_調査なし解析特別納品日数"
+                                  }
+                                },
+                                "value": "%Null%",
+                                "compareType": 1
+                              },
+                              {
+                                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                "param": {
+                                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                                  "ParamObject": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=申込情報.住宅事業者_調査なし解析特別納品日数"
+                                  }
+                                },
+                                "value": "%Null%",
+                                "compareType": 1
+                              }
+                            ],
+                            "RelationType": 1
+                          },
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                              "ParameterName": "解析作業日数",
+                              "ParameterValue": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=IF(申込情報.住宅事業者_調査なし解析特別納品日数<>\"\",申込情報.住宅事業者_調査なし解析特別納品日数,申込情報.グループ_調査なし解析特別納品日数)"
+                              },
+                              "ID": "2a481e51e67243bba361d1a3e8bfb910"
+                            }
+                          ],
+                          "ID": "f1892610-b3ff-40bf-ab72-c0b8693c4c88"
+                        },
+                        {
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                              "ParameterName": "解析作業日数",
+                              "ParameterValue": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=環境変数.調査なし解析通常納品日数"
+                              },
+                              "ID": "1201ac86fb2f47c785a516e753a26d8f"
+                            }
+                          ],
+                          "ID": "8616c4e7-0b8c-4817-af0c-86eef7708ac8"
+                        }
+                      ]
+                    }
+                  ],
+                  "ID": "d5a710f2-bc75-499c-8320-51ef37269f53"
+                }
+              ]
+            }
+          ],
+          "ID": "b92856c5-ca8f-4253-8f60-9ce0dd67a57e"
+        },
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_調査後解析フラグ"
+              }
+            },
+            "value": "1"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=申込情報.外部ユーザー登録フラグ"
+                      }
+                    },
+                    "value": "1"
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                      "ConditionAndCommandPairList": [
+                        {
+                          "Condition": {
+                            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                            "SubConditions": [
+                              {
+                                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                "param": {
+                                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                                  "ParamObject": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=申込情報.グループ_調査あり解析特別納品日数"
+                                  }
+                                },
+                                "value": "%Null%",
+                                "compareType": 1
+                              },
+                              {
+                                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                "param": {
+                                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                                  "ParamObject": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=申込情報.住宅事業者_調査あり解析特別納品日数"
+                                  }
+                                },
+                                "value": "%Null%",
+                                "compareType": 1
+                              }
+                            ],
+                            "RelationType": 1
+                          },
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                              "ParameterName": "解析作業日数",
+                              "ParameterValue": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=IF(申込情報.住宅事業者_調査あり解析特別納品日数<>\"\",申込情報.住宅事業者_調査あり解析特別納品日数,申込情報.グループ_調査あり解析特別納品日数)"
+                              },
+                              "ID": "de697be197f449d68398d85dd3b9d6d8"
+                            }
+                          ],
+                          "ID": "62451328-598b-4115-9e06-b9011a0f6dfa"
+                        },
+                        {
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                              "ParameterName": "解析作業日数",
+                              "ParameterValue": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=環境変数.調査あり解析優先納品日数"
+                              },
+                              "ID": "973dcf7439dd4c64a28d1caac8e7b83d"
+                            }
+                          ],
+                          "ID": "8ab3db1e-1223-41f3-b171-339822ff7dcb"
+                        }
+                      ]
+                    }
+                  ],
+                  "ID": "2f02da84-4130-4978-9de0-9a8f6d939835"
+                },
+                {
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                      "ConditionAndCommandPairList": [
+                        {
+                          "Condition": {
+                            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                            "SubConditions": [
+                              {
+                                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                "param": {
+                                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                                  "ParamObject": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=申込情報.グループ_調査あり解析特別納品日数"
+                                  }
+                                },
+                                "value": "%Null%",
+                                "compareType": 1
+                              },
+                              {
+                                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                "param": {
+                                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                                  "ParamObject": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=申込情報.住宅事業者_調査あり解析特別納品日数"
+                                  }
+                                },
+                                "value": "%Null%",
+                                "compareType": 1
+                              }
+                            ],
+                            "RelationType": 1
+                          },
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                              "ParameterName": "解析作業日数",
+                              "ParameterValue": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=IF(申込情報.住宅事業者_調査あり解析特別納品日数<>\"\",申込情報.住宅事業者_調査あり解析特別納品日数,申込情報.グループ_調査あり解析特別納品日数)"
+                              },
+                              "ID": "ca842e0da4404b238f58b2991e5c981e"
+                            }
+                          ],
+                          "ID": "823a700b-0040-4943-a37e-a16fe4766d4e"
+                        },
+                        {
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                              "ParameterName": "解析作業日数",
+                              "ParameterValue": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=環境変数.調査あり解析通常納品日数"
+                              },
+                              "ID": "f0b244d1fd164f23a989c13010437555"
+                            }
+                          ],
+                          "ID": "ab6dfa80-91f3-419d-9c5d-24e5752c19f8"
+                        }
+                      ]
+                    }
+                  ],
+                  "ID": "fae61bfb-5e79-4036-937a-f50fbec5d7a9"
+                }
+              ]
+            }
+          ],
+          "ID": "4d854c13-0ded-405c-9a75-ad14b244b645"
+        },
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_再解析フラグ"
+              }
+            },
+            "value": "1"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "解析情報",
+              "TableValue": {
+                "TableName": "t_object_analysis",
+                "TableValueType": 1,
+                "BindingInfos": [
+                  {
+                    "GUID": "7053f87a-9391-4aa2-905e-608cefd503d8",
+                    "BindingInfo": {
+                      "TableName": "t_object_analysis",
+                      "ColumnName": "analysis_result_id",
+                      "GUID": "3da3bacf-608d-4603-896a-ddffa927242b",
+                      "RelationBinding": {
+                        "RelatedTable": "m_analysis_result",
+                        "RelatedColumn": "analysis_result_id",
+                        "DisplayColumn": "compaction_judge_flg"
+                      }
+                    },
+                    "ColumnName": "地業転圧判定フラグ"
+                  },
+                  {
+                    "GUID": "d44f2fe0-c637-4334-b02d-82da766c4133",
+                    "BindingInfo": {
+                      "TableName": "t_object_analysis",
+                      "ColumnName": "analysis_result_id",
+                      "GUID": "55c25d4a-d0aa-4386-9d3c-a45b2719c1b8",
+                      "RelationBinding": {
+                        "RelatedTable": "m_analysis_result",
+                        "RelatedColumn": "analysis_result_id",
+                        "DisplayColumn": "construction_judge_flg"
+                      }
+                    },
+                    "ColumnName": "改良工事判定フラグ"
+                  }
+                ],
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "analysis_id",
+                    "GUID": "3ac05871-3582-48bc-abec-1c8e1efa1134"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_解析ID"
+                  }
+                },
+                "NullFormulaValueQueryPolicy": 0,
+                "TopCount": "1",
+                "OrderBySqlCondition": {
+                  "OrderByColumns": [
+                    {
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_analysis",
+                        "ColumnName": "analysis_id",
+                        "GUID": "59da9b2a-061e-4061-8847-d63f30e7efed"
+                      },
+                      "Order": 1
+                    }
+                  ]
+                }
+              },
+              "ID": "eac530c057824fd58a3943712384201d"
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "SubConditions": [
+                      {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=解析情報.地業転圧判定フラグ"
+                          }
+                        },
+                        "value": "0"
+                      },
+                      {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=解析情報.改良工事判定フラグ"
+                          }
+                        },
+                        "value": "0"
+                      }
+                    ]
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "解析作業日数",
+                      "ParameterValue": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=環境変数.再解析直接基礎判定納品日数"
+                      },
+                      "ID": "61a9774606454dec90c7ea8e0358ca3d"
+                    }
+                  ],
+                  "ID": "6afe6239-9089-4976-aaa8-0efe68f52380"
+                },
+                {
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "解析作業日数",
+                      "ParameterValue": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=環境変数.再解析地盤改良判定納品日数"
+                      },
+                      "ID": "51f873d6695e402aadb08137b556b8a7"
+                    }
+                  ],
+                  "ID": "ddcac082-2a82-409d-93d8-2f11d53aa072"
+                }
+              ]
+            }
+          ],
+          "ID": "73f72c85-0302-49e6-b228-75f3c02858c3"
+        },
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_保留後解析フラグ"
+              }
+            },
+            "value": "1"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "解析作業日数",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=環境変数.解析保留解除後納品日数"
+              },
+              "ID": "b05d30d6936f48caa7ba024f01416f82"
+            }
+          ],
+          "ID": "2867d06e-9cd3-41f2-83b8-c1815949c321"
+        }
+      ]
     },
     {
       "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -66,13 +764,22 @@
         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
         "SerializeProperty": "=P_依頼日"
       },
-      "ID": "b4c509cbc91641e987b9503b965250cc"
+      "ID": "4a3a123b21f84668b1fdb9fd00bcf85f"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "解析作業日数",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=解析作業日数+1"
+      },
+      "ID": "568e01c0419b4c0e904280c2b15b5d20"
     },
     {
       "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
       "ParameterName": "加算日数",
       "ParameterValue": "0",
-      "ID": "8691c030b88e461cadb37daa3b7e5a2d"
+      "ID": "5364eba9c4364d84b3b42d6b62fde158"
     },
     {
       "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
@@ -102,7 +809,7 @@
               }
             }
           },
-          "ID": "f1e72628367743e49b70727bf21fd0cd"
+          "ID": "80f1bfc54e28433e818da10a3e2be31b"
         },
         {
           "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -127,7 +834,7 @@
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                     "SerializeProperty": "=WEEKDAY(解析予定日)"
                   },
-                  "ID": "2ce39068e708450891d8dbeb5d90d7e4"
+                  "ID": "02765cc32d6840c7aee0585ef9ca1219"
                 },
                 {
                   "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -153,15 +860,15 @@
                             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                             "SerializeProperty": "=加算日数+1"
                           },
-                          "ID": "fc2e8fd4356d41e297ac309eec574b2c"
+                          "ID": "b682d0f76d544ff8827b3c2f0dd31ad6"
                         }
                       ],
-                      "ID": "d569668b-8bf5-4811-bb94-5048f9ed8b95"
+                      "ID": "f76affb2-e9d5-427d-abc6-50847e414146"
                     }
                   ]
                 }
               ],
-              "ID": "0a0a0779-4a33-4380-9b79-1dbe24879fdf"
+              "ID": "3968e814-a725-4d86-bf30-98891fed9f19"
             }
           ]
         },
@@ -198,7 +905,7 @@
                   ]
                 }
               ],
-              "ID": "f3b07a28-5f2b-4ef4-847c-b8e7848aded8"
+              "ID": "9f4af348-1bdb-4d50-ac94-f63ae2ece4c5"
             },
             {
               "CommandList": [
@@ -209,10 +916,10 @@
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                     "SerializeProperty": "=解析予定日+1"
                   },
-                  "ID": "faba21e2172a4e6ebb16b2e3a20e7839"
+                  "ID": "0287f947e78141a7a55523919573f4a0"
                 }
               ],
-              "ID": "373ece38-c26c-4085-962f-3bac815e8cdb"
+              "ID": "a32e73b1-f834-426f-a075-b00cbbee4068"
             }
           ]
         }

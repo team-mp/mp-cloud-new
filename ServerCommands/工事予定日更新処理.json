@@ -1,0 +1,248 @@
+{
+  "Name": "工事予定日更新処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_工事ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_工事予定開始日",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_工事予定終了日",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_工事予定日未定フラグ",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_工事予定日未定理由",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_次回工事予定確認日",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "登録更新ラベル取得",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_ユーザーID"
+            }
+          ],
+          "ReturnPropertiesTo": [
+            {
+              "ResultPropertyName": "R_ラベル名",
+              "ResultTo": {
+                "SerializeProperty": "V_最終更新ラベル"
+              }
+            },
+            {
+              "ResultPropertyName": "R_外部ユーザーフラグ"
+            },
+            {
+              "ResultPropertyName": "R_ユーザー名"
+            },
+            {
+              "ResultPropertyName": "R_所属会社名"
+            },
+            {
+              "ResultPropertyName": "R_メールアドレス"
+            }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        },
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_object_construction",
+          "ShowConfirm": false,
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object_construction",
+              "ColumnName": "construction_id",
+              "GUID": "56f6e48d-8c97-40a8-b778-b4d5850c2148"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_工事ID"
+            }
+          },
+          "UpdateBindingValues": [
+            {
+              "BindingInfo": {
+                "TableName": "t_object_construction",
+                "ColumnName": "scheduled_construction_sttdate",
+                "GUID": "fbfc4447-0d90-46a4-a767-062ce319b951"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_工事予定開始日"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_construction",
+                "ColumnName": "scheduled_construction_enddate",
+                "GUID": "fcb071c7-51aa-4878-b0a8-dba1ce7a42f0"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_工事予定終了日"
+              }
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_object_construction_ext",
+          "ShowConfirm": false,
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+            "SubConditions": [
+              {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_construction_ext",
+                  "ColumnName": "construction_id",
+                  "GUID": "6c327181-5f4a-46f8-91bf-61d94fd387a6"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_工事ID"
+                }
+              },
+              {
+                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                "SubConditions": [
+                  {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "CompareType": 1,
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_construction_ext",
+                      "ColumnName": "construction_schedule_undecided_flag",
+                      "GUID": "8d625c67-0d3e-4c08-befd-ec11145bc914"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_工事予定日未定フラグ"
+                    },
+                    "LeftBracket": 1
+                  },
+                  {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "CompareType": 1,
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_construction_ext",
+                      "ColumnName": "construction_schedule_undecided_reason",
+                      "GUID": "f19b55b0-7fde-403e-87af-284d24b49c44"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_工事予定日未定理由"
+                    }
+                  },
+                  {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "CompareType": 1,
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_construction_ext",
+                      "ColumnName": "next_schedule_confirmation_date",
+                      "GUID": "668518b3-390e-480c-a330-200b3b250792"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_次回工事予定確認日"
+                    },
+                    "RightBracket": 1
+                  }
+                ],
+                "RelationType": 1
+              }
+            ]
+          },
+          "UpdateBindingValues": [
+            {
+              "BindingInfo": {
+                "TableName": "t_object_construction_ext",
+                "ColumnName": "construction_schedule_undecided_flag",
+                "GUID": "94c78bfc-0751-4c44-a78e-221f1a1b5050"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_工事予定日未定フラグ"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_construction_ext",
+                "ColumnName": "construction_schedule_undecided_reason",
+                "GUID": "488a0a38-38fe-4afc-b6a4-f574cc08b042"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_工事予定日未定理由"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_construction_ext",
+                "ColumnName": "next_schedule_confirmation_date",
+                "GUID": "43ac249e-50c1-4e88-8ee1-46aee9a379c7"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_次回工事予定確認日"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_construction_ext",
+                "ColumnName": "schedule_undecided_update_label",
+                "GUID": "05d33ecf-2d82-4b3d-8f70-09a532ad2b0a"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=V_最終更新ラベル"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

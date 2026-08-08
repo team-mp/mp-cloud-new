@@ -22,74 +22,27 @@
       },
       "Parameters": [
         {
-          "Type": 1,
-          "ArrayParamItems": [
-            {
-              "Name": "P_申込ID",
-              "DataValidationInfo": {}
-            },
-            {
-              "Name": "P_物件ID",
-              "DataValidationInfo": {}
-            },
-            {
-              "Name": "P_ファイル属性ID",
-              "DataValidationInfo": {}
-            },
-            {
-              "Name": "P_工事会社ID",
-              "DataValidationInfo": {}
-            },
-            {
-              "Name": "P_工事工法ID",
-              "DataValidationInfo": {}
-            },
-            {
-              "Name": "P_工事報告者区分",
-              "DataValidationInfo": {}
-            },
-            {
-              "Name": "P_工事実施開始日",
-              "DataValidationInfo": {}
-            },
-            {
-              "Name": "P_工事実施終了日",
-              "DataValidationInfo": {}
-            },
-            {
-              "Name": "P_工事見積ID",
-              "DataValidationInfo": {}
-            },
-            {
-              "Name": "P_工法ID",
-              "DataValidationInfo": {}
-            },
-            {
-              "Name": "P_追加工法提案フラグ",
-              "DataValidationInfo": {}
-            },
-            {
-              "Name": "P_添付ファイル",
-              "DataValidationInfo": {}
-            },
-            {
-              "Name": "P_変換ファイル",
-              "DataValidationInfo": {}
-            },
-            {
-              "Name": "P_公開フラグ",
-              "DataValidationInfo": {}
-            }
-          ],
-          "Name": "P_添付ファイルリスト",
+          "Name": "P_申込ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_物件ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_工事見積ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_工事会社ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_工法ID",
           "DataValidationInfo": {}
         },
         {
           "Name": "P_差し替えフラグ",
-          "DataValidationInfo": {}
-        },
-        {
-          "Name": "P_差し替え元工事見積ID",
           "DataValidationInfo": {}
         },
         {
@@ -98,6 +51,10 @@
         },
         {
           "Name": "P_添付変更理由ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_差し替え添付IDs",
           "DataValidationInfo": {}
         },
         {
@@ -127,233 +84,237 @@
         {
           "Name": "P_設計審査至急理由",
           "DataValidationInfo": {}
+        },
+        {
+          "Type": 1,
+          "ArrayParamItems": [
+            {
+              "Name": "P_ファイル属性ID",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_添付ファイル",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_変換ファイル",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_公開フラグ",
+              "DataValidationInfo": {}
+            }
+          ],
+          "Name": "P_添付ファイルリスト",
+          "DataValidationInfo": {}
         }
       ]
     }
   ],
   "Commands": [
     {
-      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-      "ConditionAndCommandPairList": [
+      "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+      "ServerCommandName": "登録更新ラベル取得",
+      "Parameters": [
         {
-          "Condition": {
-            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-            "param": {
-              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
-              "ParamObject": {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_ユーザーID"
+        }
+      ],
+      "ReturnPropertiesTo": [
+        {
+          "ResultPropertyName": "R_ラベル名",
+          "ResultTo": {
+            "SerializeProperty": "最終更新ラベル"
+          }
+        },
+        {
+          "ResultPropertyName": "R_外部ユーザーフラグ"
+        },
+        {
+          "ResultPropertyName": "R_ユーザー名"
+        },
+        {
+          "ResultPropertyName": "R_所属会社名"
+        },
+        {
+          "ResultPropertyName": "R_メールアドレス"
+        }
+      ],
+      "RefreshAfterFinish": true,
+      "CheckDataValidation": true
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "添付情報",
+      "TableValue": {
+        "TableName": "t_object_attachment",
+        "BindingInfos": [
+          {
+            "GUID": "8350eee3-cf01-453e-b279-49c89e8f2b16",
+            "BindingInfo": {
+              "TableName": "t_object_attachment",
+              "ColumnName": "attachment_id",
+              "GUID": "52ce1868-ea50-49fe-a162-4251c0e9e39a"
+            },
+            "ColumnName": "添付ID"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+              "CompareType": 8,
+              "ColumnBindingInfo": {
+                "TableName": "t_object_attachment",
+                "ColumnName": "attachment_id",
+                "GUID": "bd86169b-dc15-4b9e-9032-f46bb6723fe7"
+              },
+              "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=P_差し替えフラグ"
+                "SerializeProperty": "=P_差し替え添付IDs"
               }
             },
-            "value": "1"
-          },
-          "CommandList": [
             {
-              "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
-              "ServerCommandName": "登録更新ラベル取得",
-              "Parameters": [
-                {
-                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                  "ParamName": "P_ユーザーID"
-                }
-              ],
-              "ReturnPropertiesTo": [
-                {
-                  "ResultPropertyName": "R_ラベル名",
-                  "ResultTo": {
-                    "SerializeProperty": "最終更新ラベル"
-                  }
-                },
-                {
-                  "ResultPropertyName": "R_外部ユーザーフラグ"
-                },
-                {
-                  "ResultPropertyName": "R_ユーザー名"
-                },
-                {
-                  "ResultPropertyName": "R_所属会社名"
-                },
-                {
-                  "ResultPropertyName": "R_メールアドレス"
-                }
-              ],
-              "RefreshAfterFinish": true,
-              "CheckDataValidation": true
-            },
-            {
-              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-              "ParameterName": "添付情報",
-              "TableValue": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
                 "TableName": "t_object_attachment",
-                "BindingInfos": [
-                  {
-                    "GUID": "15366ff6-be6c-4fbd-882e-8ffaec7aa065",
-                    "BindingInfo": {
-                      "TableName": "t_object_attachment",
-                      "ColumnName": "attachment_id",
-                      "GUID": "b0f59ad8-f12f-45b7-aa09-b4cb32b25473"
-                    },
-                    "ColumnName": "添付ID"
-                  }
-                ],
-                "SqlCondition": {
-                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                  "SubConditions": [
-                    {
-                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                      "ColumnBindingInfo": {
-                        "TableName": "t_object_attachment",
-                        "ColumnName": "construction_estimate_id",
-                        "GUID": "3baa1bd4-cc8f-49f7-950c-1f3d1aa1c6d6"
-                      },
-                      "Value": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=P_差し替え元工事見積ID"
-                      }
-                    },
-                    {
-                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                      "ColumnBindingInfo": {
-                        "TableName": "t_object_attachment",
-                        "ColumnName": "active_flg",
-                        "GUID": "024c4799-c256-4dd4-8c3b-696679de9e98"
-                      },
-                      "Value": "1"
-                    }
-                  ]
-                }
+                "ColumnName": "active_flg",
+                "GUID": "03c74ea1-e354-4490-9071-b2d09ab74d83"
               },
-              "ID": "b800b543983842e0be1f2f41e230ee66"
+              "Value": "1"
+            }
+          ]
+        },
+        "NullFormulaValueQueryPolicy": 0
+      },
+      "ID": "629073ae873747c88602f4122bd4cc71"
+    },
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=添付情報"
+        },
+        "LoopItemParamName": "Item"
+      },
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_object_attachment",
+          "ShowConfirm": false,
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object_attachment",
+              "ColumnName": "attachment_id",
+              "GUID": "2b0f48e3-4bf9-4ecb-8455-6a9d4028f5f5"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=Item.添付ID"
+            }
+          },
+          "UpdateBindingValues": [
+            {
+              "BindingInfo": {
+                "TableName": "t_object_attachment",
+                "ColumnName": "file_label",
+                "GUID": "e0f8ec11-8327-45b3-bc1a-a06e52e9c8af"
+              },
+              "Value": "2"
             },
             {
-              "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
-              "LoopInfo": {
-                "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
-                "LoopCount": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=添付情報"
-                },
-                "LoopItemParamName": "Item"
+              "BindingInfo": {
+                "TableName": "t_object_attachment",
+                "ColumnName": "publish_flg",
+                "GUID": "8bc2acb1-822a-45bb-b76b-fa5b6a1427df"
               },
-              "CommandList": [
-                {
-                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
-                  "TableName": "t_object_attachment",
-                  "ShowConfirm": false,
-                  "RowsToUpdate": 1,
-                  "RowsToUpdateCondition": {
-                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                    "ColumnBindingInfo": {
-                      "TableName": "t_object_attachment",
-                      "ColumnName": "attachment_id",
-                      "GUID": "2b0f48e3-4bf9-4ecb-8455-6a9d4028f5f5"
-                    },
-                    "Value": {
-                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=Item.添付ID"
-                    }
-                  },
-                  "UpdateBindingValues": [
-                    {
-                      "BindingInfo": {
-                        "TableName": "t_object_attachment",
-                        "ColumnName": "file_label",
-                        "GUID": "f715c81f-9ed3-4977-bcb3-b6f233cb3f2e"
-                      },
-                      "Value": "2"
-                    },
-                    {
-                      "BindingInfo": {
-                        "TableName": "t_object_attachment",
-                        "ColumnName": "publish_flg",
-                        "GUID": "41e31b40-e70c-43f1-bcf9-0f278a45ba77"
-                      },
-                      "Value": "0"
-                    },
-                    {
-                      "BindingInfo": {
-                        "TableName": "t_object_attachment",
-                        "ColumnName": "no_attachment_required_flg",
-                        "GUID": "ef1ca0c3-cf5a-4221-9c41-be7df30aa4b6"
-                      },
-                      "Value": "1"
-                    }
-                  ]
-                },
-                {
-                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
-                  "TableName": "t_object_attachment_comment",
-                  "UpdateType": "add",
-                  "ShowConfirm": false,
-                  "UpdateBindingValues": [
-                    {
-                      "BindingInfo": {
-                        "TableName": "t_object_attachment_comment",
-                        "ColumnName": "attachment_id",
-                        "GUID": "095c2047-1269-4f68-a64d-55f96dfd93c1"
-                      },
-                      "Value": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=Item.添付ID"
-                      }
-                    },
-                    {
-                      "BindingInfo": {
-                        "TableName": "t_object_attachment_comment",
-                        "ColumnName": "attachment_comment",
-                        "GUID": "12746fe9-45eb-491b-aa18-75a0bf2cfcbd"
-                      },
-                      "Value": "ファイルを差し替えしました"
-                    },
-                    {
-                      "BindingInfo": {
-                        "TableName": "t_object_attachment_comment",
-                        "ColumnName": "comment_user_id",
-                        "GUID": "8cb0fe67-b56d-460f-b101-cf41eb5ab7ac"
-                      },
-                      "Value": "%CurrentUser.user_id%"
-                    },
-                    {
-                      "BindingInfo": {
-                        "TableName": "t_object_attachment_comment",
-                        "ColumnName": "comment_datetime",
-                        "GUID": "a4bf54df-8043-4881-8e00-10cb02b8d7ef"
-                      },
-                      "Value": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=NOW()"
-                      }
-                    },
-                    {
-                      "BindingInfo": {
-                        "TableName": "t_object_attachment_comment",
-                        "ColumnName": "last_updated_label",
-                        "GUID": "ac968e0f-47ef-4240-a97d-01131e48a537"
-                      },
-                      "Value": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=最終更新ラベル"
-                      }
-                    }
-                  ],
-                  "ParamNameToSaveNewRowValue": "New添付コメント"
-                }
-              ]
+              "Value": "0"
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_attachment",
+                "ColumnName": "no_attachment_required_flg",
+                "GUID": "22722f7a-9caa-45d4-b275-71857b46942c"
+              },
+              "Value": "1"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_object_attachment_comment",
+          "UpdateType": "add",
+          "ShowConfirm": false,
+          "UpdateBindingValues": [
+            {
+              "BindingInfo": {
+                "TableName": "t_object_attachment_comment",
+                "ColumnName": "attachment_id",
+                "GUID": "ac84d973-864c-4b37-958c-ff395bb2a892"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=Item.添付ID"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_attachment_comment",
+                "ColumnName": "attachment_comment",
+                "GUID": "37c6b0d7-aa97-4d09-86a6-e2873f937787"
+              },
+              "Value": "ファイルを差し替えました"
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_attachment_comment",
+                "ColumnName": "comment_user_id",
+                "GUID": "9de12bc6-194d-4f7c-9d40-7a62a13ef1a2"
+              },
+              "Value": "%CurrentUser.user_id%"
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_attachment_comment",
+                "ColumnName": "comment_datetime",
+                "GUID": "32869b17-96e0-4de3-91d4-e568fc366c88"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=NOW()"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_attachment_comment",
+                "ColumnName": "last_updated_label",
+                "GUID": "556d1fcd-102d-4bd2-ae94-5b27e2da7821"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=最終更新ラベル"
+              }
             }
           ],
-          "ID": "9b90db42-3209-4c8b-9fd7-312ff6fcf44a"
+          "ParamNameToSaveNewRowValue": "New添付コメント"
         }
       ]
     },
     {
       "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
       "ParameterName": "V_新工事見積ID",
-      "ID": "0a1a8e3691d54e80ac413333f9a8b055"
+      "ID": "2dd4d120056b4b21b22be8654bbfacda"
     },
     {
       "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
       "ParameterName": "V_設計審査予定日",
-      "ID": "ed6b7f885f3e4cb38a4dbcbda1bf4a9a"
+      "ID": "ef3aa714407c40cc8a23f21dcf23d146"
     },
     {
       "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
@@ -392,7 +353,7 @@
                       "ParamName": "P_申込ID",
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=Item.P_申込ID"
+                        "SerializeProperty": "=P_申込ID"
                       }
                     },
                     {
@@ -400,7 +361,7 @@
                       "ParamName": "P_物件IDs",
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=Item.P_物件ID"
+                        "SerializeProperty": "=P_物件ID"
                       }
                     },
                     {
@@ -457,7 +418,7 @@
                       "ParamName": "P_工事見積ID",
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=Item.P_工事見積ID"
+                        "SerializeProperty": "=P_工事見積ID"
                       }
                     },
                     {
@@ -513,56 +474,36 @@
                       "ParamName": "P_工事会社ID",
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=Item.P_工事会社ID"
+                        "SerializeProperty": "=P_工事会社ID"
                       }
                     },
                     {
                       "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                      "ParamName": "P_工事工法ID",
-                      "Value": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=Item.P_工事工法ID"
-                      }
+                      "ParamName": "P_工事工法ID"
                     },
                     {
                       "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                      "ParamName": "P_工事報告者区分",
-                      "Value": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=Item.P_工事報告者区分"
-                      }
+                      "ParamName": "P_工事報告者区分"
                     },
                     {
                       "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                      "ParamName": "P_工事実施開始日",
-                      "Value": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=Item.P_工事実施開始日"
-                      }
+                      "ParamName": "P_工事実施開始日"
                     },
                     {
                       "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                      "ParamName": "P_工事実施終了日",
-                      "Value": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=Item.P_工事実施終了日"
-                      }
+                      "ParamName": "P_工事実施終了日"
                     },
                     {
                       "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
                       "ParamName": "P_工事見積工法ID",
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=Item.P_工法ID"
+                        "SerializeProperty": "=P_工法ID"
                       }
                     },
                     {
                       "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                      "ParamName": "P_追加工法提案フラグ",
-                      "Value": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=Item.P_追加工法提案フラグ"
-                      }
+                      "ParamName": "P_追加工法提案フラグ"
                     },
                     {
                       "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
@@ -715,12 +656,12 @@
                           ]
                         }
                       ],
-                      "ID": "889e985e-ac7e-4eaf-af3d-9806ab6804d0"
+                      "ID": "f5feb0ea-11f4-4ccd-a4a4-30478208e695"
                     }
                   ]
                 }
               ],
-              "ID": "3e5e8492-efcf-44e9-8f96-4ddc8455fafc"
+              "ID": "72015328-e849-41ba-a36b-23c6679c966d"
             }
           ]
         }

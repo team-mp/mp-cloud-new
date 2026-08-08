@@ -220,6 +220,8 @@
       }
     },
     "InLogicalVisibleIndexes": [
+      3,
+      4,
       34,
       35,
       36,
@@ -436,6 +438,7 @@
     "1,68": "▼地形条件（テキスト）",
     "1,76": "▼連棟物件",
     "3,3": "解析確定日",
+    "3,18": "解析保留日",
     "4,44": "▼解析済みフラグ",
     "4,52": "▼グループID",
     "4,60": "▼建物構造（テキスト）",
@@ -473,6 +476,7 @@
     "19,3": "設計接地圧",
     "19,14": "kN/㎡",
     "19,23": "地形条件",
+    "20,44": "解析保留フラグ",
     "20,70": "解析依頼日",
     "21,3": "考察",
     "21,70": "解析確定日",
@@ -538,12 +542,19 @@
     "2,52": "申込ID",
     "17,52": "ODATA(\"m_user_group?$select=user_group_key&$filter=soumu_user_flg eq 1\")",
     "2,76": "ODATA(\"v_object_multiple_count?$select=連棟カウント&$filter=物件ID eq \"&IF(ISBLANK(BY6),\"null\",BY6))",
-    "40,52": "ODATA(\"t_object_order?$select=latest_survey_id&$filter=object_order_id eq \"&IF(ISBLANK(BA3),\"null\",BA3))"
+    "40,52": "ODATA(\"t_object_order?$select=latest_survey_id&$filter=object_order_id eq \"&IF(ISBLANK(BA3),\"null\",BA3))",
+    "21,44": "IFERROR(VALUE(ODATA(\"m_analysis_status?$select=analysis_pending_flg&$filter=analysis_status_id eq \"&IF(ISBLANK(AH2),\"null\",AH2))),0)"
   },
   "ArrayFormulas": {
     "17,60,1,6": "IFERROR(ODATA(\"v_group_customer_default?$select=解析時見積添付フラグ,検討書必要フラグ,転圧判定不可フラグ,液状化判定必要フラグ,改良判定時基礎図必要フラグ,工事見積不要フラグ&$filter=グループID eq \"&IF(ISBLANK(BA6),\"null\",BA6)&\" and 顧客ID eq \"&IF(ISBLANK(BA9),\"null\",BA9)),\"\")"
   },
   "AttachInfos": {
+    "1,3": {
+      "RulesGuidList": [
+        "76ffcffb-96ea-42a9-a217-da0432aaf1b1",
+        "08afe2a6-af09-421f-9504-c96e4d9f7ffa"
+      ]
+    },
     "1,9": {
       "BindingInfo": {
         "TableName": "t_object_analysis",
@@ -555,7 +566,9 @@
         "TemplateKey": "_RS_LightLine_Translucent_SmallRoundCorner_Normal1"
       },
       "RulesGuidList": [
-        "6d344cba-3ac7-40e1-a50c-3edbf11d6421"
+        "6d344cba-3ac7-40e1-a50c-3edbf11d6421",
+        "9b952ceb-257e-4751-bdbe-a53b84091b5e",
+        "0f4eaaaa-671a-4b22-b6a4-0a6d87694c88"
       ]
     },
     "1,33": {
@@ -668,11 +681,6 @@
         "GUID": "f32dac4d-de70-4250-a117-acabd0f10925"
       }
     },
-    "3,3": {
-      "RulesGuidList": [
-        "a8cf72ec-351c-4d74-a55d-0c8fa6ddba50"
-      ]
-    },
     "3,9": {
       "BindingInfo": {
         "TableName": "t_object_analysis",
@@ -684,8 +692,7 @@
         "TemplateKey": "_RS_LightLine_Translucent_SmallRoundCorner_Normal1"
       },
       "RulesGuidList": [
-        "72cb2ff9-ced4-4074-bea6-2a8f28b4cb8c",
-        "03f32e44-9fd2-4393-ab18-23e5d07f3521"
+        "72cb2ff9-ced4-4074-bea6-2a8f28b4cb8c"
       ]
     },
     "3,16": {
@@ -699,6 +706,31 @@
       },
       "RulesGuidList": [
         "a55dc66b-dc16-4ddf-b1b7-6b1b6f7c9c9a"
+      ]
+    },
+    "3,18": {
+      "RulesGuidList": [
+        "509f8d67-90fe-4e8e-b33f-7933da78df84"
+      ]
+    },
+    "3,25": {
+      "BindingInfo": {
+        "TableName": "t_object_analysis",
+        "ColumnName": "analysis_ext_id",
+        "GUID": "a76b3365-9eb4-44db-b7fb-b873b6d5d1d7",
+        "RelationBinding": {
+          "RelatedTable": "t_object_analysis_ext",
+          "RelatedColumn": "analysis_ext_id",
+          "DisplayColumn": "analysis_pending_date"
+        }
+      },
+      "CellType": {
+        "$type": "Forguncy.DateCellType, ServerDesignerCommon",
+        "TemplateKey": "_RS_LightLine_Translucent_SmallRoundCorner_Normal1"
+      },
+      "RulesGuidList": [
+        "f3bacb6d-bc3c-468b-b4ff-4071ffb6728e",
+        "fc6512cd-c9fb-4d4f-989e-126486daa091"
       ]
     },
     "5,9": {
@@ -1038,7 +1070,7 @@
                             ]
                           }
                         ],
-                        "ID": "78b9340f-47f0-4031-9feb-f0f2cce709f3"
+                        "ID": "b6c3253a-6ec4-4de5-8926-af4ba85977dd"
                       },
                       {
                         "CommandList": [
@@ -1062,12 +1094,12 @@
                             ]
                           }
                         ],
-                        "ID": "2a14c32a-742c-48f9-a0c5-09b8b9ec044a"
+                        "ID": "07b9782f-1e2a-4d92-89d2-958dd446d06b"
                       }
                     ]
                   }
                 ],
-                "ID": "7ea82f24-b885-44dc-8bab-b43a60d35740"
+                "ID": "f3654f56-b9ee-4911-b044-7159a8bf7f3a"
               }
             ]
           }
@@ -1322,7 +1354,7 @@
                             ]
                           }
                         ],
-                        "ID": "43066ffc-e3a9-4231-96cc-a20c06c0265e"
+                        "ID": "5a4fc747-7535-4965-a609-ca66b6f43032"
                       },
                       {
                         "CommandList": [
@@ -1346,12 +1378,12 @@
                             ]
                           }
                         ],
-                        "ID": "8ead8ac0-ce20-4336-89ed-d7013aa6e257"
+                        "ID": "3a11eb20-c1c6-499e-9c7c-4f1c10a79b4b"
                       }
                     ]
                   }
                 ],
-                "ID": "5c8d4a20-db20-458d-a3f8-eb8dffd6e7b1"
+                "ID": "f059b836-2e97-410a-906e-11d5f02108b9"
               }
             ]
           }
@@ -1551,7 +1583,7 @@
                             ]
                           }
                         ],
-                        "ID": "cca97d62-7efc-4828-b1e2-b8b3a6321e3d"
+                        "ID": "1b75f6f0-719b-4624-a91b-9e9b8105cb4b"
                       },
                       {
                         "CommandList": [
@@ -1575,12 +1607,12 @@
                             ]
                           }
                         ],
-                        "ID": "05894658-cc73-4f24-91d9-8c05ffc7567a"
+                        "ID": "f1db70a7-4332-4d3f-ad58-5e7903a1d817"
                       }
                     ]
                   }
                 ],
-                "ID": "b04380dd-496b-4540-814d-d26e85f650a6"
+                "ID": "acb44fcd-b0c0-4865-83b1-e73ec789658b"
               }
             ]
           }
@@ -1788,7 +1820,7 @@
                     ]
                   }
                 ],
-                "ID": "f9adf981-b85f-486f-a26a-c6b8b3cc8d35"
+                "ID": "0db0f08d-892b-45b7-8d82-4d44cee0b4a6"
               }
             ]
           }
@@ -2155,7 +2187,7 @@
                             ]
                           }
                         ],
-                        "ID": "5aac47e3-0c17-41f3-9654-486dca911ec8"
+                        "ID": "009350be-3959-468b-824e-eb1713e73aad"
                       }
                     ]
                   },
@@ -2173,7 +2205,7 @@
                     "Comments": "フラグリセット"
                   }
                 ],
-                "ID": "563943bf-f899-4f5c-8876-edc7a82d460e"
+                "ID": "6365a680-8b36-4654-a4a4-d45fe2ee1f79"
               }
             ]
           }
@@ -3238,7 +3270,7 @@
               "TableValueType": 0,
               "BindingInfos": [
                 {
-                  "GUID": "1b216e8a-138e-4587-993d-623102a70799",
+                  "GUID": "901d0230-c69c-44f9-bd27-e617fe30b19e",
                   "BindingInfo": {
                     "TableName": "v_group_customer_default",
                     "ColumnName": "転圧判定不可フラグ",
@@ -3278,7 +3310,7 @@
               },
               "NullFormulaValueQueryPolicy": 0
             },
-            "ID": "963ea811210944ddadfeb8c44e1561e8"
+            "ID": "28c954c1c5c342f3b9fddde972f63d4d"
           },
           {
             "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -3355,12 +3387,12 @@
                             "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                           }
                         ],
-                        "ID": "eb8d80e3-d3ef-4ee4-bbf2-9b33fb66c5ab"
+                        "ID": "a3ad9b52-642c-4db2-8fe5-3b41b90102ea"
                       }
                     ]
                   }
                 ],
-                "ID": "f7689fbd-67ee-43a4-95ad-4111a181a738"
+                "ID": "8b9105c0-6ec1-4dc1-a235-c957269d3196"
               }
             ]
           },
@@ -3414,7 +3446,7 @@
                   }
                 ],
                 "Comments": "業務対応中の場合",
-                "ID": "b2eb0a3a-c941-422f-9ffe-fc8287bb34ef"
+                "ID": "75726411-bbb3-49e0-8e78-f9034b826fe3"
               }
             ]
           },
@@ -3586,6 +3618,18 @@
                         "Value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                           "SerializeProperty": "=解析登録_詳細!J4"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "c021680d-06f0-4579-9410-6798e13cf1aa",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!Z4"
                         }
                       },
                       {
@@ -3997,7 +4041,7 @@
                     "ReloadData": true
                   }
                 ],
-                "ID": "8390302d-1888-429f-9ff1-5e8471f005ab"
+                "ID": "0fc5b635-f0ab-4f0e-859a-03d480250bb8"
               }
             ]
           }
@@ -4093,7 +4137,7 @@
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "275b97f7-c944-4f95-bf9a-0d6a5f4e9b0a"
+                "ID": "dcb3388f-4acf-4cc5-bcbd-d0ef82b9fbc4"
               }
             ]
           },
@@ -4171,7 +4215,7 @@
                             "ReloadData": true
                           }
                         ],
-                        "ID": "74e6c1d6-1eca-4210-bc1f-47c7f89d2082"
+                        "ID": "eb1fbf66-5c9b-40e6-bb47-bf12e9fff578"
                       },
                       {
                         "CommandList": [
@@ -4183,12 +4227,12 @@
                             }
                           }
                         ],
-                        "ID": "94186f54-e009-4d90-a39e-90c8b0012c67"
+                        "ID": "40d082fc-b789-41d9-817e-8ea7f02fa3f2"
                       }
                     ]
                   }
                 ],
-                "ID": "c7587c26-e19f-4373-8780-bf7b4729a8d8"
+                "ID": "478ce647-da9d-4b89-85ab-1f32b0aafd15"
               }
             ]
           }
@@ -4976,10 +5020,21 @@
       "3,3": 3,
       "3,9": 0,
       "3,16": 3,
+      "3,18": 2,
+      "3,19": 3,
+      "3,20": 3,
+      "3,21": 3,
+      "3,22": 3,
+      "3,23": 3,
+      "3,24": 3,
+      "3,25": 0,
       "3,26": 3,
       "3,27": 3,
       "3,28": 3,
-      "3,37": 3,
+      "3,29": 3,
+      "3,30": 3,
+      "3,31": 3,
+      "3,32": 3,
       "3,60": 3,
       "3,61": 3,
       "3,62": 3,
@@ -5712,6 +5767,7 @@
       "21,8": 3,
       "21,9": 16,
       "21,43": 16,
+      "21,44": 4,
       "21,48": 3,
       "21,49": 3,
       "21,55": 3,
@@ -6944,7 +7000,9 @@
     "27,23,1,8",
     "46,76,1,5",
     "44,76,1,5",
-    "45,76,1,5"
+    "45,76,1,5",
+    "21,44,1,3",
+    "3,25,1,8"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -6984,7 +7042,7 @@
           "TableValueType": 1,
           "BindingInfos": [
             {
-              "GUID": "c095ead1-6188-4859-9eed-96fd3a68b29d",
+              "GUID": "3a9c001b-3071-4e79-9dff-1dce79653d46",
               "BindingInfo": {
                 "TableName": "t_object_analysis",
                 "ColumnName": "analysis_id",
@@ -6993,7 +7051,7 @@
               "ColumnName": "解析ID"
             },
             {
-              "GUID": "4f17bae7-3117-433b-a9f4-3865d8361995",
+              "GUID": "4b6ac486-4fbc-4c5c-b4f0-820c64966307",
               "BindingInfo": {
                 "TableName": "t_object_analysis",
                 "ColumnName": "analysis_ext_id",
@@ -7007,7 +7065,7 @@
               "ColumnName": "解析調査方法ID"
             },
             {
-              "GUID": "7d433a9c-a597-4599-ae6a-c9b6efd14d07",
+              "GUID": "d1d5d449-8811-447a-998f-725cc5ea4ad9",
               "BindingInfo": {
                 "TableName": "t_object_analysis",
                 "ColumnName": "analysis_ext_id",
@@ -7070,7 +7128,7 @@
             ]
           }
         },
-        "ID": "561c7801f8544ff38433b9abd420c5f9"
+        "ID": "2e8f4714afef4cb39a6fd56a089b8779"
       },
       {
         "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
@@ -7113,7 +7171,7 @@
                   "TableValueType": 1,
                   "BindingInfos": [
                     {
-                      "GUID": "9ce51eee-aa8c-441a-ade4-417dd1153d6a",
+                      "GUID": "de7b09fb-e800-4547-b42c-eb4defc9b87a",
                       "BindingInfo": {
                         "TableName": "t_object_order",
                         "ColumnName": "group_id",
@@ -7122,7 +7180,7 @@
                       "ColumnName": "グループID"
                     },
                     {
-                      "GUID": "71466bed-5fa0-4563-aa54-92ad9110f795",
+                      "GUID": "20abed19-73ab-441e-8611-d8a16d5ace0d",
                       "BindingInfo": {
                         "TableName": "t_object_order",
                         "ColumnName": "builder_id",
@@ -7131,7 +7189,7 @@
                       "ColumnName": "住宅事業者ID"
                     },
                     {
-                      "GUID": "7d59e0c9-85cb-4bff-bc6e-6996c09c4059",
+                      "GUID": "89ad9885-421f-4b5e-8994-076080a76438",
                       "BindingInfo": {
                         "TableName": "t_object_order",
                         "ColumnName": "builder_id",
@@ -7145,7 +7203,7 @@
                       "ColumnName": "住宅事業者名"
                     },
                     {
-                      "GUID": "7466d1e6-c7e7-47e9-b6c9-582c7e6ff530",
+                      "GUID": "ecea2a98-f016-4e28-80a5-f9564ed376c3",
                       "BindingInfo": {
                         "TableName": "t_object_order",
                         "ColumnName": "order_type_id",
@@ -7159,7 +7217,7 @@
                       "ColumnName": "調査フラグ"
                     },
                     {
-                      "GUID": "0fc8be70-53e0-43de-9744-6c8a8ce41610",
+                      "GUID": "e21acc62-afd3-44ae-8503-f56572b287c7",
                       "BindingInfo": {
                         "TableName": "t_object_order",
                         "ColumnName": "order_type_id",
@@ -7173,7 +7231,7 @@
                       "ColumnName": "解析フラグ"
                     },
                     {
-                      "GUID": "777b3ddd-31ae-4351-8630-1270e783bfd4",
+                      "GUID": "5e00a6c2-a616-4297-ad71-58e8b548bd7f",
                       "BindingInfo": {
                         "TableName": "t_object_order",
                         "ColumnName": "order_type_id",
@@ -7187,7 +7245,7 @@
                       "ColumnName": "保証フラグ"
                     },
                     {
-                      "GUID": "14e52d9c-03e9-4857-92c1-899fc9a16bce",
+                      "GUID": "39416525-356d-4ba2-bf0d-134488a8c43c",
                       "BindingInfo": {
                         "TableName": "t_object_order",
                         "ColumnName": "object_id",
@@ -7201,7 +7259,7 @@
                       "ColumnName": "物件番号"
                     },
                     {
-                      "GUID": "23950ac5-893e-46ae-b11d-01003197bd13",
+                      "GUID": "611ab676-aa6a-4225-bdd8-318199efba78",
                       "BindingInfo": {
                         "TableName": "t_object_order",
                         "ColumnName": "object_id",
@@ -7215,7 +7273,7 @@
                       "ColumnName": "建物構造ID"
                     },
                     {
-                      "GUID": "01fce960-fd64-48c3-8bce-f48fce6502f9",
+                      "GUID": "0ba9c6b6-532c-4940-bd92-e544e1892ed2",
                       "BindingInfo": {
                         "TableName": "t_object_order",
                         "ColumnName": "object_id",
@@ -7229,7 +7287,7 @@
                       "ColumnName": "基礎形状ID"
                     },
                     {
-                      "GUID": "8831bdde-a221-48e9-a2d9-78e921d3a974",
+                      "GUID": "ac4ce6b6-a24d-453c-84f2-7e7ab1c93b58",
                       "BindingInfo": {
                         "TableName": "t_object_order",
                         "ColumnName": "object_id",
@@ -7256,7 +7314,7 @@
                     }
                   }
                 },
-                "ID": "d75209b333154e21b3f898e477d9243a"
+                "ID": "2736addca1c5412f948a392cc745e045"
               },
               {
                 "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -7424,22 +7482,6 @@
                   {
                     "TargetCells": {
                       "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=解析登録_詳細!J2"
-                    },
-                    "Value": {
-                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=TODAY()"
-                    }
-                  }
-                ],
-                "Comments": "解析予定日に今日日付セット"
-              },
-              {
-                "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
-                "PropertyItemsList": [
-                  {
-                    "TargetCells": {
-                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                       "SerializeProperty": "=解析登録_詳細!J6"
                     },
                     "Value": {
@@ -7534,15 +7576,27 @@
                         ]
                       }
                     ],
-                    "ID": "cbfbeeff-7131-41bd-9da1-b8c3f745a9fe"
+                    "ID": "c78d23c8-2260-48e8-9910-c177d33a7176"
                   }
                 ]
               }
             ],
-            "ID": "d0bd13c7-3abf-478a-acf9-2fe748ec59dd"
+            "ID": "4de2eced-2196-46be-912d-ec01b2e7cae5"
           },
           {
             "CommandList": [
+              {
+                "$type": "Forguncy.Model.SetRowColumnLayoutCommand, ServerDesignerCommon",
+                "PropertyItemsList": [
+                  {
+                    "Location": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=解析登録_詳細!4:5"
+                    },
+                    "Value": true
+                  }
+                ]
+              },
               {
                 "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
                 "ConditionAndCommandPairList": [
@@ -7576,7 +7630,7 @@
                         ]
                       }
                     ],
-                    "ID": "3288d15b-eed3-4bc8-8392-b495bc9a3ae1"
+                    "ID": "30f211c3-0d03-4c32-9c8e-ca99908135a3"
                   }
                 ],
                 "Comments": "解析担当者ID"
@@ -7614,7 +7668,7 @@
                         ]
                       }
                     ],
-                    "ID": "9ca4854c-3cdc-4773-b673-89af0622febc"
+                    "ID": "62413522-7696-424e-ab01-de63bf06af0f"
                   }
                 ],
                 "Comments": "建物構造ID"
@@ -7652,7 +7706,7 @@
                         ]
                       }
                     ],
-                    "ID": "15f37a71-02a4-4ac6-91e2-0ab3e10e7620"
+                    "ID": "f2d1894a-7cc8-4a4c-ab14-0e9fd0fe6744"
                   }
                 ],
                 "Comments": "基礎形状ID"
@@ -7690,13 +7744,13 @@
                         ]
                       }
                     ],
-                    "ID": "9ccdd339-1f64-46aa-9f26-5fcbe3b800d9"
+                    "ID": "2bf10e78-0e94-4ad9-8743-b9257651b469"
                   }
                 ],
                 "Comments": "基礎形状ID"
               }
             ],
-            "ID": "24c1a1b6-f85b-4135-9708-fba5e38c0e61"
+            "ID": "85a4a5ab-cdaf-49bd-a794-41f9a9291397"
           }
         ]
       },
@@ -7732,7 +7786,7 @@
               }
             ],
             "Comments": "最新調査IDがある場合",
-            "ID": "6a1c9a00-2472-4955-92d8-6278531224a5"
+            "ID": "e1c0be89-02c8-455b-a50e-91b787553661"
           }
         ]
       },
@@ -7783,7 +7837,7 @@
                 ]
               }
             ],
-            "ID": "a616412a-29aa-4018-9c85-cc703ba1f393"
+            "ID": "e9b22035-e2b9-45e6-be96-a7089af45ab1"
           }
         ]
       }
@@ -7812,17 +7866,110 @@
           "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
           "Formula": {
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=解析登録_詳細!$BA$12=1"
+            "SerializeProperty": "=解析登録_詳細!$AS$22=1"
           },
-          "Priority": 40,
-          "GUID": "a8dfd428-915a-434f-80a4-6f1f7c33f9d6",
+          "Priority": 48,
+          "GUID": "0f4eaaaa-671a-4b22-b6a4-0a6d87694c88",
           "StyleInfo": {
             "Underline": null,
             "Strikethrough": null
           },
-          "IsDisabled": true,
-          "IsInvisible": false,
+          "IsDisabled": false,
+          "IsInvisible": true,
           "IsReadOnly": false
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=解析登録_詳細!$AS$22=1"
+          },
+          "Priority": 47,
+          "GUID": "08afe2a6-af09-421f-9504-c96e4d9f7ffa",
+          "StyleInfo": {
+            "Underline": null,
+            "Strikethrough": null
+          },
+          "IsDisabled": false,
+          "IsInvisible": true,
+          "IsReadOnly": false
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=解析登録_詳細!$AS$22=0"
+          },
+          "Priority": 46,
+          "GUID": "fc6512cd-c9fb-4d4f-989e-126486daa091",
+          "StyleInfo": {
+            "Underline": null,
+            "Strikethrough": null
+          },
+          "IsDisabled": false,
+          "IsInvisible": true,
+          "IsReadOnly": false
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=解析登録_詳細!$AS$22=0"
+          },
+          "Priority": 45,
+          "GUID": "509f8d67-90fe-4e8e-b33f-7933da78df84",
+          "StyleInfo": {
+            "Underline": null,
+            "Strikethrough": null
+          },
+          "IsDisabled": false,
+          "IsInvisible": true,
+          "IsReadOnly": false
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=解析登録_詳細!解析ID=\"\""
+          },
+          "Priority": 44,
+          "GUID": "9b952ceb-257e-4751-bdbe-a53b84091b5e",
+          "StyleInfo": {
+            "Underline": null,
+            "Strikethrough": null
+          },
+          "IsDisabled": false,
+          "IsInvisible": true,
+          "IsReadOnly": false
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=解析登録_詳細!解析ID=\"\""
+          },
+          "Priority": 43,
+          "GUID": "76ffcffb-96ea-42a9-a217-da0432aaf1b1",
+          "StyleInfo": {
+            "Underline": null,
+            "Strikethrough": null
+          },
+          "IsDisabled": false,
+          "IsInvisible": true,
+          "IsReadOnly": false
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.CellValueRule, ServerDesignerCommon",
+          "Operator": 3,
+          "Value1": "=1",
+          "Priority": 42,
+          "GUID": "18693b96-fc82-4dc8-a026-389db227f58b",
+          "StyleInfo": {
+            "FontWeight": "Bold",
+            "Foreground": "Text 1 0",
+            "Underline": null,
+            "Strikethrough": null
+          }
         },
         {
           "$type": "Forguncy.ConditionFormat.CellValueRule, ServerDesignerCommon",
@@ -7843,7 +7990,39 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=解析登録_詳細!$BA$12=1"
           },
+          "Priority": 40,
+          "GUID": "7c2cb60f-c8ce-4e44-b110-a9b127aae3be",
+          "StyleInfo": {
+            "Underline": null,
+            "Strikethrough": null
+          },
+          "IsDisabled": true,
+          "IsInvisible": false,
+          "IsReadOnly": false
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=解析登録_詳細!$BA$12=1"
+          },
           "Priority": 39,
+          "GUID": "a8dfd428-915a-434f-80a4-6f1f7c33f9d6",
+          "StyleInfo": {
+            "Underline": null,
+            "Strikethrough": null
+          },
+          "IsDisabled": true,
+          "IsInvisible": false,
+          "IsReadOnly": false
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=解析登録_詳細!$BA$12=1"
+          },
+          "Priority": 38,
           "GUID": "89c9882e-3de3-488e-a65c-9ac4f31136bc",
           "StyleInfo": {
             "Underline": null,
@@ -7859,7 +8038,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=解析登録_詳細!$BA$12=1"
           },
-          "Priority": 38,
+          "Priority": 37,
           "GUID": "1eaf5cc1-b7e5-405a-ba7b-69052af744f9",
           "StyleInfo": {
             "Underline": null,
@@ -7875,7 +8054,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=VALUE(解析登録_詳細!改良判定時基礎図必要フラグ)=0"
           },
-          "Priority": 37,
+          "Priority": 36,
           "GUID": "65c32358-ad55-431d-b5df-32680d9343cf",
           "StyleInfo": {
             "Underline": null,
@@ -7891,7 +8070,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=VALUE(解析登録_詳細!改良判定時基礎図必要フラグ)=0"
           },
-          "Priority": 36,
+          "Priority": 35,
           "GUID": "861e39fb-5370-41a0-ae4a-b3fc71d0cbf9",
           "StyleInfo": {
             "Underline": null,
@@ -7907,7 +8086,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=解析登録_詳細!$BA$12=1"
           },
-          "Priority": 35,
+          "Priority": 34,
           "GUID": "7c664004-98c2-4c4e-bb26-97cde18622ab",
           "StyleInfo": {
             "Underline": null,
@@ -7923,7 +8102,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=VALUE(解析登録_詳細!$AS$6)=1"
           },
-          "Priority": 34,
+          "Priority": 33,
           "GUID": "ef462b68-42d5-4838-9d0a-1aa63dc007f2",
           "StyleInfo": {
             "Underline": null,
@@ -7939,7 +8118,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=解析登録_詳細!$BA$15=1"
           },
-          "Priority": 33,
+          "Priority": 32,
           "GUID": "6fbd44ed-8b5b-4462-8862-eca179f2baf3",
           "StyleInfo": {
             "Underline": null,
@@ -7955,7 +8134,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=ISBLANK(解析登録_詳細!$AS$3)"
           },
-          "Priority": 32,
+          "Priority": 31,
           "GUID": "e131b02a-e62c-4d75-83c3-7fc539dd75b2",
           "StyleInfo": {
             "Underline": null,
@@ -7971,7 +8150,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=ISBLANK(解析登録_詳細!$AS$3)"
           },
-          "Priority": 31,
+          "Priority": 30,
           "GUID": "106a5d92-efa3-4790-95d9-d902dddd2808",
           "StyleInfo": {
             "Underline": null,
@@ -7987,7 +8166,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=VALUE(解析登録_詳細!$AS$6)=1"
           },
-          "Priority": 30,
+          "Priority": 29,
           "GUID": "e8373167-bd56-4cf8-a878-188e6b5b05a0",
           "StyleInfo": {
             "Underline": null,
@@ -8003,7 +8182,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=ISBLANK(解析登録_詳細!$AS$3)"
           },
-          "Priority": 29,
+          "Priority": 28,
           "GUID": "3b2b41aa-5514-46b3-a5da-852e53bf93e8",
           "StyleInfo": {
             "Underline": null,
@@ -8019,7 +8198,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=VALUE(解析登録_詳細!$AS$6)=1"
           },
-          "Priority": 28,
+          "Priority": 27,
           "GUID": "943b11ea-0065-4e03-9aa6-11d1710ea6f8",
           "StyleInfo": {
             "Underline": null,
@@ -8035,7 +8214,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=解析登録_詳細!$BA$12=1"
           },
-          "Priority": 27,
+          "Priority": 26,
           "GUID": "f4e38f02-1472-4ad6-a02b-5b1da004e1b2",
           "StyleInfo": {
             "Underline": null,
@@ -8051,7 +8230,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=解析登録_詳細!$BA$12=1"
           },
-          "Priority": 26,
+          "Priority": 25,
           "GUID": "fa98075c-55dc-450a-926b-eca16bc753ce",
           "StyleInfo": {
             "Underline": null,
@@ -8067,7 +8246,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=解析登録_詳細!$BA$12=1"
           },
-          "Priority": 25,
+          "Priority": 24,
           "GUID": "6b8d6d28-aced-4dab-8d0e-b128fc706301",
           "StyleInfo": {
             "Underline": null,
@@ -8083,7 +8262,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=解析登録_詳細!$BA$12=1"
           },
-          "Priority": 24,
+          "Priority": 23,
           "GUID": "205b1c8f-a219-4aa9-b2de-69463bbeaaff",
           "StyleInfo": {
             "Underline": null,
@@ -8099,7 +8278,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=解析登録_詳細!$BA$12=1"
           },
-          "Priority": 23,
+          "Priority": 22,
           "GUID": "544c0310-8793-4642-b42b-a4fd2cc90407",
           "StyleInfo": {
             "Underline": null,
@@ -8115,7 +8294,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=解析登録_詳細!$BA$12=1"
           },
-          "Priority": 22,
+          "Priority": 21,
           "GUID": "938007c1-06b0-4d2b-b8d8-5061644fb23c",
           "StyleInfo": {
             "Underline": null,
@@ -8131,7 +8310,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=解析登録_詳細!$BA$12=1"
           },
-          "Priority": 21,
+          "Priority": 20,
           "GUID": "b2b96d79-8f15-4417-b682-70c4b506c4a0",
           "StyleInfo": {
             "Underline": null,
@@ -8147,7 +8326,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=解析登録_詳細!$BA$12=1"
           },
-          "Priority": 20,
+          "Priority": 19,
           "GUID": "9fb76756-4a2c-4fb3-a765-db3704676313",
           "StyleInfo": {
             "Underline": null,
@@ -8163,7 +8342,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=解析登録_詳細!$BA$12=1"
           },
-          "Priority": 19,
+          "Priority": 18,
           "GUID": "c16895f1-f5d9-4728-9781-478600f83f77",
           "StyleInfo": {
             "Underline": null,
@@ -8179,7 +8358,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=VALUE(解析登録_詳細!$AS$6)=1"
           },
-          "Priority": 18,
+          "Priority": 17,
           "GUID": "ad61fbe2-ef53-4ee9-b3b4-705de3010880",
           "StyleInfo": {
             "Underline": null,
@@ -8195,7 +8374,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=解析登録_詳細!$BA$12=1"
           },
-          "Priority": 17,
+          "Priority": 16,
           "GUID": "bdd99b80-951b-404d-90ac-af769e0993fe",
           "StyleInfo": {
             "Underline": null,
@@ -8211,7 +8390,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=解析登録_詳細!$BA$12=1"
           },
-          "Priority": 16,
+          "Priority": 15,
           "GUID": "64bbacf2-a9ac-41e7-a80d-515b72c43ee9",
           "StyleInfo": {
             "Underline": null,
@@ -8227,7 +8406,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=解析登録_詳細!$BA$12=1"
           },
-          "Priority": 15,
+          "Priority": 14,
           "GUID": "ef155bdd-b893-438e-af45-070ccfdde1e7",
           "StyleInfo": {
             "Underline": null,
@@ -8243,7 +8422,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=解析登録_詳細!$BA$12=1"
           },
-          "Priority": 14,
+          "Priority": 13,
           "GUID": "71f7a9da-680b-406a-a331-fb0764a7ad75",
           "StyleInfo": {
             "Underline": null,
@@ -8259,7 +8438,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=解析登録_詳細!$BA$12=1"
           },
-          "Priority": 13,
+          "Priority": 12,
           "GUID": "23388832-8688-44dd-8eec-072d4ced8e38",
           "StyleInfo": {
             "Underline": null,
@@ -8275,7 +8454,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=OR(解析登録_詳細!$BA$12=1,解析登録_詳細!$BQ$15=1)"
           },
-          "Priority": 12,
+          "Priority": 11,
           "GUID": "3a7b6582-ecf1-4e8b-a7c6-114df9b3e84f",
           "StyleInfo": {
             "Underline": null,
@@ -8291,7 +8470,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=OR(解析登録_詳細!$BA$12=1,解析登録_詳細!$BQ$15=1)"
           },
-          "Priority": 11,
+          "Priority": 10,
           "GUID": "b408be11-6521-44d2-b104-b0af6b20af9a",
           "StyleInfo": {
             "Underline": null,
@@ -8307,7 +8486,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=解析登録_詳細!$BA$12=1"
           },
-          "Priority": 10,
+          "Priority": 9,
           "GUID": "01bb67dc-fa28-4fc8-9ec4-77621c7bb113",
           "StyleInfo": {
             "Underline": null,
@@ -8321,7 +8500,7 @@
           "$type": "Forguncy.ConditionFormat.CellValueRule, ServerDesignerCommon",
           "Operator": 3,
           "Value1": "=1",
-          "Priority": 9,
+          "Priority": 8,
           "GUID": "4a8f0a88-35a4-4746-889f-3db6fe3bb706",
           "StyleInfo": {
             "FontWeight": "Bold",
@@ -8336,7 +8515,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=解析登録_詳細!$BA$12=1"
           },
-          "Priority": 8,
+          "Priority": 7,
           "GUID": "a165d67b-f6a5-4be3-87aa-9f95f092f75d",
           "StyleInfo": {
             "Underline": null,
@@ -8350,7 +8529,7 @@
           "$type": "Forguncy.ConditionFormat.CellValueRule, ServerDesignerCommon",
           "Operator": 3,
           "Value1": "=1",
-          "Priority": 7,
+          "Priority": 6,
           "GUID": "33dc474e-18f3-4ec4-b33a-75c686fff46e",
           "StyleInfo": {
             "FontWeight": "Bold",
@@ -8365,7 +8544,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=解析登録_詳細!$BA$12=1"
           },
-          "Priority": 6,
+          "Priority": 5,
           "GUID": "ac9c2d06-8415-4d56-9a0c-79e19d4d9e65",
           "StyleInfo": {
             "Underline": null,
@@ -8381,24 +8560,8 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=解析登録_詳細!$AU$2=\"\""
           },
-          "Priority": 5,
-          "GUID": "a55dc66b-dc16-4ddf-b1b7-6b1b6f7c9c9a",
-          "StyleInfo": {
-            "Underline": null,
-            "Strikethrough": null
-          },
-          "IsDisabled": false,
-          "IsInvisible": true,
-          "IsReadOnly": false
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=解析登録_詳細!$AU$2=\"\""
-          },
           "Priority": 4,
-          "GUID": "03f32e44-9fd2-4393-ab18-23e5d07f3521",
+          "GUID": "a55dc66b-dc16-4ddf-b1b7-6b1b6f7c9c9a",
           "StyleInfo": {
             "Underline": null,
             "Strikethrough": null
@@ -8414,7 +8577,7 @@
             "SerializeProperty": "=解析登録_詳細!$BA$12=1"
           },
           "Priority": 3,
-          "GUID": "72cb2ff9-ced4-4074-bea6-2a8f28b4cb8c",
+          "GUID": "f3bacb6d-bc3c-468b-b4ff-4071ffb6728e",
           "StyleInfo": {
             "Underline": null,
             "Strikethrough": null
@@ -8427,16 +8590,16 @@
           "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
           "Formula": {
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=解析登録_詳細!$AU$2=\"\""
+            "SerializeProperty": "=解析登録_詳細!$BA$12=1"
           },
           "Priority": 2,
-          "GUID": "a8cf72ec-351c-4d74-a55d-0c8fa6ddba50",
+          "GUID": "72cb2ff9-ced4-4074-bea6-2a8f28b4cb8c",
           "StyleInfo": {
             "Underline": null,
             "Strikethrough": null
           },
-          "IsDisabled": false,
-          "IsInvisible": true,
+          "IsDisabled": true,
+          "IsInvisible": false,
           "IsReadOnly": false
         },
         {
@@ -8462,35 +8625,6 @@
             "SerializeProperty": "=解析登録_詳細!$BA$12=1"
           },
           "GUID": "6d344cba-3ac7-40e1-a50c-3edbf11d6421",
-          "StyleInfo": {
-            "Underline": null,
-            "Strikethrough": null
-          },
-          "IsDisabled": true,
-          "IsInvisible": false,
-          "IsReadOnly": false
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.CellValueRule, ServerDesignerCommon",
-          "Operator": 3,
-          "Value1": "=1",
-          "Priority": 41,
-          "GUID": "18693b96-fc82-4dc8-a026-389db227f58b",
-          "StyleInfo": {
-            "FontWeight": "Bold",
-            "Foreground": "Text 1 0",
-            "Underline": null,
-            "Strikethrough": null
-          }
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=解析登録_詳細!$BA$12=1"
-          },
-          "Priority": 40,
-          "GUID": "7c2cb60f-c8ce-4e44-b110-a9b127aae3be",
           "StyleInfo": {
             "Underline": null,
             "Strikethrough": null
@@ -8656,4 +8790,4 @@
       "Formula": "解析登録_詳細!$BY$46"
     }
   ]
-}//zGe4+muO3r5mhxTnhSKpLHBDSNbRn7X12IXNTmXVaJW+LetbdpoLCFq/DwIiewjkvexXRp+e8L5lVGX6FtAE0yKkxT9DmefRKgG71EFsYVeBCUPqHFJiKp02N6rJxCP9Rz3DZ7RmXKp3xulWwkCa36KkZ9v1cWuNUumvucfwnNYJnyHIdTBOPG+ohsjwcQLh7MqcmVXsRQdK/0RC5TGWLhc/S0HLIXCUCQpXJ6SRwG6l2RTigSwd4V4kmpfrMHnBO3YDf/pqeh4qsWS+j0N2WT2BI2CzVF/ll+2EBukgtcpASm+zBdraIDduhLYn28SmneEwBsqGMDWUYvjqi+cFzPrNKeVQ7oXlcVSWsZnEWFazXOW/Sa8iAuQhi+fAiiaXoY/91abwainJ4hHw4g3BIy/1qx6/u3xaVKVZirAHLNozgv3I00714nlifygAFYG6YvX4WIBayCKaIV1kXf4PKZ/yUO8IdG6gf+UqpdZm69pgcJtLMTkbG0FZnCTD1IV8LaoguTfQ+RMGXrFV6a69lJnUzgKLuaJlhMV+aZyCIqZFhjvfQn8FCvM4uE7LLkTKVaAL1P6t3cqb7/ppR3MfZB6lKwuNWNVCLqTT0G8/O5p3G6WaUl5RvYldT8qp2PcSwtsX7w19pSC7dt3YuzbajXUgj35u4kauk6cRWCi1/kKZ2wY3QPSz2kTVLxkuq3n4L+ohqa/PluGRUg2KGROq1pt2A5Jtri3euuaJ/G+Iue6XDjzFl+K+72UJCKWCelE+kIHoThAR9dpM7ttvrI5nyppQkj0csAyL+zt4QFcqzPjemUgA/Yt+kagKlPQt42EibDGJRH58AQBiYftdxMitvPmsP4zN7XD5y2wPa86QcZuC62E4NoN30hhSsLUqmf51sCP3w3CGJusTA5n/SlYgag==|920
+}//sQU+B6RLpsc9RBpDkMn0miz+/zPzr9fnQLrWca7aU1fu5xHlbED3TjuIQhlh46RXbIHT2uMPS/Dev4AC001EKGWNVNYOy23i8rtMxqbi8VG/vFdT6ZA/ko63ibDcfdaLZSSMvb2hsvD+LMAc3RrV5OPBTyLCmGazEFPJdPkszFT0SEy1jFhu+Ndh6+lbqLqJYQj64b2OZ05KfFD1AgBrdTGG+Tx2XsQbCPLZgUMLqN8IFak9Xykqt2rP2nYyNTqIIjdkrynAi9SzCe+l34hD9DivqOvlVSEyJBHFYSwSILITJesL+xDM8mGlpYBVplE069065sB0QW8fzuObQchLprDVsXwO4Weh+DHH0mBV4eFHqbL2azRdAjytyRKds/ZOzloOseFdnI08Fgt38aVOCeHIadbgNm+x/lMoDmjnHl5nSWmHbGg51Lg0Hh6y78IxaPzxMJtQfoZK+grlNEhBAKAxHakC3XZg91UiI0imiGiYQLOVJzpmCMlBSdGv0FD29ieCbFDctQpWwg+RZzUvE22GxfF7RUu+lHYUKUPwuxr1z0kR0SqQTa9WgC5qSKylZ5IF8zWOOQvdx+VtAK93wTVOjmHBzYLOgMOxKAcIxZpAHsFWQiOf/oEchfDr+taa/I8rUAbXI/9Vqr88ytaYE9OR8R4cdKXAHAkuhM5wr//ozKGX0fjq58wCJrS5yRmkdBISBsfGRjEpRC12DmzYFB1gjnPokjq+NneSAs89M+y4Xy1X7vYBg+Clraz1Vc894z7xxY6WmZWDd7E/tPAN6VTHKNpdaSZG/eh/1Iy+aLzzy1kJ9V6uQuGy6sUtkq0Mrf7hVn+03rPmIoyvtiu9ymWRtvZeVuZ6YVEJ1DYcjjXDTNPOoKuF8X81aVPt+dvcNthtImvauA8ay/xugDAP7Q==|920

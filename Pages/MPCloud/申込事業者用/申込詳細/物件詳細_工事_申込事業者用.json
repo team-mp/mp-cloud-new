@@ -276,9 +276,19 @@
       51,
       52,
       53,
-      54
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64
     ],
-    "Count": 55,
+    "Count": 65,
     "DefaultSize": 25.0
   },
   "Cols": {
@@ -823,42 +833,52 @@
     "40,86": "工法ID",
     "40,112": "見積依頼日",
     "41,86": "受注確定日",
-    "41,112": "見積依頼コメント",
+    "41,112": "見積至急フラグ",
     "42,86": "工事日程通知日",
-    "42,112": "見積書受領日",
+    "42,112": "見積期限日",
     "43,86": "工事予定開始日",
-    "43,112": "設計審査結果",
+    "43,112": "見積リマインドフラグ",
     "44,86": "工事予定終了日",
-    "44,112": "設計審査コメント",
+    "44,112": "見積リマインド日",
     "45,86": "工事報告書受領予定日",
-    "45,112": "設計承認フラグ",
+    "45,112": "見積依頼コメント",
     "46,86": "工事実施開始日",
-    "46,112": "見積送付日",
+    "46,112": "見積書受領日",
     "47,86": "工事実施終了日",
-    "47,112": "見積送付コメント",
+    "47,112": "設計審査依頼日",
     "48,86": "施工審査結果",
-    "48,112": "社内備考",
+    "48,112": "設計審査予定日",
     "49,86": "施工審査コメント",
-    "49,112": "工事見積ステータスID",
+    "49,112": "設計審査日",
     "50,86": "施工承認フラグ",
+    "50,112": "設計審査者ID",
     "51,86": "工事報告書受領日",
+    "51,112": "設計審査結果",
     "52,86": "工事報告書納品日",
-    "53,86": "工事ステータスID"
+    "52,112": "仮承認フラグ",
+    "53,86": "工事ステータスID",
+    "53,112": "設計審査コメント",
+    "54,112": "設計承認フラグ",
+    "55,112": "見積送付日",
+    "56,112": "見積送付コメント",
+    "57,112": "社内備考",
+    "58,112": "工事見積ステータスID"
   },
   "Formulas": {
     "10,91": "IFERROR(ODATA(\"m_customer_specify_construction?$select=priority_type&$filter=customer_id eq \"&IF(ISBLANK(CM11),\"null\",CM11)&\" and construction_id eq \"&IF(ISBLANK(CJ11),\"null\",CJ11)),0)",
-    "10,115": "ODATA(\"t_object_attachment/$count?$filter=construction_estimate_id eq \"&IF(ISBLANK(CG11),\"null\",CG11)&\" and file_attribute_id eq \"&IF(ISBLANK(工事見積書ファイル属性ID),\"null\",工事見積書ファイル属性ID)&\" and publish_flg eq 1 and active_flg eq 1\")",
+    "10,124": "DQ11+DR11+DS11+DT11",
     "5,17": "IF(DK16>0,\"※現在、\"&DK16&\"社の工事会社が設定されています\",\"\")",
     "23,115": "\"施工報告書(\"&DK24&\")\"",
-    "10,123": "DP11+DQ11+DR11+DS11",
+    "10,117": "IF(CF11=1,\"設計書\",\"見積書\")&\"(\"&DM11&\")\"",
     "23,114": "IFERROR(ODATA(\"v_construction_file_count?$select=改良工事報告書数_申込事業者&$filter=工事ID eq \"&IF(ISBLANK(CF24),\"null\",CF24)),0)",
     "23,84": "$CD$29-ROW(CD24)+1",
     "23,118": "IF(DN24<>\"\",\"最終更新日時：\"&DN24,\"\")",
     "28,81": "COUNT(CF24)",
-    "10,114": "ROW(CJ11)",
-    "23,113": "IF(OR(DG24=1,DH24=1,DI24=1),1,0)",
+    "10,116": "ODATA(\"t_object_attachment/$count?$filter=construction_estimate_id eq \"&IF(ISBLANK(CG11),\"null\",CG11)&\" and file_attribute_id eq \"&IF(ISBLANK(工事見積書ファイル属性ID),\"null\",工事見積書ファイル属性ID)&\" and publish_flg eq 1 and active_flg eq 1\")",
+    "23,113": "IF(OR(DF24=1,DG24=1,DH24=1),1,0)",
     "15,114": "COUNT(CD11)",
-    "10,116": "IF(CF11=1,\"設計書\",\"見積書\")&\"(\"&DL11&\")\""
+    "10,115": "ROW(CJ11)",
+    "4,78": "IF(CK20=0,\"※見積金額は税抜きとりなります。\",\"\")"
   },
   "AttachInfos": {
     "1,0": {
@@ -970,14 +990,74 @@
             ]
           },
           {
-            "$type": "Forguncy.Model.SetRowColumnLayoutCommand, ServerDesignerCommon",
-            "PropertyItemsList": [
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
               {
-                "Location": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=物件詳細_工事_申込事業者用!7:14"
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=物件詳細_工事_申込事業者用!CK20"
+                      }
+                    ]
+                  },
+                  "value": "1"
                 },
-                "Value": true
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.SetRowColumnLayoutCommand, ServerDesignerCommon",
+                    "PropertyItemsList": [
+                      {
+                        "Location": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=物件詳細_工事_申込事業者用!7:7"
+                        },
+                        "Value": true
+                      },
+                      {
+                        "Location": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=物件詳細_工事_申込事業者用!9:9"
+                        },
+                        "Value": true
+                      },
+                      {
+                        "Location": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=物件詳細_工事_申込事業者用!10:14"
+                        },
+                        "Value": true
+                      }
+                    ]
+                  }
+                ],
+                "ID": "88cc7535-1130-48ed-b0a6-bfa72e0f03df"
+              },
+              {
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.SetRowColumnLayoutCommand, ServerDesignerCommon",
+                    "PropertyItemsList": [
+                      {
+                        "Location": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=物件詳細_工事_申込事業者用!7:8"
+                        },
+                        "Value": true
+                      },
+                      {
+                        "Location": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=物件詳細_工事_申込事業者用!10:14"
+                        },
+                        "Value": true
+                      }
+                    ]
+                  }
+                ],
+                "ID": "3e9cadb4-fd1e-4a68-af65-f0d1bc6f8dd4"
               }
             ]
           }
@@ -1067,13 +1147,13 @@
         "RowIndex": 9,
         "ColumnIndex": 81,
         "RowCount": 4,
-        "ColumnCount": 51,
+        "ColumnCount": 52,
         "SqlCondition": {
           "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
           "ColumnBindingInfo": {
             "TableName": "t_object_construction_estimate",
             "ColumnName": "object_order_id",
-            "GUID": "13450eba-4d76-47a1-ab6f-a7ac61a084bb"
+            "GUID": "83d4dc89-f1a8-4c3f-b4d1-59704e664948"
           },
           "Value": {
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1086,7 +1166,7 @@
               "ColumnBindingInfo": {
                 "TableName": "t_object_construction_estimate",
                 "ColumnName": "construction_customer_id",
-                "GUID": "b1703a89-772d-4088-989f-94049efbff45",
+                "GUID": "b7a67595-c8c0-4894-8514-bc3a471fdf66",
                 "RelationBinding": {
                   "RelatedTable": "m_customer",
                   "RelatedColumn": "customer_id",
@@ -1099,7 +1179,7 @@
               "ColumnBindingInfo": {
                 "TableName": "t_object_construction_estimate",
                 "ColumnName": "construction_estimate_id",
-                "GUID": "7449c14f-a71f-4542-a2b8-e9b8815b877a"
+                "GUID": "d4638c2f-64ee-4150-b448-aeb553bc3535"
               },
               "Order": 0
             }
@@ -1431,6 +1511,19 @@
       }
     },
     "10,113": {
+      "NameUsedInJavaScript": "工事報告待ちフラグ",
+      "BindingInfo": {
+        "TableName": "t_object_construction_estimate",
+        "ColumnName": "construction_estimate_status_id",
+        "GUID": "9e090a02-d59d-4d62-80a8-b1effe3a16e8",
+        "RelationBinding": {
+          "RelatedTable": "m_construction_estimate_status",
+          "RelatedColumn": "construction_estimate_status_id",
+          "DisplayColumn": "construction_report_wait_flg"
+        }
+      }
+    },
+    "10,114": {
       "NameUsedInJavaScript": "受注確定日",
       "BindingInfo": {
         "TableName": "t_object_construction_estimate",
@@ -1443,16 +1536,16 @@
         }
       }
     },
-    "10,114": {
+    "10,115": {
       "NameUsedInJavaScript": "行番号"
     },
-    "10,115": {
+    "10,116": {
       "NameUsedInJavaScript": "工事見積書添付カウント"
     },
-    "10,116": {
+    "10,117": {
       "NameUsedInJavaScript": "見積書添付ラベル"
     },
-    "10,118": {
+    "10,119": {
       "NameUsedInJavaScript": "受注確定待ちフラグ",
       "BindingInfo": {
         "TableName": "t_object_construction_estimate",
@@ -1465,7 +1558,7 @@
         }
       }
     },
-    "10,119": {
+    "10,120": {
       "NameUsedInJavaScript": "辞退終了フラグ",
       "BindingInfo": {
         "TableName": "t_object_construction_estimate",
@@ -1478,7 +1571,7 @@
         }
       }
     },
-    "10,120": {
+    "10,121": {
       "NameUsedInJavaScript": "失注終了フラグ",
       "BindingInfo": {
         "TableName": "t_object_construction_estimate",
@@ -1491,7 +1584,7 @@
         }
       }
     },
-    "10,121": {
+    "10,122": {
       "NameUsedInJavaScript": "手配取り下げフラグ",
       "BindingInfo": {
         "TableName": "t_object_construction_estimate",
@@ -1504,7 +1597,7 @@
         }
       }
     },
-    "10,122": {
+    "10,123": {
       "NameUsedInJavaScript": "キャンセル終了フラグ",
       "BindingInfo": {
         "TableName": "t_object_construction_estimate",
@@ -1517,13 +1610,13 @@
         }
       }
     },
-    "10,123": {
+    "10,124": {
       "CellComment": {
         "Comments": "辞退、失注、キャンセル、取下げの何れかの場合に「見積終了」とする"
       },
       "NameUsedInJavaScript": "見積終了フラグ"
     },
-    "10,125": {
+    "10,126": {
       "NameUsedInJavaScript": "見積金額",
       "BindingInfo": {
         "TableName": "t_object_construction_estimate",
@@ -1536,7 +1629,7 @@
         }
       }
     },
-    "10,126": {
+    "10,127": {
       "NameUsedInJavaScript": "見積備考",
       "BindingInfo": {
         "TableName": "t_object_construction_estimate",
@@ -1549,7 +1642,7 @@
         }
       }
     },
-    "10,127": {
+    "10,128": {
       "NameUsedInJavaScript": "施工可能開始日",
       "BindingInfo": {
         "TableName": "t_object_construction_estimate",
@@ -1562,7 +1655,7 @@
         }
       }
     },
-    "10,128": {
+    "10,129": {
       "NameUsedInJavaScript": "施工可能終了日",
       "BindingInfo": {
         "TableName": "t_object_construction_estimate",
@@ -1575,7 +1668,7 @@
         }
       }
     },
-    "10,129": {
+    "10,130": {
       "NameUsedInJavaScript": "設計審査至急フラグ",
       "BindingInfo": {
         "TableName": "t_object_construction_estimate",
@@ -1583,7 +1676,7 @@
         "GUID": "27de1210-686e-40d4-9b85-79835f79fe30"
       }
     },
-    "10,130": {
+    "10,131": {
       "NameUsedInJavaScript": "設計審査至急理由",
       "BindingInfo": {
         "TableName": "t_object_construction_estimate",
@@ -1711,7 +1804,7 @@
           "ColumnBindingInfo": {
             "TableName": "t_object_construction",
             "ColumnName": "object_order_id",
-            "GUID": "377d8232-913c-4344-b614-d236711126f0"
+            "GUID": "228aab83-d89d-4c45-9e08-48d45e3c0115"
           },
           "Value": {
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1724,7 +1817,7 @@
               "ColumnBindingInfo": {
                 "TableName": "t_object_construction",
                 "ColumnName": "construction_id",
-                "GUID": "2eece43c-b509-4e6d-813d-1949b09c58fb"
+                "GUID": "00d8f1fc-438c-4547-86bc-0ce08c61079c"
               },
               "Order": 1
             }
@@ -1939,7 +2032,7 @@
         "GUID": "b527939a-a3fa-493b-b4e7-011b8b1877bd"
       }
     },
-    "23,106": {
+    "23,105": {
       "NameUsedInJavaScript": "工事ステータスID",
       "BindingInfo": {
         "TableName": "t_object_construction",
@@ -1947,7 +2040,7 @@
         "GUID": "c696b059-fdb8-4961-b7cd-26800fab9584"
       }
     },
-    "23,107": {
+    "23,106": {
       "NameUsedInJavaScript": "工事ステータス名",
       "BindingInfo": {
         "TableName": "t_object_construction",
@@ -1960,7 +2053,7 @@
         }
       }
     },
-    "23,108": {
+    "23,107": {
       "NameUsedInJavaScript": "工事ステータス順",
       "BindingInfo": {
         "TableName": "t_object_construction",
@@ -1973,7 +2066,7 @@
         }
       }
     },
-    "23,109": {
+    "23,108": {
       "NameUsedInJavaScript": "工事完了フラグ",
       "BindingInfo": {
         "TableName": "t_object_construction",
@@ -1986,7 +2079,7 @@
         }
       }
     },
-    "23,110": {
+    "23,109": {
       "NameUsedInJavaScript": "完了フラグ",
       "BindingInfo": {
         "TableName": "t_object_construction",
@@ -1999,7 +2092,7 @@
         }
       }
     },
-    "23,111": {
+    "23,110": {
       "NameUsedInJavaScript": "キャンセル終了フラグ",
       "BindingInfo": {
         "TableName": "t_object_construction",
@@ -2012,7 +2105,7 @@
         }
       }
     },
-    "23,112": {
+    "23,111": {
       "NameUsedInJavaScript": "処理前フラグ",
       "BindingInfo": {
         "TableName": "t_object_construction",
@@ -2022,6 +2115,19 @@
           "RelatedTable": "m_construction_status",
           "RelatedColumn": "construction_status_id",
           "DisplayColumn": "before_process_flg"
+        }
+      }
+    },
+    "23,112": {
+      "NameUsedInJavaScript": "工事報告待ちフラグ",
+      "BindingInfo": {
+        "TableName": "t_object_construction",
+        "ColumnName": "construction_status_id",
+        "GUID": "8cef63a9-d3bb-4d06-8733-06f30c789148",
+        "RelationBinding": {
+          "RelatedTable": "m_construction_status",
+          "RelatedColumn": "construction_status_id",
+          "DisplayColumn": "construction_report_wait_flg"
         }
       }
     },
@@ -2075,7 +2181,7 @@
       "BindingInfo": {
         "TableName": "t_object_construction_estimate",
         "ColumnName": "construction_estimate_register_date",
-        "GUID": "dae4871c-85ca-45fd-ab1c-57b26bb4d1db"
+        "GUID": "104bc5db-3409-4680-80c8-5ce24e571fa0"
       },
       "CssName": ""
     },
@@ -2090,7 +2196,7 @@
       "BindingInfo": {
         "TableName": "t_object_construction_estimate",
         "ColumnName": "construction_customer_id",
-        "GUID": "c8be0ef0-ad0d-4a60-83c9-9f100be027a5"
+        "GUID": "0d87764e-42c6-406d-94d2-0e342417fba9"
       }
     },
     "39,94": {
@@ -2104,7 +2210,7 @@
       "BindingInfo": {
         "TableName": "t_object_construction_estimate",
         "ColumnName": "construction_method_id",
-        "GUID": "302408db-c6b1-4217-b2fb-739072e4e1b0"
+        "GUID": "297797f6-7921-47ba-a742-a8c512c3954e"
       }
     },
     "40,94": {
@@ -2118,7 +2224,7 @@
       "BindingInfo": {
         "TableName": "t_object_construction_estimate",
         "ColumnName": "estimate_requested_date",
-        "GUID": "2ff1476e-ed85-4486-aa32-98be00cf9fdc"
+        "GUID": "39968102-e2d5-4f4b-9eb6-57542515844f"
       }
     },
     "41,94": {
@@ -2131,8 +2237,8 @@
     "41,120": {
       "BindingInfo": {
         "TableName": "t_object_construction_estimate",
-        "ColumnName": "estimate_requested_comment",
-        "GUID": "845a8724-b208-4f21-95ca-9fcf2a66f9e7"
+        "ColumnName": "estimate_urgent_flg",
+        "GUID": "cc45ddf4-391b-41ac-b1a0-bd3952f8c20c"
       }
     },
     "42,94": {
@@ -2145,8 +2251,8 @@
     "42,120": {
       "BindingInfo": {
         "TableName": "t_object_construction_estimate",
-        "ColumnName": "estimate_receipt_date",
-        "GUID": "945ff99d-e63d-4b45-be9e-5fe1881fc56f"
+        "ColumnName": "estimate_period_date",
+        "GUID": "c64e1864-28c6-4bac-8012-207b3ea2250d"
       }
     },
     "43,94": {
@@ -2159,8 +2265,8 @@
     "43,120": {
       "BindingInfo": {
         "TableName": "t_object_construction_estimate",
-        "ColumnName": "design_check_result",
-        "GUID": "8aed0dc7-77c4-4c1d-9f9d-4600df778331"
+        "ColumnName": "estimate_reminder_flg",
+        "GUID": "6ef3208d-39cc-4524-b0e6-6d3ed2ba8113"
       }
     },
     "44,94": {
@@ -2173,8 +2279,8 @@
     "44,120": {
       "BindingInfo": {
         "TableName": "t_object_construction_estimate",
-        "ColumnName": "design_check_comment",
-        "GUID": "7562499e-d4c7-44d9-b4c9-cd5bf218622a"
+        "ColumnName": "estimate_reminder_date",
+        "GUID": "48950653-ed39-4a10-8ec9-4e15600462d5"
       }
     },
     "45,94": {
@@ -2187,8 +2293,8 @@
     "45,120": {
       "BindingInfo": {
         "TableName": "t_object_construction_estimate",
-        "ColumnName": "design_approval_flg",
-        "GUID": "77737b94-5602-4087-a5d5-aa1e85e3b5f2"
+        "ColumnName": "estimate_requested_comment",
+        "GUID": "13a477cb-1402-4cbc-85cc-08461a189f55"
       }
     },
     "46,94": {
@@ -2201,8 +2307,8 @@
     "46,120": {
       "BindingInfo": {
         "TableName": "t_object_construction_estimate",
-        "ColumnName": "estimate_sending_date",
-        "GUID": "302b5d3d-7c7c-41c1-8436-ba1098c5be4c"
+        "ColumnName": "estimate_receipt_date",
+        "GUID": "53b1b8fa-c194-4396-9260-1538260695fe"
       }
     },
     "47,94": {
@@ -2215,8 +2321,8 @@
     "47,120": {
       "BindingInfo": {
         "TableName": "t_object_construction_estimate",
-        "ColumnName": "estimate_sending_comment",
-        "GUID": "4619c4c8-1885-4c63-a4fc-178882cb5bdf"
+        "ColumnName": "design_approval_request_date",
+        "GUID": "3ceebce8-7afa-4e16-8c0a-dad669ef0486"
       }
     },
     "48,94": {
@@ -2229,8 +2335,8 @@
     "48,120": {
       "BindingInfo": {
         "TableName": "t_object_construction_estimate",
-        "ColumnName": "internal_notes",
-        "GUID": "46f9754e-d80e-42ca-b109-30a27f451f53"
+        "ColumnName": "design_approval_schedule_date",
+        "GUID": "a4029364-fbad-4036-a58a-09dc9ebdd4ad"
       }
     },
     "49,94": {
@@ -2243,8 +2349,8 @@
     "49,120": {
       "BindingInfo": {
         "TableName": "t_object_construction_estimate",
-        "ColumnName": "construction_estimate_status_id",
-        "GUID": "4e4f484d-bcee-4d77-8545-a71f4f81a3c6"
+        "ColumnName": "design_approval_date",
+        "GUID": "fd592cb7-e83a-4b4d-92e8-3b9c3703bea3"
       }
     },
     "50,94": {
@@ -2254,11 +2360,25 @@
         "GUID": "ba1e7310-2627-468d-b000-81e6523853cd"
       }
     },
+    "50,120": {
+      "BindingInfo": {
+        "TableName": "t_object_construction_estimate",
+        "ColumnName": "design_approval_user_id",
+        "GUID": "00a9a2e6-b8bc-49df-bb6a-9453ad0a05bb"
+      }
+    },
     "51,94": {
       "BindingInfo": {
         "TableName": "t_object_construction",
         "ColumnName": "construction_report_receipt_date",
         "GUID": "482a19a1-da6b-42cc-9e08-5f70f7b5adc2"
+      }
+    },
+    "51,120": {
+      "BindingInfo": {
+        "TableName": "t_object_construction_estimate",
+        "ColumnName": "design_check_result",
+        "GUID": "c9a242e5-0d99-4c4a-ab2e-d6d06243986f"
       }
     },
     "52,94": {
@@ -2268,11 +2388,60 @@
         "GUID": "eb73f3b3-3145-4e91-a921-0f92277a8350"
       }
     },
+    "52,120": {
+      "BindingInfo": {
+        "TableName": "t_object_construction_estimate",
+        "ColumnName": "provisional_approval_flg",
+        "GUID": "a2a8edaa-e118-4b19-b257-aa5a34e35315"
+      }
+    },
     "53,94": {
       "BindingInfo": {
         "TableName": "t_object_construction",
         "ColumnName": "construction_status_id",
         "GUID": "b343d43e-2280-4241-a02c-1350889b4f65"
+      }
+    },
+    "53,120": {
+      "BindingInfo": {
+        "TableName": "t_object_construction_estimate",
+        "ColumnName": "design_check_comment",
+        "GUID": "e1006c56-0fb7-4b3c-9321-d1d542ab2f40"
+      }
+    },
+    "54,120": {
+      "BindingInfo": {
+        "TableName": "t_object_construction_estimate",
+        "ColumnName": "design_approval_flg",
+        "GUID": "9ded23a1-d3b9-4043-870d-31a48ea5f374"
+      }
+    },
+    "55,120": {
+      "BindingInfo": {
+        "TableName": "t_object_construction_estimate",
+        "ColumnName": "estimate_sending_date",
+        "GUID": "9235078e-d381-4d5b-8eb2-5026cba7f3f4"
+      }
+    },
+    "56,120": {
+      "BindingInfo": {
+        "TableName": "t_object_construction_estimate",
+        "ColumnName": "estimate_sending_comment",
+        "GUID": "ee97d727-8a75-4b90-967b-079dcce43cb7"
+      }
+    },
+    "57,120": {
+      "BindingInfo": {
+        "TableName": "t_object_construction_estimate",
+        "ColumnName": "internal_notes",
+        "GUID": "1f6a07e5-2700-4842-ad8d-947ac2e363af"
+      }
+    },
+    "58,120": {
+      "BindingInfo": {
+        "TableName": "t_object_construction_estimate",
+        "ColumnName": "construction_estimate_status_id",
+        "GUID": "d98205a8-2205-4f3c-af13-1c3446141852"
       }
     }
   },
@@ -2486,6 +2655,11 @@
       {
         "Background": 17,
         "FontFamily": 0
+      },
+      {
+        "Background": 17,
+        "FontFamily": 0,
+        "VerticalAlignment": 11
       }
     ],
     "Types": {
@@ -3004,6 +3178,9 @@
       "9,126": 2,
       "9,127": 2,
       "9,128": 2,
+      "9,129": 2,
+      "9,130": 2,
+      "9,131": 2,
       "10,81": 2,
       "10,83": 2,
       "10,84": 2,
@@ -3051,6 +3228,9 @@
       "10,126": 2,
       "10,127": 2,
       "10,128": 2,
+      "10,129": 2,
+      "10,130": 2,
+      "10,131": 2,
       "11,81": 2,
       "11,82": 2,
       "11,83": 2,
@@ -3684,19 +3864,19 @@
       "37,96": 2,
       "37,97": 2,
       "37,98": 2,
-      "37,112": 2,
-      "37,113": 2,
-      "37,114": 2,
-      "37,115": 2,
-      "37,116": 2,
-      "37,117": 2,
-      "37,118": 2,
-      "37,119": 2,
-      "37,120": 36,
-      "37,121": 2,
-      "37,122": 2,
-      "37,123": 2,
-      "37,124": 2,
+      "37,112": 26,
+      "37,113": 26,
+      "37,114": 26,
+      "37,115": 26,
+      "37,116": 26,
+      "37,117": 26,
+      "37,118": 26,
+      "37,119": 26,
+      "37,120": 37,
+      "37,121": 26,
+      "37,122": 26,
+      "37,123": 26,
+      "37,124": 26,
       "38,86": 2,
       "38,87": 2,
       "38,88": 2,
@@ -3710,19 +3890,19 @@
       "38,96": 2,
       "38,97": 2,
       "38,98": 2,
-      "38,112": 4,
-      "38,113": 2,
-      "38,114": 2,
-      "38,115": 2,
-      "38,116": 2,
-      "38,117": 2,
-      "38,118": 2,
-      "38,119": 2,
-      "38,120": 36,
-      "38,121": 2,
-      "38,122": 2,
-      "38,123": 2,
-      "38,124": 2,
+      "38,112": 31,
+      "38,113": 26,
+      "38,114": 26,
+      "38,115": 26,
+      "38,116": 26,
+      "38,117": 26,
+      "38,118": 26,
+      "38,119": 26,
+      "38,120": 37,
+      "38,121": 26,
+      "38,122": 26,
+      "38,123": 26,
+      "38,124": 26,
       "39,86": 4,
       "39,87": 2,
       "39,88": 2,
@@ -3736,19 +3916,19 @@
       "39,96": 2,
       "39,97": 2,
       "39,98": 2,
-      "39,112": 4,
-      "39,113": 2,
-      "39,114": 2,
-      "39,115": 2,
-      "39,116": 2,
-      "39,117": 2,
-      "39,118": 2,
-      "39,119": 2,
-      "39,120": 36,
-      "39,121": 2,
-      "39,122": 2,
-      "39,123": 2,
-      "39,124": 2,
+      "39,112": 31,
+      "39,113": 26,
+      "39,114": 26,
+      "39,115": 26,
+      "39,116": 26,
+      "39,117": 26,
+      "39,118": 26,
+      "39,119": 26,
+      "39,120": 37,
+      "39,121": 26,
+      "39,122": 26,
+      "39,123": 26,
+      "39,124": 26,
       "40,86": 4,
       "40,87": 2,
       "40,88": 2,
@@ -3762,19 +3942,19 @@
       "40,96": 2,
       "40,97": 2,
       "40,98": 2,
-      "40,112": 2,
-      "40,113": 2,
-      "40,114": 2,
-      "40,115": 2,
-      "40,116": 2,
-      "40,117": 2,
-      "40,118": 2,
-      "40,119": 2,
-      "40,120": 36,
-      "40,121": 2,
-      "40,122": 2,
-      "40,123": 2,
-      "40,124": 2,
+      "40,112": 26,
+      "40,113": 26,
+      "40,114": 26,
+      "40,115": 26,
+      "40,116": 26,
+      "40,117": 26,
+      "40,118": 26,
+      "40,119": 26,
+      "40,120": 37,
+      "40,121": 26,
+      "40,122": 26,
+      "40,123": 26,
+      "40,124": 26,
       "41,86": 2,
       "41,87": 2,
       "41,88": 2,
@@ -3788,19 +3968,19 @@
       "41,96": 2,
       "41,97": 2,
       "41,98": 2,
-      "41,112": 2,
-      "41,113": 2,
-      "41,114": 2,
-      "41,115": 2,
-      "41,116": 2,
-      "41,117": 2,
-      "41,118": 2,
-      "41,119": 2,
-      "41,120": 36,
-      "41,121": 2,
-      "41,122": 2,
-      "41,123": 2,
-      "41,124": 2,
+      "41,112": 26,
+      "41,113": 26,
+      "41,114": 26,
+      "41,115": 26,
+      "41,116": 26,
+      "41,117": 26,
+      "41,118": 26,
+      "41,119": 26,
+      "41,120": 37,
+      "41,121": 26,
+      "41,122": 26,
+      "41,123": 26,
+      "41,124": 26,
       "42,86": 2,
       "42,87": 2,
       "42,88": 2,
@@ -3814,19 +3994,19 @@
       "42,96": 2,
       "42,97": 2,
       "42,98": 2,
-      "42,112": 2,
-      "42,113": 2,
-      "42,114": 2,
-      "42,115": 2,
-      "42,116": 2,
-      "42,117": 2,
-      "42,118": 2,
-      "42,119": 2,
-      "42,120": 36,
-      "42,121": 2,
-      "42,122": 2,
-      "42,123": 2,
-      "42,124": 2,
+      "42,112": 26,
+      "42,113": 26,
+      "42,114": 26,
+      "42,115": 26,
+      "42,116": 26,
+      "42,117": 26,
+      "42,118": 26,
+      "42,119": 26,
+      "42,120": 37,
+      "42,121": 26,
+      "42,122": 26,
+      "42,123": 26,
+      "42,124": 26,
       "43,86": 2,
       "43,87": 2,
       "43,88": 2,
@@ -3840,19 +4020,19 @@
       "43,96": 2,
       "43,97": 2,
       "43,98": 2,
-      "43,112": 2,
-      "43,113": 2,
-      "43,114": 2,
-      "43,115": 2,
-      "43,116": 2,
-      "43,117": 2,
-      "43,118": 2,
-      "43,119": 2,
-      "43,120": 36,
-      "43,121": 2,
-      "43,122": 2,
-      "43,123": 2,
-      "43,124": 2,
+      "43,112": 31,
+      "43,113": 26,
+      "43,114": 26,
+      "43,115": 26,
+      "43,116": 26,
+      "43,117": 26,
+      "43,118": 26,
+      "43,119": 26,
+      "43,120": 37,
+      "43,121": 26,
+      "43,122": 26,
+      "43,123": 26,
+      "43,124": 26,
       "44,86": 4,
       "44,87": 2,
       "44,88": 2,
@@ -3866,19 +4046,19 @@
       "44,96": 2,
       "44,97": 2,
       "44,98": 2,
-      "44,112": 4,
-      "44,113": 2,
-      "44,114": 2,
-      "44,115": 2,
-      "44,116": 2,
-      "44,117": 2,
-      "44,118": 2,
-      "44,119": 2,
-      "44,120": 36,
-      "44,121": 2,
-      "44,122": 2,
-      "44,123": 2,
-      "44,124": 2,
+      "44,112": 31,
+      "44,113": 26,
+      "44,114": 26,
+      "44,115": 26,
+      "44,116": 26,
+      "44,117": 26,
+      "44,118": 26,
+      "44,119": 26,
+      "44,120": 37,
+      "44,121": 26,
+      "44,122": 26,
+      "44,123": 26,
+      "44,124": 26,
       "45,86": 2,
       "45,87": 2,
       "45,88": 2,
@@ -3892,19 +4072,19 @@
       "45,96": 2,
       "45,97": 2,
       "45,98": 2,
-      "45,112": 2,
-      "45,113": 2,
-      "45,114": 2,
-      "45,115": 2,
-      "45,116": 2,
-      "45,117": 2,
-      "45,118": 2,
-      "45,119": 2,
-      "45,120": 36,
-      "45,121": 2,
-      "45,122": 2,
-      "45,123": 2,
-      "45,124": 2,
+      "45,112": 26,
+      "45,113": 26,
+      "45,114": 26,
+      "45,115": 26,
+      "45,116": 26,
+      "45,117": 26,
+      "45,118": 26,
+      "45,119": 26,
+      "45,120": 37,
+      "45,121": 26,
+      "45,122": 26,
+      "45,123": 26,
+      "45,124": 26,
       "46,86": 2,
       "46,87": 2,
       "46,88": 2,
@@ -3918,19 +4098,19 @@
       "46,96": 2,
       "46,97": 2,
       "46,98": 2,
-      "46,112": 2,
-      "46,113": 2,
-      "46,114": 2,
-      "46,115": 2,
-      "46,116": 2,
-      "46,117": 2,
-      "46,118": 2,
-      "46,119": 2,
-      "46,120": 36,
-      "46,121": 2,
-      "46,122": 2,
-      "46,123": 2,
-      "46,124": 2,
+      "46,112": 26,
+      "46,113": 26,
+      "46,114": 26,
+      "46,115": 26,
+      "46,116": 26,
+      "46,117": 26,
+      "46,118": 26,
+      "46,119": 26,
+      "46,120": 37,
+      "46,121": 26,
+      "46,122": 26,
+      "46,123": 26,
+      "46,124": 26,
       "47,86": 4,
       "47,87": 2,
       "47,88": 2,
@@ -3940,19 +4120,19 @@
       "47,92": 2,
       "47,93": 2,
       "47,94": 36,
-      "47,112": 4,
-      "47,113": 2,
-      "47,114": 2,
-      "47,115": 2,
-      "47,116": 2,
-      "47,117": 2,
-      "47,118": 2,
-      "47,119": 2,
-      "47,120": 36,
-      "47,121": 2,
-      "47,122": 2,
-      "47,123": 2,
-      "47,124": 2,
+      "47,112": 26,
+      "47,113": 26,
+      "47,114": 26,
+      "47,115": 26,
+      "47,116": 26,
+      "47,117": 26,
+      "47,118": 26,
+      "47,119": 26,
+      "47,120": 37,
+      "47,121": 26,
+      "47,122": 26,
+      "47,123": 26,
+      "47,124": 26,
       "48,86": 2,
       "48,87": 2,
       "48,88": 2,
@@ -3966,19 +4146,19 @@
       "48,96": 2,
       "48,97": 2,
       "48,98": 2,
-      "48,112": 2,
-      "48,113": 2,
-      "48,114": 2,
-      "48,115": 2,
-      "48,116": 2,
-      "48,117": 2,
-      "48,118": 2,
-      "48,119": 2,
-      "48,120": 36,
-      "48,121": 2,
-      "48,122": 2,
-      "48,123": 2,
-      "48,124": 2,
+      "48,112": 31,
+      "48,113": 26,
+      "48,114": 26,
+      "48,115": 26,
+      "48,116": 26,
+      "48,117": 26,
+      "48,118": 26,
+      "48,119": 26,
+      "48,120": 37,
+      "48,121": 26,
+      "48,122": 26,
+      "48,123": 26,
+      "48,124": 26,
       "49,86": 4,
       "49,87": 2,
       "49,88": 2,
@@ -3992,19 +4172,19 @@
       "49,96": 2,
       "49,97": 2,
       "49,98": 2,
-      "49,112": 4,
-      "49,113": 2,
-      "49,114": 2,
-      "49,115": 2,
-      "49,116": 2,
-      "49,117": 2,
-      "49,118": 2,
-      "49,119": 2,
-      "49,120": 36,
-      "49,121": 2,
-      "49,122": 2,
-      "49,123": 2,
-      "49,124": 2,
+      "49,112": 31,
+      "49,113": 26,
+      "49,114": 26,
+      "49,115": 26,
+      "49,116": 26,
+      "49,117": 26,
+      "49,118": 26,
+      "49,119": 26,
+      "49,120": 37,
+      "49,121": 26,
+      "49,122": 26,
+      "49,123": 26,
+      "49,124": 26,
       "50,86": 4,
       "50,87": 2,
       "50,88": 2,
@@ -4018,19 +4198,19 @@
       "50,96": 2,
       "50,97": 2,
       "50,98": 2,
-      "50,112": 30,
-      "50,113": 30,
-      "50,114": 30,
-      "50,115": 30,
-      "50,116": 30,
-      "50,117": 30,
-      "50,118": 30,
-      "50,119": 30,
-      "50,120": 30,
-      "50,121": 30,
-      "50,122": 30,
-      "50,123": 30,
-      "50,124": 30,
+      "50,112": 26,
+      "50,113": 26,
+      "50,114": 26,
+      "50,115": 26,
+      "50,116": 26,
+      "50,117": 26,
+      "50,118": 26,
+      "50,119": 26,
+      "50,120": 37,
+      "50,121": 26,
+      "50,122": 26,
+      "50,123": 26,
+      "50,124": 26,
       "51,86": 2,
       "51,87": 2,
       "51,88": 2,
@@ -4044,6 +4224,19 @@
       "51,96": 2,
       "51,97": 2,
       "51,98": 2,
+      "51,112": 26,
+      "51,113": 26,
+      "51,114": 26,
+      "51,115": 26,
+      "51,116": 26,
+      "51,117": 26,
+      "51,118": 26,
+      "51,119": 26,
+      "51,120": 37,
+      "51,121": 26,
+      "51,122": 26,
+      "51,123": 26,
+      "51,124": 26,
       "52,86": 4,
       "52,87": 2,
       "52,88": 2,
@@ -4057,6 +4250,19 @@
       "52,96": 2,
       "52,97": 2,
       "52,98": 2,
+      "52,112": 26,
+      "52,113": 26,
+      "52,114": 26,
+      "52,115": 26,
+      "52,116": 26,
+      "52,117": 26,
+      "52,118": 26,
+      "52,119": 26,
+      "52,120": 37,
+      "52,121": 26,
+      "52,122": 26,
+      "52,123": 26,
+      "52,124": 26,
       "53,86": 4,
       "53,87": 2,
       "53,88": 2,
@@ -4069,7 +4275,85 @@
       "53,95": 2,
       "53,96": 2,
       "53,97": 2,
-      "53,98": 2
+      "53,98": 2,
+      "53,112": 31,
+      "53,113": 26,
+      "53,114": 26,
+      "53,115": 26,
+      "53,116": 26,
+      "53,117": 26,
+      "53,118": 26,
+      "53,119": 26,
+      "53,120": 37,
+      "53,121": 26,
+      "53,122": 26,
+      "53,123": 26,
+      "53,124": 26,
+      "54,112": 26,
+      "54,113": 26,
+      "54,114": 26,
+      "54,115": 26,
+      "54,116": 26,
+      "54,117": 26,
+      "54,118": 26,
+      "54,119": 26,
+      "54,120": 37,
+      "54,121": 26,
+      "54,122": 26,
+      "54,123": 26,
+      "54,124": 26,
+      "55,112": 26,
+      "55,113": 26,
+      "55,114": 26,
+      "55,115": 26,
+      "55,116": 26,
+      "55,117": 26,
+      "55,118": 26,
+      "55,119": 26,
+      "55,120": 37,
+      "55,121": 26,
+      "55,122": 26,
+      "55,123": 26,
+      "55,124": 26,
+      "56,112": 31,
+      "56,113": 26,
+      "56,114": 26,
+      "56,115": 26,
+      "56,116": 26,
+      "56,117": 26,
+      "56,118": 26,
+      "56,119": 26,
+      "56,120": 37,
+      "56,121": 26,
+      "56,122": 26,
+      "56,123": 26,
+      "56,124": 26,
+      "57,112": 26,
+      "57,113": 26,
+      "57,114": 26,
+      "57,115": 26,
+      "57,116": 26,
+      "57,117": 26,
+      "57,118": 26,
+      "57,119": 26,
+      "57,120": 37,
+      "57,121": 26,
+      "57,122": 26,
+      "57,123": 26,
+      "57,124": 26,
+      "58,112": 31,
+      "58,113": 26,
+      "58,114": 26,
+      "58,115": 26,
+      "58,116": 26,
+      "58,117": 26,
+      "58,118": 26,
+      "58,119": 26,
+      "58,120": 37,
+      "58,121": 26,
+      "58,122": 26,
+      "58,123": 26,
+      "58,124": 26
     },
     "RowStyles": {
       "18": 30,
@@ -4184,19 +4468,6 @@
     "52,94,1,5",
     "53,94,1,5",
     "47,94,1,5",
-    "37,120,1,5",
-    "38,120,1,5",
-    "39,120,1,5",
-    "40,120,1,5",
-    "41,120,1,5",
-    "42,120,1,5",
-    "43,120,1,5",
-    "44,120,1,5",
-    "45,120,1,5",
-    "46,120,1,5",
-    "47,120,1,5",
-    "48,120,1,5",
-    "49,120,1,5",
     "5,14,1,2",
     "5,1,1,13",
     "4,14,1,2",
@@ -4205,9 +4476,31 @@
     "5,87,1,3",
     "15,114,1,3",
     "19,88,1,3",
-    "24,81,2,41",
     "1,0,2,80",
-    "11,81,2,51"
+    "24,81,2,41",
+    "37,120,1,5",
+    "38,120,1,5",
+    "39,120,1,5",
+    "40,120,1,5",
+    "42,120,1,5",
+    "43,120,1,5",
+    "44,120,1,5",
+    "41,120,1,5",
+    "45,120,1,5",
+    "46,120,1,5",
+    "47,120,1,5",
+    "48,120,1,5",
+    "55,120,1,5",
+    "56,120,1,5",
+    "57,120,1,5",
+    "58,120,1,5",
+    "51,120,1,5",
+    "53,120,1,5",
+    "54,120,1,5",
+    "52,120,1,5",
+    "50,120,1,5",
+    "49,120,1,5",
+    "11,81,2,52"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -4260,7 +4553,7 @@
                 ]
               }
             ],
-            "ID": "04f0a9fc-8a50-4af2-898c-72b12ace5c89"
+            "ID": "6e1ddee4-72a5-4d8e-b3f6-ee2cce87d2d0"
           },
           {
             "CommandList": [
@@ -4284,7 +4577,7 @@
                 ]
               }
             ],
-            "ID": "141ecea5-d911-4275-8433-f94e5eb61df5"
+            "ID": "4ca6162c-6a22-4c0a-a620-86254a580cbb"
           }
         ]
       },
@@ -4318,23 +4611,23 @@
   "CustomNames": [
     {
       "Name": "元_見積依頼コメント",
-      "Formula": "物件詳細_工事_申込事業者用!$DQ$42"
+      "Formula": "物件詳細_工事_申込事業者用!$DQ$46"
     },
     {
-      "Name": "元_見積依頼日",
+      "Name": "元_工事見積依頼日",
       "Formula": "物件詳細_工事_申込事業者用!$DQ$41"
     },
     {
       "Name": "元_見積書受領日",
-      "Formula": "物件詳細_工事_申込事業者用!$DQ$43"
+      "Formula": "物件詳細_工事_申込事業者用!$DQ$47"
+    },
+    {
+      "Name": "元_社内備考",
+      "Formula": "物件詳細_工事_申込事業者用!$DQ$58"
     },
     {
       "Name": "元_見積送付コメント",
-      "Formula": "物件詳細_工事_申込事業者用!$DQ$48"
-    },
-    {
-      "Name": "元_見積送付日",
-      "Formula": "物件詳細_工事_申込事業者用!$DQ$47"
+      "Formula": "物件詳細_工事_申込事業者用!$DQ$57"
     },
     {
       "Name": "元_工事ステータスID",
@@ -4349,8 +4642,8 @@
       "Formula": "物件詳細_工事_申込事業者用!$CQ$39"
     },
     {
-      "Name": "元_工事見積ステータスID",
-      "Formula": "物件詳細_工事_申込事業者用!$DQ$50"
+      "Name": "元_工事見積送付日",
+      "Formula": "物件詳細_工事_申込事業者用!$DQ$56"
     },
     {
       "Name": "元_工事見積会社ID",
@@ -4417,8 +4710,8 @@
       "Formula": "物件詳細_工事_申込事業者用!$CQ$49"
     },
     {
-      "Name": "元_社内備考",
-      "Formula": "物件詳細_工事_申込事業者用!$DQ$49"
+      "Name": "元_工事見積ステータスID",
+      "Formula": "物件詳細_工事_申込事業者用!$DQ$59"
     },
     {
       "Name": "元_受注確定日",
@@ -4426,14 +4719,14 @@
     },
     {
       "Name": "元_設計承認フラグ",
-      "Formula": "物件詳細_工事_申込事業者用!$DQ$46"
+      "Formula": "物件詳細_工事_申込事業者用!$DQ$55"
     },
     {
-      "Name": "元_設計審査コメント",
+      "Name": "元_見積リマインド日",
       "Formula": "物件詳細_工事_申込事業者用!$DQ$45"
     },
     {
-      "Name": "元_設計審査結果",
+      "Name": "元_見積リマインドフラグ",
       "Formula": "物件詳細_工事_申込事業者用!$DQ$44"
     },
     {
@@ -4443,6 +4736,42 @@
     {
       "Name": "施工報告書ファイル属性ID",
       "Formula": "物件詳細_工事_申込事業者用!$CR$29"
+    },
+    {
+      "Name": "元_設計審査コメント",
+      "Formula": "物件詳細_工事_申込事業者用!$DQ$54"
+    },
+    {
+      "Name": "元_仮承認フラグ",
+      "Formula": "物件詳細_工事_申込事業者用!$DQ$53"
+    },
+    {
+      "Name": "元_設計審査結果",
+      "Formula": "物件詳細_工事_申込事業者用!$DQ$52"
+    },
+    {
+      "Name": "元_設計審査者ID",
+      "Formula": "物件詳細_工事_申込事業者用!$DQ$51"
+    },
+    {
+      "Name": "元_設計審査日",
+      "Formula": "物件詳細_工事_申込事業者用!$DQ$50"
+    },
+    {
+      "Name": "元_設計審査予定日",
+      "Formula": "物件詳細_工事_申込事業者用!$DQ$49"
+    },
+    {
+      "Name": "元_設計審査依頼日",
+      "Formula": "物件詳細_工事_申込事業者用!$DQ$48"
+    },
+    {
+      "Name": "元_見積期限日",
+      "Formula": "物件詳細_工事_申込事業者用!$DQ$43"
+    },
+    {
+      "Name": "元_見積至急フラグ",
+      "Formula": "物件詳細_工事_申込事業者用!$DQ$42"
     }
   ]
-}//huXugxa4zpf5B7dGz2n0lgslC0L/FGWuGpMovX7xlQpdBh4d+MGxaOcrJqpHDOoeZ7MWiM56k7Sl8YWgrNyHhcsaGC5gLR9jkaWJvj8oFalzb88fJ5ewrK7uoJbBame5vD6fbuhTIm5MqLmn89ShmFv0v7qMkzlhvz+aoye+Ev2ECG0kXceoEMzoFAQa6VpYA8mksSC8uElT6aCVOsrr6IRZwMLZitGy9WJ3A/TLspsm+giNjj61sbmwGeQf0Qs0I8NDv79BasaCEt5aCdeVaYUvqygRZ6HXK51lrR8RJ1ln3LyVysRtJ8rVArewmKo0Ho30VfzTA4PxxV1YLvWoeeP4dEFy7f8DrBVoTUMFIzjYpCp/Df3LrOLRE+3LmPUeWO8MAEcZ1mEcw3j3SfO8GXTSRxqlyUFfDq86HsrDOmQkULu6aovwXDe4/j2YBywUTxFTeq+RT138pyvyqXMLmq25xzCJy0Iz2r3gY1g7Jr6ixBj4ynPzgn948CGpxzhGgX360kaglCcN1Ez9o7VsnOidcaMsd374AlZIca2iiI1EHNDQjpqMCDRrZH0YC3Is1WG09ZwjwAsbpakNO1QWJt0H1uA+P2c+JMrZ4+YrHBPjBrHyKTMkMMMf1wu0rHhHJ+W6fvkbDulsGpOxYDHaYA4TwU2n8VoTmHHjMDk8k7Kbyq15e6waylS1nm+/oaxZQwqy3uX+5yTNoINZCqnaPiFPEYvVD1pBVX/fyCENp+dk1XVKrgDGoMa0wMthpXgYTpgvDRAvwC/GE6ICi6CNVr/HUHRSanEeBezw/87BSuQ64+v0VO//nmKakhthsuMwET1FaLzQgexrKYVtfobkMJv5xPwmRyqVnki5/CRUvFgXNBOQpP4NeliMvd/n3OyZVnOwEo5RSmt3RX5wbJ0hRQ==|920
+}//6iM80s9gEhlyLQ6C2gL6HSfaF1HfeC2AMr6MpO7qADOQlNmFZ9wXdj/eQWPfHNksW1sR7VTFOCwgMc70bI5sjlHMxIxte8QVMwhls+4lrsb4qMRTn/78bxkXyoTkVpGtJkubb++hFSQYe8MCCNJANjkWhkTL0NmbNQIjQBUbmGWJB2zj2zFGT2rYhvTlCaQAwMqrraBfhi17S9QIhThiCDDQ5d2B6elrjGLbuKRk0b3Kjf0H1jYd5fKQVe36NRoCownW2DBtmXuhRb9NgIRWSWddaXhIoXoIwGYgD9FnBI8kfdonVX0D/ZoTSOkZBHUeg+X9uaCn3h8Scjnv7Byi3kvsXPg15HK1e+1B7dfesx4Dv/GYV0Wktt5+z1CiLxoLWm9X1TIwn82r+qfcGMl0wj6zfLeiNcJ9ji5LktbngC+6uWC/dG/4yHB27+KcXZhMlS4RZDGwdJGL980gkdu3xXv1CDYNEYApVuFWomR94RWQhTJf9x4UamUxTx9C6QOkzyRCyemGck0Ff3BIkltXjJ55kENeQJgle3QAZEM8EhpYXYOdlkx90Zyxr397vw5CXYk+9u3HT3jxGFgGLcVxMmM6OyeDd6bM5Mkjt6LbsmDtzo/lw8z/WhRREm9GSWy+yXfyvbKTwLvIOhxZZAQBZj6rUWwaIL2AOFb74HwKA5txsHK6UL4aMhLdGTyjX25LeSeI0G12MvQ+1V4aJbkUCTdqrYYHzEogpGBEI5bjL487inruRRh9iWXT0jIN34Mh+u1KxNIEGTi6hOYTuKvkeX4qxUnXCWhe88Du4RNr2PYHp6ioxfp+mf1OwYfbYDwEC1IZ/nTt3IsMyvScwH7DGmM2bnFc4TM1J9u5el1WDhYQuV6BTQ9haMKDBvfWQ1gfo9mect3lEgdv8/ZzZRm/OQ==|920

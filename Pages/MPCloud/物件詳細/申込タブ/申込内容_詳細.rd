@@ -1,7 +1,7 @@
 {
   "PageType": 0,
   "ColumnCount": 138,
-  "RowCount": 85,
+  "RowCount": 89,
   "Formulas": {
     "24,122": "IF(DQ25=0,\"\",DQ25)",
     "24,97": "IF(CR25=0,\"\",CR25)",
@@ -48,7 +48,8 @@
   },
   "ArrayFormulas": {
     "5,126,1,6": "IFERROR(ODATA(\"m_order_type?$select=groud_survey_flg,site_survey_flg,object_overview_display_flg,analyze_flg,warranty_flg,warranty_type_id&$filter=order_type_id eq \"&IF(ISBLANK(CC6),\"null\",CC6)),0)",
-    "24,126,1,2": "IFERROR(ODATA(\"m_customer_default?$select=warranty_period_specify_flg,specify_warranty_period&$filter=customer_id eq \"&IF(ISBLANK(CR12),\"null\",CR12)),\"\")"
+    "24,126,1,2": "IFERROR(ODATA(\"m_customer_default?$select=warranty_period_specify_flg,specify_warranty_period&$filter=customer_id eq \"&IF(ISBLANK(CR12),\"null\",CR12)),\"\")",
+    "5,133,1,2": "IFERROR(ODATA(\"m_order_type?$select=groud_survey_flg,analyze_flg&$filter=order_type_id eq \"&IF(ISBLANK(元_申込タイプID),\"null\",元_申込タイプID)),\"\")"
   },
   "CustomNames": [
     {
