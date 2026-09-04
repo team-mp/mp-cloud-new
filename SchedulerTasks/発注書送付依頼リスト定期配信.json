@@ -1,0 +1,151 @@
+{
+  "Name": "発注書送付依頼リスト定期配信",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.OneTimeScheduleTriggerSaveData, ServerDesignerCommon",
+      "StartDateTime": 45978.0,
+      "ScheduleRunInDebugServer": false
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "発注書送付依頼事業者",
+      "TableValue": {
+        "TableName": "t_object_product",
+        "BindingInfos": [
+          {
+            "GUID": "43a4d6ad-08f0-495b-9ea7-e835cae6a654",
+            "BindingInfo": {
+              "TableName": "t_object_product",
+              "ColumnName": "billing_comp_id",
+              "GUID": "b95ea80f-c6b0-4924-9e6a-757fde9147c2"
+            },
+            "ColumnName": "請求先ID"
+          },
+          {
+            "GUID": "d97b9874-9fe8-421f-b91c-a3234b3b226b",
+            "BindingInfo": {
+              "TableName": "t_object_product",
+              "ColumnName": "レコード件数",
+              "GUID": "8b0f7b5c-045c-4c4f-a9ae-0dc2b5cf22c4"
+            },
+            "ColumnName": "レコード件数"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_product",
+                "ColumnName": "billing_comp_id",
+                "GUID": "51ff6727-de74-4772-9389-6e4cc684ac2b",
+                "RelationBinding": {
+                  "RelatedTable": "m_customer",
+                  "RelatedColumn": "customer_id",
+                  "DisplayColumn": "customer_billing_id",
+                  "NextRelationBinding": {
+                    "RelatedTable": "m_customer_billing",
+                    "RelatedColumn": "customer_billing_id",
+                    "DisplayColumn": "purchase_order_check_no_notify_flg"
+                  }
+                }
+              },
+              "Value": "0"
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_product",
+                "ColumnName": "purchase_required_flg",
+                "GUID": "a5e425ea-4752-4d9a-9577-d8c304f934c0"
+              },
+              "Value": "1"
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_product",
+                "ColumnName": "sales_account_status_id",
+                "GUID": "4e10afe3-cb40-4040-97b4-0560ef46c58a",
+                "RelationBinding": {
+                  "RelatedTable": "m_account_status",
+                  "RelatedColumn": "account_status_id",
+                  "DisplayColumn": "purchase_collect_wait_flg"
+                }
+              },
+              "Value": "1"
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_product",
+                "ColumnName": "object_order_id",
+                "GUID": "de91e72a-50a1-400b-93b2-7471f4968c8c",
+                "RelationBinding": {
+                  "RelatedTable": "t_object_order",
+                  "RelatedColumn": "object_order_id",
+                  "DisplayColumn": "group_id",
+                  "NextRelationBinding": {
+                    "RelatedTable": "m_group",
+                    "RelatedColumn": "group_id",
+                    "DisplayColumn": "purchase_order_check_no_notify_flg"
+                  }
+                }
+              },
+              "Value": "0"
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "CompareType": 2,
+              "ColumnBindingInfo": {
+                "TableName": "t_object_product",
+                "ColumnName": "sales_amount",
+                "GUID": "3e0e789b-9d1c-4837-9e97-694f8784d683"
+              },
+              "Value": "0"
+            }
+          ]
+        }
+      },
+      "ID": "0be462cc88404fdd98e6edf00392d2e5"
+    },
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=発注書送付依頼事業者"
+        },
+        "LoopItemParamName": "Item"
+      },
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "発注書送付依頼リストメール送信",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_対象事業者ID",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=Item.請求先ID"
+              }
+            }
+          ],
+          "ReturnPropertiesTo": [
+            {
+              "ResultPropertyName": "R_送信済みフラグ"
+            }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        }
+      ]
+    }
+  ]
+}

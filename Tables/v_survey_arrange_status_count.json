@@ -1,0 +1,39 @@
+{
+  "Name": "v_survey_arrange_status_count",
+  "Columns": [
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "調査手配_自動手配待ち件数",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "調査手配_調査承諾待ち件数",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "調査手配_調査確定待ち件数",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    }
+  ],
+  "ExternalDatabaseInfo": {
+    "DataBaseType": "6db454c0-531c-4395-9122-921a18942902",
+    "ConnectionId": "PostgreSQL1",
+    "SourceTableName": "v_survey_arrange_status_count",
+    "SourceTableSchema": "public",
+    "CreateViewSql": " SELECT count(\n        CASE\n            WHEN (suba.auto_arrange_wait_flg = 1) THEN 1\n            ELSE NULL::integer\n        END) AS \"調査手配_自動手配待ち件数\",\n    count(\n        CASE\n            WHEN (suba.survey_consent_wait_flg = 1) THEN 1\n            ELSE NULL::integer\n        END) AS \"調査手配_調査承諾待ち件数\",\n    count(\n        CASE\n            WHEN (suba.survey_confirm_flg = 1) THEN 1\n            ELSE NULL::integer\n        END) AS \"調査手配_調査確定待ち件数\"\n   FROM ((t_object_survey_arrange main\n     JOIN m_survey_arrange_status suba ON ((main.survey_arrange_status_id = suba.survey_arrange_status_id)))\n     JOIN t_object_survey subb ON ((main.survey_id = subb.survey_id)))\n  WHERE ((EXISTS ( SELECT 1\n           FROM t_object_order\n          WHERE ((t_object_order.object_order_id = subb.object_order_id) AND (t_object_order.active_flg = 1)))) AND ((suba.auto_arrange_wait_flg = 1) OR (suba.survey_consent_wait_flg = 1) OR (suba.survey_confirm_flg = 1)));",
+    "ViewInfo": {
+      "ViewName": "v_survey_arrange_status_count",
+      "IsUpdatable": true,
+      "QueryColumns": []
+    }
+  },
+  "Indexes": []
+}

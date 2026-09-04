@@ -1,0 +1,119 @@
+{
+  "Name": "営業担当者一括更新",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.OneTimeScheduleTriggerSaveData, ServerDesignerCommon",
+      "StartDateTime": 46242.0,
+      "ScheduleRunInDebugServer": false
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "売上拡張",
+      "TableValue": {
+        "TableName": "t_sales",
+        "BindingInfos": [
+          {
+            "GUID": "44a4330d-9313-417c-b49b-77cac03787ec",
+            "BindingInfo": {
+              "TableName": "t_sales",
+              "ColumnName": "sales_ext_id",
+              "GUID": "ca330200-3893-42d9-91c0-e13edf2b99d4"
+            },
+            "ColumnName": "売上拡張ID"
+          },
+          {
+            "GUID": "001f7e2c-37c1-433b-acbd-ecf6ab453aa7",
+            "BindingInfo": {
+              "TableName": "t_sales",
+              "ColumnName": "object_order_id",
+              "GUID": "8d54dd9c-6f31-44fb-ab0c-0cf44611937c",
+              "RelationBinding": {
+                "RelatedTable": "t_object_order",
+                "RelatedColumn": "object_order_id",
+                "DisplayColumn": "sales_staff_id"
+              }
+            },
+            "ColumnName": "営業担当ID"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_sales",
+                "ColumnName": "sales_ext_id",
+                "GUID": "b0f7d632-c1a5-4607-9c52-b97dff32407f",
+                "RelationBinding": {
+                  "RelatedTable": "t_sales_ext",
+                  "RelatedColumn": "sales_ext_id",
+                  "DisplayColumn": "sales_staff_id"
+                }
+              },
+              "Value": "%Null%"
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "CompareType": 1,
+              "ColumnBindingInfo": {
+                "TableName": "t_sales",
+                "ColumnName": "object_order_id",
+                "GUID": "cab29f48-471f-4408-8f73-b8a736e97140"
+              },
+              "Value": "%Null%"
+            }
+          ]
+        }
+      },
+      "ID": "4193971ca6394ea084b2d554f211cebd"
+    },
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=売上拡張"
+        },
+        "LoopItemParamName": "Item"
+      },
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_sales_ext",
+          "ShowConfirm": false,
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_sales_ext",
+              "ColumnName": "sales_ext_id",
+              "GUID": "558037ba-993b-4d29-9c5d-7dab1b986629"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=Item.売上拡張ID"
+            }
+          },
+          "UpdateBindingValues": [
+            {
+              "BindingInfo": {
+                "TableName": "t_sales_ext",
+                "ColumnName": "sales_staff_id",
+                "GUID": "d94de43c-ab2b-4cc7-a384-aa1f09fe572d"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=Item.営業担当ID"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "PageType": 0,
-  "ColumnCount": 51,
+  "ColumnCount": 60,
   "RowCount": 72,
   "Formulas": {
     "47,14": "IF(U49=1,\"仮\",\"\")",

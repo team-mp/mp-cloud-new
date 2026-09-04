@@ -44,7 +44,8 @@
     "11,126": "IF(AND(DL10=1,VALUE(DW6)=0,VALUE(DZ6)=1,VALUE(EA6)=1),1,0)",
     "54,90": "IFERROR(ODATA(\"m_product?$select=housing_type&$filter=product_id eq \"&IF(ISBLANK(CC55),\"null\",CC55)),\"\")",
     "66,80": "IF(AND(OR(元_保証確認区分>0,CC55<>元_受付商品ID),CC55<>\"\",DZ6=1,EA6=1,CI67=0,CO67=0),1,0)",
-    "63,80": "IF(S64=1,1,IF(N66=1,2,IF(BA67=1,3,IF(BK67=1,4,IF(N68=1,5,IF(S65=1,6,\"\"))))))"
+    "63,80": "IF(S64=1,1,IF(N66=1,2,IF(BA67=1,3,IF(BK67=1,4,IF(N68=1,5,IF(S65=1,6,\"\"))))))",
+    "7,90": "IFERROR(ODATA(\"m_user?$select=active_flg&$filter=user_id eq \"&IF(ISBLANK(CC8),\"null\",CC8)),0)"
   },
   "ArrayFormulas": {
     "5,126,1,6": "IFERROR(ODATA(\"m_order_type?$select=groud_survey_flg,site_survey_flg,object_overview_display_flg,analyze_flg,warranty_flg,warranty_type_id&$filter=order_type_id eq \"&IF(ISBLANK(CC6),\"null\",CC6)),0)",

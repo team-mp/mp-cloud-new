@@ -38,7 +38,7 @@
         "TableValueType": 0,
         "BindingInfos": [
           {
-            "GUID": "0efb2392-dd4b-464a-8508-2fbe46247ba8",
+            "GUID": "ecb2e115-75b7-419d-8119-17e2d6f58a5b",
             "BindingInfo": {
               "TableName": "m_environment",
               "ColumnName": "analysis_work_days",
@@ -57,16 +57,7 @@
           "Value": "1"
         }
       },
-      "ID": "6d61befef54a47e3952823ab89aae1c2"
-    },
-    {
-      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-      "ParameterName": "審査作業日数",
-      "ParameterValue": {
-        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-        "SerializeProperty": "=審査作業日数+1"
-      },
-      "ID": "5bc0eea9fbb14fcea15e30a67e34f22b"
+      "ID": "eb51d38ab12d409ebe3e5d808c76bccc"
     },
     {
       "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -75,13 +66,90 @@
         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
         "SerializeProperty": "=P_依頼日"
       },
-      "ID": "89d6d988911546c7b75cf805351a5d72"
+      "ID": "4b91ddcaae3a468baa0af8c1458a9445"
     },
     {
       "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
       "ParameterName": "加算日数",
       "ParameterValue": "0",
-      "ID": "89bf03efa3f342869aa58ea538d36147"
+      "ID": "c0885d2de98941668c560fe359b50de8"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "休業日登録件数",
+      "TableValue": {
+        "TableName": "m_company_holiday",
+        "TableValueType": 3,
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "m_company_holiday",
+            "ColumnName": "holiday",
+            "GUID": "75b6d0bf-ebbf-43e4-ac74-d168b7ec223e"
+          },
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=審査予定日"
+          }
+        }
+      },
+      "ID": "010d98bab1c84c6fad95df33af80fa6d"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "曜日",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=WEEKDAY(審査予定日)"
+      },
+      "ID": "196e11a14ee84f8496e27c309e97316b"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+            "SubConditions": [
+              {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=曜日"
+                  }
+                },
+                "value": "1,7",
+                "compareType": 13
+              },
+              {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=休業日登録件数"
+                  }
+                },
+                "value": "0"
+              }
+            ]
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "審査作業日数",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=審査作業日数+1"
+              },
+              "ID": "9a997461c8134ea38c9b62238e38b2ce"
+            }
+          ],
+          "ID": "98407f8a-23d5-430b-a407-10a2d7ba728e"
+        }
+      ]
     },
     {
       "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
@@ -111,7 +179,7 @@
               }
             }
           },
-          "ID": "647c01d6840b4d338bd26c786f14fa8b"
+          "ID": "0a413020f3ff40319d7361c9dc278c04"
         },
         {
           "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -136,7 +204,7 @@
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                     "SerializeProperty": "=WEEKDAY(審査予定日)"
                   },
-                  "ID": "80cff714c8ac4e7ca003608630875635"
+                  "ID": "cf54b1637198454f85781e2ce3cb444a"
                 },
                 {
                   "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -165,12 +233,12 @@
                           "ID": "50a085492010448da61b2452b00c006a"
                         }
                       ],
-                      "ID": "74afbff3-2391-4e4a-b2c0-059ccccb6fa7"
+                      "ID": "d28c8f29-1164-46cf-8bba-32e8e26a02c8"
                     }
                   ]
                 }
               ],
-              "ID": "3629d415-b886-4f7a-8072-f6962192a866"
+              "ID": "6e33c9cd-db71-484b-aa24-a0471f0c22bb"
             }
           ]
         },
@@ -207,7 +275,7 @@
                   ]
                 }
               ],
-              "ID": "1fde5ad7-17bb-41d9-8bb9-133c32cea6c7"
+              "ID": "283ee863-4b00-4366-bd52-6626af946f6b"
             },
             {
               "CommandList": [
@@ -221,7 +289,7 @@
                   "ID": "7dc2e6c19b4340cbbbd8f25bee4e6aba"
                 }
               ],
-              "ID": "6f73fecd-20e0-4d0e-b7cb-72c2962d3107"
+              "ID": "30733058-03c0-43c7-9c1f-00445a1a1a1a"
             }
           ]
         }

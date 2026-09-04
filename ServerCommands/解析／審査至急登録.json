@@ -85,6 +85,89 @@
       "CheckDataValidation": true
     },
     {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "申込情報",
+      "TableValue": {
+        "TableName": "t_object_order",
+        "TableValueType": 1,
+        "BindingInfos": [
+          {
+            "GUID": "2e899975-62cd-4031-86f4-5df0b64f1c3b",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "group_id",
+              "GUID": "f2ba732a-8ad3-431e-b78a-ba3ed000d3aa"
+            },
+            "ColumnName": "グループID"
+          },
+          {
+            "GUID": "bb47a743-d5b0-421e-bb88-673bab0b04f7",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "builder_id",
+              "GUID": "516811e1-4974-4fcd-bf2d-e0c43aa858a0"
+            },
+            "ColumnName": "住宅事業者ID"
+          },
+          {
+            "GUID": "0d139174-04d7-4364-b452-f831c300987f",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "latest_analysis_id",
+              "GUID": "52be265b-de61-4279-8e9f-85795a86310f"
+            },
+            "ColumnName": "最新解析ID"
+          },
+          {
+            "GUID": "8d41b1c9-bb5b-4233-a280-9e101304fa69",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "latest_analysis_id",
+              "GUID": "60d346cf-80d9-4c5f-86bf-1ca206c15ef7",
+              "RelationBinding": {
+                "RelatedTable": "t_object_analysis",
+                "RelatedColumn": "analysis_id",
+                "DisplayColumn": "analysis_planned_date"
+              }
+            },
+            "ColumnName": "解析予定日"
+          },
+          {
+            "GUID": "a321b41d-4a5a-483d-bceb-8d7433a48a07",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "latest_analysis_id",
+              "GUID": "12dbb76d-e4d4-461d-b898-a78aa46b6907",
+              "RelationBinding": {
+                "RelatedTable": "t_object_analysis",
+                "RelatedColumn": "analysis_id",
+                "DisplayColumn": "analysis_ext_id",
+                "NextRelationBinding": {
+                  "RelatedTable": "t_object_analysis_ext",
+                  "RelatedColumn": "analysis_ext_id",
+                  "DisplayColumn": "original_analysis_planned_date"
+                }
+              }
+            },
+            "ColumnName": "元解析予定日"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "t_object_order",
+            "ColumnName": "object_order_id",
+            "GUID": "3675b01b-1baa-4b48-8f92-2b84d47f4ae0"
+          },
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_申込ID"
+          }
+        }
+      },
+      "ID": "5f83c9ea054848b6865e9bc24fc326cc"
+    },
+    {
       "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
       "ConditionAndCommandPairList": [
         {
@@ -133,10 +216,10 @@
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                         "SerializeProperty": "=\"【審査至急】\"&CHAR(10)&P_至急コメント"
                       },
-                      "ID": "16c154409cd94db8ba8f0f59cd8111da"
+                      "ID": "b22cda48cae1485696ce46d3cd02e59e"
                     }
                   ],
-                  "ID": "dcff5d56-328e-4237-9342-fc1d6079bf84"
+                  "ID": "251e122e-db6a-4cad-b387-3c69a5364c1a"
                 },
                 {
                   "CommandList": [
@@ -147,7 +230,7 @@
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                         "SerializeProperty": "=\"解析期限：\"&IF(P_至急期限日<>\"\",TEXT(P_至急期限日,\"yyyyy/mm/dd\")&\" \"&TEXT(P_至急期限時刻,\"hh:mm\"),\"\")"
                       },
-                      "ID": "39671eb83e804bc0ae313111f4c58cf3"
+                      "ID": "b7bfa81550d54f0d9d627e3ec8f9147d"
                     },
                     {
                       "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -156,10 +239,103 @@
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                         "SerializeProperty": "=\"【解析至急】\"&CHAR(10)&P_至急コメント"
                       },
-                      "ID": "86858db7a8b8464196fc5ed2eb5d0fdb"
+                      "ID": "378096542fe84cefbf2314d288da1ff9"
+                    },
+                    {
+                      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                      "ConditionAndCommandPairList": [
+                        {
+                          "Condition": {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_至急期限日"
+                              }
+                            },
+                            "value": "%Null%",
+                            "compareType": 1
+                          },
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                              "ParameterName": "V_解析予定日",
+                              "ParameterValue": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_至急期限日"
+                              },
+                              "ID": "c93b9b57340d406e861fc10d50d0c85d"
+                            },
+                            {
+                              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                              "TableName": "t_object_analysis",
+                              "ShowConfirm": false,
+                              "RowsToUpdate": 1,
+                              "RowsToUpdateCondition": {
+                                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                "ColumnBindingInfo": {
+                                  "TableName": "t_object_analysis",
+                                  "ColumnName": "analysis_id",
+                                  "GUID": "059cc1eb-39d1-4354-90ff-2f2103a62793"
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=申込情報.最新解析ID"
+                                }
+                              },
+                              "UpdateBindingValues": [
+                                {
+                                  "BindingInfo": {
+                                    "TableName": "t_object_analysis",
+                                    "ColumnName": "analysis_planned_date",
+                                    "GUID": "585af347-44a2-454a-8b23-baf1482dad25"
+                                  },
+                                  "Value": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=V_解析予定日"
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                              "TableName": "t_object_analysis_ext",
+                              "ShowConfirm": false,
+                              "RowsToUpdate": 1,
+                              "RowsToUpdateCondition": {
+                                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                "ColumnBindingInfo": {
+                                  "TableName": "t_object_analysis_ext",
+                                  "ColumnName": "analysis_id",
+                                  "GUID": "c88018c4-1249-4d12-8253-acf639b06393"
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=申込情報.最新解析ID"
+                                }
+                              },
+                              "UpdateBindingValues": [
+                                {
+                                  "BindingInfo": {
+                                    "TableName": "t_object_analysis_ext",
+                                    "ColumnName": "original_analysis_planned_date",
+                                    "GUID": "a0b02c55-3920-471e-be25-864ee94bcfdb"
+                                  },
+                                  "Value": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=申込情報.解析予定日"
+                                  }
+                                }
+                              ]
+                            }
+                          ],
+                          "ID": "b2d3ac5f-a820-4ec0-90a9-fe162bf1c417"
+                        }
+                      ]
                     }
                   ],
-                  "ID": "6a90ced1-4425-467a-9c1e-0887e5e29d27"
+                  "ID": "631d1f9e-4ba0-436c-a8d3-9d8fff06a14d"
                 }
               ]
             },
@@ -170,7 +346,7 @@
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                 "SerializeProperty": "=期限日時ラベル&CHAR(10)&最終更新ラベル&IF(P_至急コメント<>\"\",CHAR(10)&P_至急コメント,\"\")"
               },
-              "ID": "63eace492c714574ba76e642233a47c3"
+              "ID": "c9c0283c59304b1c9f4c46de7a916130"
             },
             {
               "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
@@ -194,7 +370,7 @@
                   "BindingInfo": {
                     "TableName": "t_object_order_sub",
                     "ColumnName": "analysis_urgent_flg",
-                    "GUID": "3b0fc38d-86a6-412d-a6cd-bf8dcc7eee24"
+                    "GUID": "8d346dbb-6341-4c55-bd5e-f437eed45d9a"
                   },
                   "Value": "1"
                 },
@@ -202,7 +378,7 @@
                   "BindingInfo": {
                     "TableName": "t_object_order_sub",
                     "ColumnName": "analysis_limite_date",
-                    "GUID": "f1e59765-6177-4706-9b0b-3ab195ec9b67"
+                    "GUID": "cc127849-954b-4464-9686-44fa3669034c"
                   },
                   "Value": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -213,7 +389,7 @@
                   "BindingInfo": {
                     "TableName": "t_object_order_sub",
                     "ColumnName": "analysis_limite_time",
-                    "GUID": "39a5c296-c39d-42ff-8ad6-0602c9fcca43"
+                    "GUID": "0060e9f3-0431-4920-94ba-509c82591ced"
                   },
                   "Value": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -224,7 +400,7 @@
                   "BindingInfo": {
                     "TableName": "t_object_order_sub",
                     "ColumnName": "analysis_comment",
-                    "GUID": "7e59ba04-4a07-4c85-9d3f-fde3d049ce56"
+                    "GUID": "4490f654-0d19-47c1-b40e-a6d4e15090ff"
                   },
                   "Value": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -235,7 +411,7 @@
                   "BindingInfo": {
                     "TableName": "t_object_order_sub",
                     "ColumnName": "analysis_urgent_label",
-                    "GUID": "c600aa41-9289-47cb-b950-c33c7a61508c"
+                    "GUID": "1ec7926c-62af-402c-8bf3-1601bf18e2a0"
                   },
                   "Value": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -423,12 +599,12 @@
                       }
                     }
                   ],
-                  "ID": "a97683fc-d9aa-4871-94e0-7401ff12375f"
+                  "ID": "fc8ea3e9-3623-4e16-9eb2-5f674aea46dd"
                 }
               ]
             }
           ],
-          "ID": "7a39dfbb-6583-4a25-9849-7d26becd417c"
+          "ID": "9419485a-83a1-4239-98b7-1da81adc651d"
         },
         {
           "CommandList": [
@@ -452,10 +628,10 @@
                       "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
                       "ParameterName": "連絡事項の内容",
                       "ParameterValue": "審査至急を解除しました",
-                      "ID": "3c0020d17cc6453bb624fb49579dacfd"
+                      "ID": "d887962126f4493099fadedeb49e0ebc"
                     }
                   ],
-                  "ID": "66fcb361-35f2-4c90-b1e8-bef49ff9c9cd"
+                  "ID": "8fbb6285-f0cc-4296-9fb3-2ec3751e7be2"
                 },
                 {
                   "CommandList": [
@@ -463,10 +639,68 @@
                       "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
                       "ParameterName": "連絡事項の内容",
                       "ParameterValue": "解析至急を解除しました",
-                      "ID": "cbd3d0c0542e4073916b644b2761d9bb"
+                      "ID": "cb908d1cdb244fd2a1fcb5996e0f6e15"
+                    },
+                    {
+                      "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                      "TableName": "t_object_analysis",
+                      "ShowConfirm": false,
+                      "RowsToUpdate": 1,
+                      "RowsToUpdateCondition": {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_analysis",
+                          "ColumnName": "analysis_id",
+                          "GUID": "f97bd15f-fd3b-4f78-8a3f-1ab4e504de9d"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=申込情報.最新解析ID"
+                        }
+                      },
+                      "UpdateBindingValues": [
+                        {
+                          "BindingInfo": {
+                            "TableName": "t_object_analysis",
+                            "ColumnName": "analysis_planned_date",
+                            "GUID": "45957769-645a-4edc-b30e-b4b153f23d61"
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=申込情報.元解析予定日"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                      "TableName": "t_object_analysis_ext",
+                      "ShowConfirm": false,
+                      "RowsToUpdate": 1,
+                      "RowsToUpdateCondition": {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_analysis_ext",
+                          "ColumnName": "analysis_id",
+                          "GUID": "50baf77f-9f89-4126-89c0-e29d768c4961"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=申込情報.最新解析ID"
+                        }
+                      },
+                      "UpdateBindingValues": [
+                        {
+                          "BindingInfo": {
+                            "TableName": "t_object_analysis_ext",
+                            "ColumnName": "original_analysis_planned_date",
+                            "GUID": "84f8be3e-ea70-49ab-9a6e-c6830e63917b"
+                          }
+                        }
+                      ]
                     }
                   ],
-                  "ID": "a991bedc-8aeb-4d6d-9a41-de54f2cd46af"
+                  "ID": "73c2f305-f086-406e-b688-23d252929efb"
                 }
               ]
             },
@@ -705,12 +939,12 @@
                       }
                     }
                   ],
-                  "ID": "1ba0421b-8283-4d7d-b5c5-29de529f5867"
+                  "ID": "aef60605-baf2-4982-98b4-b5336ec3cc85"
                 }
               ]
             }
           ],
-          "ID": "ebd9940a-9f4c-4f2e-b967-728f7df4bb12"
+          "ID": "62511914-d841-43bb-91d2-c10f915c49ad"
         }
       ]
     }
