@@ -1,0 +1,849 @@
+{
+  "Name": "調査保留登録",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_調査IDs",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_調査保留理由",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "登録更新ラベル取得",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_ユーザーID"
+            }
+          ],
+          "ResultErrorCodeTo": {
+            "SerializeProperty": "リターンコード"
+          },
+          "ResultMessageTo": {
+            "SerializeProperty": "リターンメッセージ"
+          },
+          "ReturnPropertiesTo": [
+            {
+              "ResultPropertyName": "R_ラベル名",
+              "ResultTo": {
+                "SerializeProperty": "最終更新ラベル"
+              }
+            },
+            {
+              "ResultPropertyName": "R_外部ユーザーフラグ"
+            },
+            {
+              "ResultPropertyName": "R_ユーザー名"
+            },
+            {
+              "ResultPropertyName": "R_所属会社名"
+            },
+            {
+              "ResultPropertyName": "R_メールアドレス"
+            }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "調査情報",
+          "TableValue": {
+            "TableName": "t_object_survey",
+            "TableValueType": 1,
+            "BindingInfos": [
+              {
+                "GUID": "02349743-75c1-4d7f-b6b0-9162cbc1f317",
+                "BindingInfo": {
+                  "TableName": "t_object_survey",
+                  "ColumnName": "survey_status_id",
+                  "GUID": "3254c414-151c-450c-9386-1503dea6265d"
+                },
+                "ColumnName": "調査ステータスID"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+              "CompareType": 8,
+              "ColumnBindingInfo": {
+                "TableName": "t_object_survey",
+                "ColumnName": "survey_id",
+                "GUID": "46800ded-1027-467f-897d-ec50ccf50daf"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_調査IDs"
+              }
+            },
+            "TopCount": "1",
+            "OrderBySqlCondition": {
+              "OrderByColumns": [
+                {
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_survey",
+                    "ColumnName": "survey_id",
+                    "GUID": "b11509c8-b2a6-4bfc-83fd-ab28e4ee194e"
+                  },
+                  "Order": 0
+                }
+              ]
+            }
+          },
+          "ID": "dfd8d9e1864049269c9c0d07ff2015f2"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "調査サマリ",
+          "TableValue": {
+            "TableName": "t_object_survey",
+            "TableValueType": 1,
+            "BindingInfos": [
+              {
+                "GUID": "fd103cd4-ace0-40d7-bc68-068e645eed7f",
+                "BindingInfo": {
+                  "TableName": "t_object_survey",
+                  "ColumnName": "object_order_id",
+                  "GUID": "49ff3e1e-32da-4719-a092-47a2706f5b77",
+                  "RelationBinding": {
+                    "RelatedTable": "t_object_order",
+                    "RelatedColumn": "object_order_id",
+                    "DisplayColumn": "最小申込ID"
+                  }
+                },
+                "ColumnName": "最小申込ID"
+              },
+              {
+                "GUID": "c861c604-4987-4e44-8794-c456c67a6e5f",
+                "BindingInfo": {
+                  "TableName": "t_object_survey",
+                  "ColumnName": "object_order_id",
+                  "GUID": "276000fa-1bbd-4754-b660-99def2dce93b",
+                  "RelationBinding": {
+                    "RelatedTable": "t_object_order",
+                    "RelatedColumn": "object_order_id",
+                    "DisplayColumn": "申込KEYs"
+                  }
+                },
+                "ColumnName": "申込KEYs"
+              },
+              {
+                "GUID": "d5fc17b4-0406-46eb-b526-246cba4bcd78",
+                "BindingInfo": {
+                  "TableName": "t_object_survey",
+                  "ColumnName": "object_order_id",
+                  "GUID": "217871f0-d984-4106-8025-43f87b9921e0",
+                  "RelationBinding": {
+                    "RelatedTable": "t_object_order",
+                    "RelatedColumn": "object_order_id",
+                    "DisplayColumn": "申込IDs"
+                  }
+                },
+                "ColumnName": "申込IDs"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+              "CompareType": 8,
+              "ColumnBindingInfo": {
+                "TableName": "t_object_survey",
+                "ColumnName": "survey_id",
+                "GUID": "de0b8c40-cb41-414e-80f8-85b53f85ed57"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_調査IDs"
+              }
+            }
+          },
+          "ID": "5a6b0c3a81bd4e509953b54a1ee68da9"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "調査保留ST",
+          "TableValue": {
+            "TableName": "m_survey_status",
+            "TableValueType": 1,
+            "BindingInfos": [
+              {
+                "GUID": "30cea2e4-c4cc-4248-b9b3-1d7abe9cd5ba",
+                "BindingInfo": {
+                  "TableName": "m_survey_status",
+                  "ColumnName": "survey_status_id",
+                  "GUID": "b9360ed0-cd9b-4671-86eb-3793c0bd7a6f"
+                },
+                "ColumnName": "調査ステータスID"
+              },
+              {
+                "GUID": "6cf1c7ad-f222-44c0-be1a-e136f7b30e5e",
+                "BindingInfo": {
+                  "TableName": "m_survey_status",
+                  "ColumnName": "order_status_id",
+                  "GUID": "d402862e-a0bd-43e5-9d20-8a4c505e3e3b"
+                },
+                "ColumnName": "申込ステータスID"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_survey_status",
+                "ColumnName": "survey_arrange_pending_flg",
+                "GUID": "c9243921-1acb-475a-8b28-200da58f2b05"
+              },
+              "Value": "1"
+            }
+          },
+          "ID": "01a17358c1db425eae48e98bc072d089"
+        },
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_object_survey",
+          "ShowConfirm": false,
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+            "CompareType": 8,
+            "ColumnBindingInfo": {
+              "TableName": "t_object_survey",
+              "ColumnName": "survey_id",
+              "GUID": "44798b78-c1cb-4b32-a170-7e8b4412f579"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_調査IDs"
+            }
+          },
+          "UpdateBindingValues": [
+            {
+              "BindingInfo": {
+                "TableName": "t_object_survey",
+                "ColumnName": "survey_status_id",
+                "GUID": "3c1e5ef5-9af2-4310-a533-aa44f08cb688"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=調査保留ST.調査ステータスID"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_survey",
+                "ColumnName": "before_survey_status_id",
+                "GUID": "a58c0d08-e4b8-4809-9abb-ed2d372542f0"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=調査情報.調査ステータスID"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_survey",
+                "ColumnName": "survey_pending_date",
+                "GUID": "ba781728-29ef-4490-ab99-1b26b23d3bd6"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=TODAY()"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_survey",
+                "ColumnName": "last_updated_label",
+                "GUID": "e35b0840-0c03-4bc2-a4cb-c8c43278bc98"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=最終更新ラベル"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_survey",
+                "ColumnName": "scheduled_survey_sttdate",
+                "GUID": "3ff3eed6-e83c-4924-93b9-71a28486e5aa"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_survey",
+                "ColumnName": "scheduled_survey_enddate",
+                "GUID": "3c0046c3-48a6-4989-898d-2591d45b6064"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_survey",
+                "ColumnName": "scheduled_survey_time",
+                "GUID": "db2c14ab-4579-4eb3-9bf8-85222ca95ab2"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_survey",
+                "ColumnName": "survey_report_scheduled_date",
+                "GUID": "4aa08e59-d799-45bc-91db-1cd63596264d"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_survey",
+                "ColumnName": "survey_report_receipt_date",
+                "GUID": "4df9427c-d3c1-4635-bcef-14423c25e325"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_survey",
+                "ColumnName": "suvey_report_delivery_date",
+                "GUID": "ecd9799a-0b7d-44c7-ac11-bd4df13ae2cf"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_survey",
+                "ColumnName": "survey_arrange_id",
+                "GUID": "706c7311-95f5-415e-92c6-fc58113e1a54"
+              }
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=調査保留ST.申込ステータスID"
+                  }
+                },
+                "value": "%Null%",
+                "compareType": 1
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "t_object_order",
+                  "ShowConfirm": false,
+                  "RowsToUpdate": 1,
+                  "RowsToUpdateCondition": {
+                    "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                    "CompareType": 8,
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_order",
+                      "ColumnName": "object_order_id",
+                      "GUID": "8881bed5-41c0-4127-a983-6a5aef0fb682"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=調査サマリ.申込IDs"
+                    }
+                  },
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_object_order",
+                        "ColumnName": "order_status_id",
+                        "GUID": "c1677856-06b6-41ac-a21f-0599eac30647"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=調査保留ST.申込ステータスID"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "ID": "e1967c4c-52cd-4530-8f1f-74d32242babd"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "調査手配中リスト",
+          "TableValue": {
+            "TableName": "t_object_survey_arrange",
+            "BindingInfos": [
+              {
+                "GUID": "c1a232d8-6a79-4e28-a942-6e2e2262c859",
+                "BindingInfo": {
+                  "TableName": "t_object_survey_arrange",
+                  "ColumnName": "survey_arrange_id",
+                  "GUID": "6ba2faf4-db1c-42a7-b5a2-51ccc21fdb37"
+                },
+                "ColumnName": "調査手配ID"
+              },
+              {
+                "GUID": "e98bfac4-7292-4f47-918e-6e1585772bf8",
+                "BindingInfo": {
+                  "TableName": "t_object_survey_arrange",
+                  "ColumnName": "survey_arrange_status_id",
+                  "GUID": "94a699a1-927a-448b-add0-011b6df1f237"
+                },
+                "ColumnName": "調査手配ステータスID"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "SubConditions": [
+                {
+                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                  "CompareType": 8,
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_survey_arrange",
+                    "ColumnName": "survey_id",
+                    "GUID": "c8df3c80-062a-4ce8-a177-7567f9a7bdcc"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_調査IDs"
+                  }
+                },
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_survey_arrange",
+                    "ColumnName": "survey_arrange_status_id",
+                    "GUID": "332c02a0-9cbe-4877-9323-90b8e9f3460f",
+                    "RelationBinding": {
+                      "RelatedTable": "m_survey_arrange_status",
+                      "RelatedColumn": "survey_arrange_status_id",
+                      "DisplayColumn": "survey_declined_flg"
+                    }
+                  },
+                  "Value": "0"
+                },
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_survey_arrange",
+                    "ColumnName": "survey_arrange_status_id",
+                    "GUID": "7d49fb38-5e1f-41ac-949f-3e01386c47df",
+                    "RelationBinding": {
+                      "RelatedTable": "m_survey_arrange_status",
+                      "RelatedColumn": "survey_arrange_status_id",
+                      "DisplayColumn": "arrange_withdrawal_flg"
+                    }
+                  },
+                  "Value": "0"
+                },
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_survey_arrange",
+                    "ColumnName": "survey_arrange_status_id",
+                    "GUID": "ea4a21c8-bca8-4870-9f85-0821cc603d11",
+                    "RelationBinding": {
+                      "RelatedTable": "m_survey_arrange_status",
+                      "RelatedColumn": "survey_arrange_status_id",
+                      "DisplayColumn": "arrange_cancel_flg"
+                    }
+                  },
+                  "Value": "0"
+                }
+              ]
+            },
+            "NullFormulaValueQueryPolicy": 0
+          },
+          "ID": "79e33ab31ab74438b9dd5ff14da932f5"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "手配保留ST",
+          "TableValue": {
+            "TableName": "m_survey_arrange_status",
+            "TableValueType": 1,
+            "BindingInfos": [
+              {
+                "GUID": "fafdf389-d231-4ba3-9cc8-1768fa9bffd4",
+                "BindingInfo": {
+                  "TableName": "m_survey_arrange_status",
+                  "ColumnName": "survey_arrange_status_id",
+                  "GUID": "9e2149b4-dbf4-4d15-869a-179a643616cb"
+                },
+                "ColumnName": "調査手配ステータスID"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_survey_arrange_status",
+                "ColumnName": "arrange_pending_flg",
+                "GUID": "11f615ef-c9b4-434e-a73a-c66eb411a603"
+              },
+              "Value": "1"
+            },
+            "NullFormulaValueQueryPolicy": 0
+          },
+          "ID": "a63995d59d27462e9c58516c850b96ae"
+        },
+        {
+          "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+          "LoopInfo": {
+            "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+            "LoopCount": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=調査手配中リスト"
+            },
+            "LoopItemParamName": "Item"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object_survey_arrange",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_survey_arrange",
+                  "ColumnName": "survey_arrange_id",
+                  "GUID": "dc716160-021a-4377-8c58-9b554af50426"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=Item.調査手配ID"
+                }
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_survey_arrange",
+                    "ColumnName": "survey_arrange_status_id",
+                    "GUID": "885d6683-bdb5-4527-93b8-259894c8a174"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=手配保留ST.調査手配ステータスID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_survey_arrange",
+                    "ColumnName": "before_survey_arrange_status_id",
+                    "GUID": "8626d616-5bb1-4845-b53f-0306a22d4788"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.調査手配ステータスID"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_調査保留理由"
+                  }
+                },
+                "value": "%Null%",
+                "compareType": 1
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "V_連絡事項",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=\"【調査保留】\"&CHAR(10)&TRIM(P_調査保留理由)"
+                  },
+                  "ID": "2b5c0b62748442f8a84f11bae3d49b67"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "V_連棟適用フラグ",
+                  "ParameterValue": "0",
+                  "ID": "03a16a25145b4acda92ddde1c93b23f6"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "V_申込KEYs",
+                  "ID": "efc3af14c2044c65b1b45b2fd2205f2b"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "連棟カウント",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=LEN(P_調査IDs)-LEN(SUBSTITUTE(P_調査IDs,\",\",\"\"))"
+                  },
+                  "ID": "25762c1de136440c99049eb26d488397"
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=連棟カウント"
+                          }
+                        },
+                        "value": "0",
+                        "compareType": 2
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                          "ParameterName": "V_連棟適用フラグ",
+                          "ParameterValue": "1",
+                          "ID": "17eea5bb77354ae8a1c62a60bc2c784c"
+                        },
+                        {
+                          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                          "ParameterName": "V_申込KEYs",
+                          "ParameterValue": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=調査サマリ.申込KEYs"
+                          },
+                          "ID": "466081f58f8b4798b1b7059616baa2a1"
+                        }
+                      ],
+                      "ID": "97f1d8f5-cb9e-4aea-b0d9-dfc5cefc5166"
+                    }
+                  ]
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+                  "ServerCommandName": "連絡事項登録処理",
+                  "Parameters": [
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_連絡ID"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_申込ID",
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=調査サマリ.最小申込ID"
+                      }
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_元連絡ID"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_連絡グループID"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_タブID",
+                      "Value": "2"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_内容",
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=V_連絡事項"
+                      }
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_リッチテキスト"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_外部公開フラグ",
+                      "Value": "1"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_メール通知フラグ",
+                      "Value": "0"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_送信元区分"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_指定ユーザーID"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_通知先ユーザーIDs"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_タスク設定フラグ",
+                      "Value": "0"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_タスクID"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_処理済フラグ",
+                      "Value": "0"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_期限日"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_作業ユーザーID"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_ユーザーグループKEYs"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_リマインド設定フラグ"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_本社公開フラグ",
+                      "Value": "1"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_連棟適用フラグ",
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=V_連棟適用フラグ"
+                      }
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_申込KEYs",
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=V_申込KEYs"
+                      }
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_問合せID"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_再解析依頼ID"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_保証依頼ID"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_設計審査依頼ID"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_施工審査依頼ID"
+                    },
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_依頼タイプ"
+                    }
+                  ],
+                  "ResultErrorCodeTo": {
+                    "SerializeProperty": "リターンコード"
+                  },
+                  "ResultMessageTo": {
+                    "SerializeProperty": "リターンメッセージ"
+                  },
+                  "ReturnPropertiesTo": [
+                    {
+                      "ResultPropertyName": "R_連絡ID"
+                    },
+                    {
+                      "ResultPropertyName": "R_タスクID"
+                    }
+                  ],
+                  "RefreshAfterFinish": true,
+                  "CheckDataValidation": true
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=リターンコード"
+                          }
+                        },
+                        "value": "0",
+                        "compareType": 1
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                          "ErrorCode": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=リターンコード"
+                          },
+                          "Message": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=リターンメッセージ"
+                          }
+                        }
+                      ],
+                      "ID": "9159d9aa-e4ed-4603-96f6-9be58339b118"
+                    }
+                  ]
+                }
+              ],
+              "ID": "7d1cf960-2d3a-4aa5-b18b-39c88322c347"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

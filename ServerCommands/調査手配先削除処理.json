@@ -22,7 +22,7 @@
       },
       "Parameters": [
         {
-          "Name": "P_調査手配ID",
+          "Name": "P_調査手配IDs",
           "DataValidationInfo": {}
         }
       ]
@@ -40,17 +40,23 @@
             "TableValueType": 1,
             "BindingInfos": [
               {
-                "GUID": "30d64e97-770e-4e62-9871-0bc9bd977cc9",
+                "GUID": "f245c519-f6e6-4d4a-a184-43fae780b33a",
                 "BindingInfo": {
                   "TableName": "t_object_survey_arrange",
                   "ColumnName": "survey_id",
-                  "GUID": "9344030d-144c-425b-b4ff-c33415028ec7"
+                  "GUID": "56ba8cec-ac68-4b1b-b3d9-1782c385544e",
+                  "RelationBinding": {
+                    "RelatedTable": "t_object_survey",
+                    "RelatedColumn": "survey_id",
+                    "DisplayColumn": "調査IDs"
+                  }
                 },
-                "ColumnName": "調査ID"
+                "ColumnName": "調査IDs"
               }
             ],
             "SqlCondition": {
-              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+              "CompareType": 8,
               "ColumnBindingInfo": {
                 "TableName": "t_object_survey_arrange",
                 "ColumnName": "survey_arrange_id",
@@ -58,11 +64,11 @@
               },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=P_調査手配ID"
+                "SerializeProperty": "=P_調査手配IDs"
               }
             }
           },
-          "ID": "7ddd9f17eeab43948099aa37397f97e8"
+          "ID": "89307b71c91a432484cdaf8e0d561671"
         },
         {
           "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
@@ -72,7 +78,8 @@
           "ConfirmText": "本当に削除してもよろしいですか？",
           "RowsToUpdate": 1,
           "RowsToUpdateCondition": {
-            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+            "CompareType": 8,
             "ColumnBindingInfo": {
               "TableName": "t_object_survey_arrange",
               "ColumnName": "survey_arrange_id",
@@ -80,62 +87,107 @@
             },
             "Value": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=P_調査手配ID"
+              "SerializeProperty": "=P_調査手配IDs"
             }
           }
         },
         {
-          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
-          "ServerCommandName": "最新調査ステータス更新",
-          "Parameters": [
-            {
-              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-              "ParamName": "P_調査ID",
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "調査情報",
+          "TableValue": {
+            "TableName": "t_object_survey",
+            "BindingInfos": [
+              {
+                "GUID": "fa4c2057-0288-4c27-99d5-3b6c33988ef4",
+                "BindingInfo": {
+                  "TableName": "t_object_survey",
+                  "ColumnName": "survey_id",
+                  "GUID": "5a6740cb-2016-45f7-b2a0-951a0ed5aee5"
+                },
+                "ColumnName": "調査ID"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+              "CompareType": 8,
+              "ColumnBindingInfo": {
+                "TableName": "t_object_survey",
+                "ColumnName": "survey_id",
+                "GUID": "61335781-6e63-442e-b9db-d2e04a5960d1"
+              },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=調査手配情報.調査ID"
+                "SerializeProperty": "=調査手配情報.調査IDs"
               }
             }
-          ],
-          "ResultErrorCodeTo": {
-            "SerializeProperty": "リターンコード"
           },
-          "ResultMessageTo": {
-            "SerializeProperty": "リターンメッセージ"
-          },
-          "RefreshAfterFinish": true,
-          "CheckDataValidation": true
+          "ID": "173571ba1b684b78808b597ea193db1e"
         },
         {
-          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-          "ConditionAndCommandPairList": [
+          "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+          "LoopInfo": {
+            "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+            "LoopCount": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=調査情報"
+            },
+            "LoopItemParamName": "Item"
+          },
+          "CommandList": [
             {
-              "Condition": {
-                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                "param": {
-                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
-                  "ParamObject": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=リターンコード"
-                  }
-                },
-                "value": "0",
-                "compareType": 1
-              },
-              "CommandList": [
+              "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+              "ServerCommandName": "最新調査ステータス更新",
+              "Parameters": [
                 {
-                  "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
-                  "ErrorCode": {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_調査ID",
+                  "Value": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=リターンコード"
-                  },
-                  "Message": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=リターンメッセージ"
+                    "SerializeProperty": "=Item.調査ID"
                   }
                 }
               ],
-              "ID": "687926ff-b188-4f04-9acf-d89bcf85f70b"
+              "ResultErrorCodeTo": {
+                "SerializeProperty": "リターンコード"
+              },
+              "ResultMessageTo": {
+                "SerializeProperty": "リターンメッセージ"
+              },
+              "RefreshAfterFinish": true,
+              "CheckDataValidation": true
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=リターンコード"
+                      }
+                    },
+                    "value": "0",
+                    "compareType": 1
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                      "ErrorCode": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=リターンコード"
+                      },
+                      "Message": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=リターンメッセージ"
+                      }
+                    }
+                  ],
+                  "ID": "bb2b3e34-1679-4bc5-ad11-aca8b3a1fb0d"
+                }
+              ]
             }
           ]
         }

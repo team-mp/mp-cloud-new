@@ -1,6 +1,6 @@
 {
   "PageType": 2,
-  "ColumnCount": 180,
+  "ColumnCount": 196,
   "RowCount": 16,
   "Formulas": {
     "9,31": "IF(AND(VALUE(DI10)=1,EX5<>\"\"),\"調査辞退日時：\"&EX5,\"\")",
