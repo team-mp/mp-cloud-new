@@ -1,7 +1,7 @@
 {
   "PageType": 0,
   "ColumnCount": 90,
-  "RowCount": 32,
+  "RowCount": 24,
   "Formulas": {
     "17,50": "COUNT(BA13)",
     "12,51": "$AY$18-ROW(AY13)+1",
@@ -11,6 +11,10 @@
     "12,69": "IFERROR(ODATA(\"v_external_file_count?$select=外販納品書数&$filter=外販ID eq \"&IF(ISBLANK(AY13),\"null\",AY13)),0)"
   },
   "CustomNames": [
+    {
+      "Name": "外販データ変更チェックボタン",
+      "Formula": "物件詳細_外販!$BG$18"
+    },
     {
       "Name": "外販見積書ファイル属性ID",
       "Formula": "物件詳細_外販!$BO$8"
@@ -24,48 +28,8 @@
       "Formula": "物件詳細_外販!$BE$8"
     },
     {
-      "Name": "元_外注先ID",
-      "Formula": "物件詳細_外販!$BG$23"
-    },
-    {
-      "Name": "元_外販ステータスID",
-      "Formula": "物件詳細_外販!$BG$31"
-    },
-    {
-      "Name": "元_外販特記事項",
-      "Formula": "物件詳細_外販!$BG$30"
-    },
-    {
-      "Name": "元_外販見積依頼日",
-      "Formula": "物件詳細_外販!$BG$24"
-    },
-    {
-      "Name": "元_外販見積送付日",
-      "Formula": "物件詳細_外販!$BG$25"
-    },
-    {
-      "Name": "元_外販実施日",
-      "Formula": "物件詳細_外販!$BG$27"
-    },
-    {
-      "Name": "元_成果品受領日",
-      "Formula": "物件詳細_外販!$BG$28"
-    },
-    {
-      "Name": "元_外販納品日",
-      "Formula": "物件詳細_外販!$BG$29"
-    },
-    {
-      "Name": "元_外販納品予定日",
-      "Formula": "物件詳細_外販!$BG$26"
-    },
-    {
       "Name": "外販変更フラグ",
       "Formula": "物件詳細_外販!$BO$18"
-    },
-    {
-      "Name": "外販データ変更チェックボタン",
-      "Formula": "物件詳細_外販!$BG$18"
     }
   ]
 }

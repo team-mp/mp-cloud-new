@@ -4,7 +4,9 @@
   "RowCount": 25,
   "Formulas": {
     "23,2": "\"現在、「\"&BN12&\"」さんが選択されています\"",
-    "4,59": "IF(BD5=$BN$15,1,0)"
+    "4,59": "IF(BD5=$BN$15,1,0)",
+    "20,65": "IFERROR(ODATA(\"m_customer?$select=management_customer_ids&$filter=customer_id eq \"&IF(ISBLANK(顧客ID),\"null\",顧客ID)),\"\")",
+    "24,65": "TEXTJOIN(\",\",TRUE,BN18,BN21)"
   },
   "CustomNames": [
     {

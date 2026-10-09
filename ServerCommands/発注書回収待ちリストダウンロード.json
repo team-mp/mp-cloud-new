@@ -1,0 +1,139 @@
+{
+  "Name": "発注書回収待ちリストダウンロード",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_検索ワード1",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_検索ワード2",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_検索_物件番号",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_検索_物件名",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_抽出区分",
+          "Remark": "1:回収待ち\r\n2:回収済み\r\n3:回収不要",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "エクスポートファイル名",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=\"発注書回収待ちリスト_\"&TEXT(TODAY(),\"yyyymmdd\")"
+      },
+      "ID": "9f5ebf239f964b028fe3d13d31cc699b"
+    },
+    {
+      "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+      "ServerCommandName": "個人フォルダパス取得",
+      "ReturnPropertiesTo": [
+        {
+          "ResultPropertyName": "R_個人フォルダパス名",
+          "ResultTo": {
+            "SerializeProperty": "個人フォルダパス名"
+          },
+          "Remark": "サーバーのフォルダパスを返却"
+        },
+        {
+          "ResultPropertyName": "P_個人フォルダ名",
+          "Remark": "ユーザーIDを返却"
+        }
+      ],
+      "RefreshAfterFinish": true,
+      "CheckDataValidation": true
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "エクスポートファイルフルパス名",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=個人フォルダパス名&エクスポートファイル名"
+      },
+      "ID": "ad1b9469d61040429576393896fb360c"
+    },
+    {
+      "$type": "Forguncy.Model.ExportPageToExcelCommand, ServerDesignerCommon",
+      "TargetPageName": "発注書回収待ちリスト",
+      "ServerExportFileName": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=エクスポートファイルフルパス名"
+      },
+      "ExportCellValueInfos": [
+        {
+          "CellName": "検索ワード1",
+          "CellValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_検索ワード1"
+          }
+        },
+        {
+          "CellName": "検索ワード2",
+          "CellValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_検索ワード2"
+          }
+        },
+        {
+          "CellName": "検索_物件番号",
+          "CellValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_検索_物件番号"
+          }
+        },
+        {
+          "CellName": "検索_物件名",
+          "CellValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_検索_物件名"
+          }
+        },
+        {
+          "CellName": "抽出区分",
+          "CellValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_抽出区分"
+          }
+        }
+      ]
+    },
+    {
+      "$type": "OperateFilesCommand.DownloadFileCommand, OperateFilesCommand",
+      "FilePath": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=エクスポートファイルフルパス名&\".xlsx\""
+      }
+    }
+  ]
+}

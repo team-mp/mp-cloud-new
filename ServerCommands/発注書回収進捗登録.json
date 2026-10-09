@@ -1,0 +1,241 @@
+{
+  "Name": "発注書回収進捗登録",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_物件商品ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_発注書回収進捗コメント",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "登録更新ラベル取得",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_ユーザーID"
+            }
+          ],
+          "ReturnPropertiesTo": [
+            {
+              "ResultPropertyName": "R_ラベル名",
+              "ResultTo": {
+                "SerializeProperty": "最終更新ラベル"
+              }
+            },
+            {
+              "ResultPropertyName": "R_外部ユーザーフラグ"
+            },
+            {
+              "ResultPropertyName": "R_ユーザー名"
+            },
+            {
+              "ResultPropertyName": "R_所属会社名"
+            },
+            {
+              "ResultPropertyName": "R_メールアドレス"
+            }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "現在の物件商品",
+          "TableValue": {
+            "TableName": "t_object_product",
+            "TableValueType": 1,
+            "BindingInfos": [
+              {
+                "GUID": "36183247-868c-4161-9ffd-f9f49f9f2c51",
+                "BindingInfo": {
+                  "TableName": "t_object_product",
+                  "ColumnName": "object_product_ext_id",
+                  "GUID": "3ffd93ca-159f-4dc7-975e-84cf7ab23c29",
+                  "RelationBinding": {
+                    "RelatedTable": "t_object_product_ext",
+                    "RelatedColumn": "object_product_ext_id",
+                    "DisplayColumn": "purchase_collect_progress_comment"
+                  }
+                },
+                "ColumnName": "発注書回収進捗コメント"
+              },
+              {
+                "GUID": "e966a018-4c37-4c1c-9510-b468415b92cd",
+                "BindingInfo": {
+                  "TableName": "t_object_product",
+                  "ColumnName": "object_product_ext_id",
+                  "GUID": "23f8b519-abfd-4785-8898-664bacd9726b",
+                  "RelationBinding": {
+                    "RelatedTable": "t_object_product_ext",
+                    "RelatedColumn": "object_product_ext_id",
+                    "DisplayColumn": "purchase_collect_progress_label"
+                  }
+                },
+                "ColumnName": "発注書回収進捗ラベル"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_product",
+                "ColumnName": "object_product_id",
+                "GUID": "6160605f-cef3-4000-a22c-4cec833ddfd1"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_物件商品ID"
+              }
+            }
+          },
+          "ID": "ffa3d0fb80b7415d91509f416ede882a"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "V_発注書回収進捗ラベル",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=現在の物件商品.発注書回収進捗ラベル"
+          },
+          "ID": "3093cd0f661a4ff9a37042eb8d79e30f"
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_発注書回収進捗コメント"
+                  }
+                },
+                "value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=現在の物件商品.発注書回収進捗ラベル"
+                },
+                "compareType": 1
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_発注書回収進捗コメント"
+                          }
+                        },
+                        "value": "%Null%"
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                          "ParameterName": "V_発注書回収進捗ラベル",
+                          "ID": "f73d62915c1b49138737b5f1d465f802"
+                        }
+                      ],
+                      "ID": "d0a84821-4815-40e9-9eaa-814e6c31f97b"
+                    },
+                    {
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                          "ParameterName": "V_発注書回収進捗ラベル",
+                          "ParameterValue": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=最終更新ラベル"
+                          },
+                          "ID": "52c9afea8e67495abfc1b5d4066986a6"
+                        }
+                      ],
+                      "ID": "e852f773-dff3-4928-96fb-1e3bd2ea25c0"
+                    }
+                  ]
+                }
+              ],
+              "ID": "2f80dbe6-44fb-4fd0-8ee9-3d30ea6ebc7d"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_object_product_ext",
+          "ShowConfirm": false,
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object_product_ext",
+              "ColumnName": "object_product_id",
+              "GUID": "31f26206-b931-40d5-852c-8c33499f5ee9"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_物件商品ID"
+            }
+          },
+          "UpdateBindingValues": [
+            {
+              "BindingInfo": {
+                "TableName": "t_object_product_ext",
+                "ColumnName": "purchase_collect_progress_comment",
+                "GUID": "76c115e1-8f28-4c7c-9ab3-8604552e3471"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=TRIM(P_発注書回収進捗コメント)"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_product_ext",
+                "ColumnName": "purchase_collect_progress_label",
+                "GUID": "0bd18445-f58d-436c-b345-bff46db62d75"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=V_発注書回収進捗ラベル"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

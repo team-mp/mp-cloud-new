@@ -1,0 +1,374 @@
+{
+  "Name": "連棟物件一括更新",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_親物件ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Type": 1,
+          "ArrayParamItems": [
+            {
+              "Name": "P_物件ID",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_物件元名",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_棟番号",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_区割名",
+              "DataValidationInfo": {}
+            }
+          ],
+          "OnlySendChangedData": true,
+          "PrimaryKeys": [
+            "object_id"
+          ],
+          "Name": "P_連棟物件リスト",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+          "LoopInfo": {
+            "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+            "LoopCount": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_連棟物件リスト.AddRows"
+            },
+            "LoopItemParamName": "Item"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "t_object",
+                  "ColumnName": "object_id",
+                  "GUID": "a30c8e40-3fe9-4239-89ad-d962d13fb274"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=Item.P_物件ID"
+                }
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object",
+                    "ColumnName": "parent_object_id",
+                    "GUID": "dda36e10-bcdb-4a98-8cdf-aaac34534562"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_親物件ID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object",
+                    "ColumnName": "object_name",
+                    "GUID": "16a76042-a734-4ff9-bcd9-425b5d5a518a"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_物件元名"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object",
+                    "ColumnName": "building_number",
+                    "GUID": "18cac3b5-ff5d-4964-9aeb-9d685d97b61d"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_棟番号"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object",
+                    "ColumnName": "devision_name",
+                    "GUID": "3d122b09-a052-40a8-a9bd-6202e53f0a65"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_区割名"
+                  }
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object_attachment_relation",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_attachment_relation",
+                  "ColumnName": "object_id",
+                  "GUID": "28b9896b-b113-47cd-91af-66e171bd466a"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=Item.P_物件ID"
+                }
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_attachment_relation",
+                    "ColumnName": "parent_object_id",
+                    "GUID": "8dec8c61-0d45-461e-86a6-c5d41dcd655c"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_親物件ID"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+          "LoopInfo": {
+            "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+            "LoopCount": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_連棟物件リスト.EditRows"
+            },
+            "LoopItemParamName": "Item"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "t_object",
+                  "ColumnName": "object_id",
+                  "GUID": "bfa3bc67-0ca6-4c7c-8262-5a95d3df794a"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=Item.object_id"
+                }
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object",
+                    "ColumnName": "object_name",
+                    "GUID": "a3981dd2-533c-4b53-bf51-9a5373aab928"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_物件元名"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object",
+                    "ColumnName": "building_number",
+                    "GUID": "908d4665-cff0-4032-b56f-5f833952e09f"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_棟番号"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object",
+                    "ColumnName": "devision_name",
+                    "GUID": "497e6f44-fe35-4abe-aa73-02b6f84958ed"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_区割名"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+          "LoopInfo": {
+            "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+            "LoopCount": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_連棟物件リスト.DeleteRows"
+            },
+            "LoopItemParamName": "Item"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "t_object",
+                  "ColumnName": "object_id",
+                  "GUID": "540c669a-5f84-422b-accc-44dccc27ce6d"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=Item.object_id"
+                }
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object",
+                    "ColumnName": "parent_object_id",
+                    "GUID": "05c0e28d-9792-47f3-9016-50f1397f82b2"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.object_id"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object",
+                    "ColumnName": "object_multiple_count",
+                    "GUID": "f6c36332-7837-45b2-bb6c-34995fe78367"
+                  },
+                  "Value": "1"
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object_attachment_relation",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_attachment_relation",
+                  "ColumnName": "object_id",
+                  "GUID": "24c06d46-fccb-445a-90da-fba830f8f75c"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=Item.object_id"
+                }
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_attachment_relation",
+                    "ColumnName": "parent_object_id",
+                    "GUID": "245a13e9-6a4b-4696-94b7-0d547f59c86f"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.object_id"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "V_連棟物件数",
+          "TableValue": {
+            "TableName": "t_object",
+            "TableValueType": 3,
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object",
+                "ColumnName": "parent_object_id",
+                "GUID": "80a5a55e-f86f-4df9-85f8-e8d5e732f2e0"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_親物件ID"
+              }
+            }
+          },
+          "ID": "4d5a00644b584f46a5e97dcf831128e6"
+        },
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_object",
+          "ShowConfirm": false,
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object",
+              "ColumnName": "parent_object_id",
+              "GUID": "52cffa14-9354-4ebc-9069-f8ccf8e60535"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_親物件ID"
+            }
+          },
+          "UpdateBindingValues": [
+            {
+              "BindingInfo": {
+                "TableName": "t_object",
+                "ColumnName": "object_multiple_count",
+                "GUID": "6912e7ca-23e7-4648-b591-bd6c5ce4702f"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=V_連棟物件数"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

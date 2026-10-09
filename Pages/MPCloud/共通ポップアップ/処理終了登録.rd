@@ -10,11 +10,15 @@
   "CustomNames": [
     {
       "Name": "外部ユーザーフラグ",
-      "Formula": "処理終了登録_申込事業者!$AS$19"
+      "Formula": "処理終了登録!$AS$18"
     },
     {
       "Name": "更新フラグ",
-      "Formula": "処理終了登録_申込事業者!$AL$19"
+      "Formula": "処理終了登録!$AL$18"
+    },
+    {
+      "Name": "申込IDs",
+      "Formula": "処理終了登録!$AD$18"
     }
   ]
 }

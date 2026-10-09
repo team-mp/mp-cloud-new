@@ -1,7 +1,7 @@
 {
   "PageType": 0,
   "ColumnCount": 136,
-  "RowCount": 60,
+  "RowCount": 43,
   "Formulas": {
     "11,58": "CG16",
     "11,19": "IF(CC16=0,\"\",CC16)",
@@ -31,66 +31,6 @@
     "15,80,1,5": "ODATA(\"v_group_customer_default?$select=既定保証期間,保証書原本郵送フラグ,郵送手数料フラグ,郵送方法ID,付保証明書必要フラグ&$filter=グループID eq \"&IF(ISBLANK(CK32),\"null\",CK32)&\" and 顧客ID eq \"&IF(ISBLANK(CC32),\"null\",CC32))"
   },
   "CustomNames": [
-    {
-      "Name": "元_原本郵送フラグ",
-      "Formula": "物件詳細_保証!$CK$57"
-    },
-    {
-      "Name": "元_原本郵送日",
-      "Formula": "物件詳細_保証!$CK$59"
-    },
-    {
-      "Name": "元_特記事項",
-      "Formula": "物件詳細_保証!$CK$54"
-    },
-    {
-      "Name": "元_保証キャンセル日",
-      "Formula": "物件詳細_保証!$CK$56"
-    },
-    {
-      "Name": "元_保証ステータスID",
-      "Formula": "物件詳細_保証!$CK$60"
-    },
-    {
-      "Name": "元_保証開始日",
-      "Formula": "物件詳細_保証!$CK$52"
-    },
-    {
-      "Name": "元_保証期間",
-      "Formula": "物件詳細_保証!$CK$53"
-    },
-    {
-      "Name": "元_保証書バージョンID",
-      "Formula": "物件詳細_保証!$CK$49"
-    },
-    {
-      "Name": "元_保証書区分ID",
-      "Formula": "物件詳細_保証!$CK$48"
-    },
-    {
-      "Name": "元_保証書発行依頼日",
-      "Formula": "物件詳細_保証!$CK$47"
-    },
-    {
-      "Name": "元_保証書発行区分",
-      "Formula": "物件詳細_保証!$CK$46"
-    },
-    {
-      "Name": "元_保証書発行日",
-      "Formula": "物件詳細_保証!$CK$55"
-    },
-    {
-      "Name": "元_保証物件住所",
-      "Formula": "物件詳細_保証!$CK$51"
-    },
-    {
-      "Name": "元_保証物件名",
-      "Formula": "物件詳細_保証!$CK$50"
-    },
-    {
-      "Name": "元_郵送方法ID",
-      "Formula": "物件詳細_保証!$CK$58"
-    },
     {
       "Name": "添付ファイル",
       "Formula": "物件詳細_保証!$DK$29"
