@@ -1,60 +1,62 @@
 {
   "PageType": 0,
-  "ColumnCount": 120,
-  "RowCount": 34,
+  "ColumnCount": 125,
+  "RowCount": 36,
   "Formulas": {
-    "11,117": "\"(工法) \"&DM12",
-    "11,100": "CU12&CHAR(10)&CV12",
-    "19,98": "TEXTJOINIF(\",\",TRUE,CG12,1,CH12)",
-    "16,98": "CG17+CN17",
-    "19,84": "COUNTIF(CG12,1)",
-    "11,95": "TEXT(CO12,\"yyyy/mm/dd hh:mm\")&\" \"&CQ12&\" \"&CP12",
-    "11,108": "IF(CJ12<>DC12,1,0)",
-    "11,96": "CN12/1000",
-    "16,84": "COUNTIF(DD12,1)",
-    "19,91": "COUNT(CH12)",
-    "16,91": "COUNTIF(DE12,1)",
-    "11,107": "IF(CL12<>DB12,1,0)",
-    "11,97": "IFERROR(ODATA(\"v_object_attachment_cout?$select=コメント数&$filter=添付ID eq \"&IF(ISBLANK(CH12),\"null\",CH12)),0)",
-    "11,98": "IFERROR(ODATA(\"v_object_attachment_cout?$select=最終コメント&$filter=添付ID eq \"&IF(ISBLANK(CH12),\"null\",CH12)),\"\")",
-    "11,99": "IFERROR(ODATA(\"v_object_attachment_cout?$select=最終更新ラベル&$filter=添付ID eq \"&IF(ISBLANK(CH12),\"null\",CH12)),\"\")"
+    "13,113": "IF(CO14<>DH14,1,0)",
+    "18,89": "COUNTIF(DI14,1)",
+    "13,103": "IFERROR(ODATA(\"v_object_attachment_cout?$select=最終コメント&$filter=添付ID eq \"&IF(ISBLANK(CM14),\"null\",CM14)),\"\")",
+    "13,101": "CS14/1000",
+    "13,104": "IFERROR(ODATA(\"v_object_attachment_cout?$select=最終更新ラベル&$filter=添付ID eq \"&IF(ISBLANK(CM14),\"null\",CM14)),\"\")",
+    "13,112": "IF(CQ14<>DG14,1,0)",
+    "13,105": "CZ14&CHAR(10)&DA14",
+    "13,122": "\"(工法) \"&DR14",
+    "13,102": "IFERROR(ODATA(\"v_object_attachment_cout?$select=コメント数&$filter=添付ID eq \"&IF(ISBLANK(CM14),\"null\",CM14)),0)",
+    "21,89": "COUNTIF(CL14,1)",
+    "21,103": "TEXTJOINIF(\",\",TRUE,CL14,1,CM14)",
+    "13,100": "TEXT(CT14,\"yyyy/mm/dd hh:mm\")&\" \"&CV14&\" \"&CU14",
+    "21,96": "COUNT(CM14)",
+    "18,103": "CL19+CS19",
+    "18,96": "COUNTIF(DJ14,1)",
+    "9,109": "ODATA(\"t_object_wait_documents/$count?$filter=object_order_id eq \"&IF(ISBLANK(CL10),\"null\",CL10)&\" and receipt_flg eq 0\")",
+    "1,1": "IF(DF10>0,\"現在、\"&DF10&\"件の資料待ちがあります。新規アップードボタンよりご確認の上、ご送付くださいますようお願いします。\",\"\")"
   },
   "CustomNames": [
     {
       "Name": "コメント表示フラグ",
-      "Formula": "ファイルリストサブ_申込事業者用!$CU$29"
+      "Formula": "ファイルリストサブ_申込事業者用!$CZ$31"
     },
     {
       "Name": "選択ファイル属性ID",
-      "Formula": "ファイルリストサブ_申込事業者用!$CT$5"
+      "Formula": "ファイルリストサブ_申込事業者用!$CY$7"
     },
     {
       "Name": "選択ファイル分類ID",
-      "Formula": "ファイルリストサブ_申込事業者用!$CM$5"
+      "Formula": "ファイルリストサブ_申込事業者用!$CR$7"
     },
     {
       "Name": "選択工事見積ID",
-      "Formula": "ファイルリストサブ_申込事業者用!$DA$5"
+      "Formula": "ファイルリストサブ_申込事業者用!$DF$7"
     },
     {
       "Name": "選択中添付ID",
-      "Formula": "ファイルリストサブ_申込事業者用!$CG$23"
+      "Formula": "ファイルリストサブ_申込事業者用!$CL$25"
     },
     {
       "Name": "選択物件ID",
-      "Formula": "ファイルリストサブ_申込事業者用!$CG$5"
+      "Formula": "ファイルリストサブ_申込事業者用!$CL$7"
     },
     {
       "Name": "全選択チェックボックス",
-      "Formula": "ファイルリストサブ_申込事業者用!$B$4"
+      "Formula": "ファイルリストサブ_申込事業者用!$B$6"
     },
     {
       "Name": "抽出カウント",
-      "Formula": "ファイルリストサブ_申込事業者用!$CN$20"
+      "Formula": "ファイルリストサブ_申込事業者用!$CS$22"
     },
     {
       "Name": "添付コメントタイトル",
-      "Formula": "ファイルリストサブ_申込事業者用!$E$27"
+      "Formula": "ファイルリストサブ_申込事業者用!$E$29"
     }
   ]
 }

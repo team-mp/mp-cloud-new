@@ -28,6 +28,10 @@
         {
           "Name": "P_処理終了解除理由",
           "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_資料待ち不要終了戻しフラグ",
+          "DataValidationInfo": {}
         }
       ]
     }
@@ -75,7 +79,7 @@
             "TableName": "t_object_order",
             "BindingInfos": [
               {
-                "GUID": "5027487d-1741-4c38-adb8-d01f38a96426",
+                "GUID": "a25f75c9-2dc7-4015-84f0-a59a451616d1",
                 "BindingInfo": {
                   "TableName": "t_object_order",
                   "ColumnName": "object_id",
@@ -89,7 +93,7 @@
                 "ColumnName": "親物件ID"
               },
               {
-                "GUID": "b35363c6-860f-4f2c-b466-67e7d707cc33",
+                "GUID": "9ec93eb6-6b03-450c-a763-2efd83562fc4",
                 "BindingInfo": {
                   "TableName": "t_object_order",
                   "ColumnName": "最小申込ID",
@@ -98,7 +102,7 @@
                 "ColumnName": "最小申込ID"
               },
               {
-                "GUID": "cf095b13-4fe4-459b-a193-256b79cd3552",
+                "GUID": "4069b5ff-ab66-4532-9feb-6ea87d915d74",
                 "BindingInfo": {
                   "TableName": "t_object_order",
                   "ColumnName": "申込KEYs",
@@ -107,7 +111,7 @@
                 "ColumnName": "申込KEYs"
               },
               {
-                "GUID": "1b8c7fa4-ea85-4075-ad37-cc78d027d985",
+                "GUID": "565f7ce7-89c4-4950-9725-d35f4ab2fafe",
                 "BindingInfo": {
                   "TableName": "t_object_order",
                   "ColumnName": "レコード件数",
@@ -130,7 +134,7 @@
               }
             }
           },
-          "ID": "d85d56e1cdb04f43834dd30defc28a36"
+          "ID": "30c356981efe42e6a22a5b937643c6b3"
         },
         {
           "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -139,7 +143,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=\"【処理終了解除】\"&CHAR(10)&P_処理終了解除理由"
           },
-          "ID": "1f93d56622594c3bbf10b2a3440e76e0"
+          "ID": "298ee1059882477a8e1d31cf91f35b9b"
         },
         {
           "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
@@ -405,7 +409,7 @@
                       }
                     }
                   ],
-                  "ID": "8e0f6e52-5595-422f-ae0a-e5d551601714"
+                  "ID": "c312c560-8c25-426d-b768-1e5f9a88df78"
                 }
               ]
             }
@@ -473,7 +477,7 @@
                       }
                     }
                   ],
-                  "ID": "ef0be4df-e32f-4e07-b966-db9c740abc50"
+                  "ID": "56a96af1-466c-4e5f-a800-805487723a1f"
                 }
               ]
             },
@@ -528,9 +532,85 @@
                       }
                     }
                   ],
-                  "ID": "20863dc3-ae57-40ec-ae97-b916cce6bad7"
+                  "ID": "7b21885c-b97e-4e58-94cc-afe134e7a2e9"
                 }
               ]
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_資料待ち不要終了戻しフラグ"
+                  }
+                },
+                "value": "1"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+                  "ServerCommandName": "資料待ち不要終了解除",
+                  "Parameters": [
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_申込IDs",
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_申込IDs"
+                      }
+                    }
+                  ],
+                  "ResultErrorCodeTo": {
+                    "SerializeProperty": "リターンコード"
+                  },
+                  "ResultMessageTo": {
+                    "SerializeProperty": "リターンメッセージ"
+                  },
+                  "RefreshAfterFinish": true,
+                  "CheckDataValidation": true
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=リターンコード"
+                          }
+                        },
+                        "value": "0",
+                        "compareType": 1
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                          "ErrorCode": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=リターンコード"
+                          },
+                          "Message": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=リターンメッセージ"
+                          }
+                        }
+                      ],
+                      "ID": "9070c3ab-f472-4bf3-a860-e0a9efa422a6"
+                    }
+                  ]
+                }
+              ],
+              "ID": "77268c8b-f914-403f-b811-0a121d207409"
             }
           ]
         }

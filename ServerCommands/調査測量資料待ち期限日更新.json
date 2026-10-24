@@ -1,0 +1,312 @@
+{
+  "Name": "調査測量資料待ち期限日更新",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.InvokeTriggerSaveData, ServerDesignerCommon",
+      "Parameters": [
+        {
+          "Name": "P_申込IDs",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_予定日",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "ファイル属性サマリ",
+      "TableValue": {
+        "TableName": "m_file_attribute",
+        "TableValueType": 1,
+        "BindingInfos": [
+          {
+            "GUID": "e739f6f8-d140-46e3-a8eb-77b21a52d1b0",
+            "BindingInfo": {
+              "TableName": "m_file_attribute",
+              "ColumnName": "ファイル属性IDs",
+              "GUID": "d7bf8f89-6056-4ffd-bb84-012a5dc1f8e5"
+            },
+            "ColumnName": "ファイル属性IDs"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_file_attribute",
+                "ColumnName": "delivery_deadline_change_flg",
+                "GUID": "f9aead03-64b0-4697-bba5-436694f425d5"
+              },
+              "Value": "1"
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_file_attribute",
+                "ColumnName": "active_flg",
+                "GUID": "56ef591a-d35f-4717-a657-ca67f64cae1f"
+              },
+              "Value": "1"
+            }
+          ]
+        }
+      },
+      "ID": "a84170c5a1584a729e7b420d13730c58"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "資料待ちカウント",
+      "TableValue": {
+        "TableName": "t_object_wait_documents",
+        "TableValueType": 3,
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+              "CompareType": 8,
+              "ColumnBindingInfo": {
+                "TableName": "t_object_wait_documents",
+                "ColumnName": "object_order_id",
+                "GUID": "d8fadd6c-c833-4aad-aa6c-7a0f1b76c458"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_申込IDs"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+              "CompareType": 8,
+              "ColumnBindingInfo": {
+                "TableName": "t_object_wait_documents",
+                "ColumnName": "file_attribute_id",
+                "GUID": "c2308ff3-261d-4488-b888-4bc1437aa44a"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=ファイル属性サマリ.ファイル属性IDs"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_wait_documents",
+                "ColumnName": "receipt_flg",
+                "GUID": "b72050a4-b730-4ae6-be94-fb8056f8a1c7"
+              },
+              "Value": "0"
+            }
+          ]
+        },
+        "NullFormulaValueQueryPolicy": 0
+      },
+      "ID": "d3b312e3c9654455b3520b2fdcd363b8"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=資料待ちカウント"
+              }
+            },
+            "value": "0",
+            "compareType": 2
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+              "ServerCommandName": "登録更新ラベル取得",
+              "Parameters": [
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_ユーザーID"
+                }
+              ],
+              "ReturnPropertiesTo": [
+                {
+                  "ResultPropertyName": "R_ラベル名",
+                  "ResultTo": {
+                    "SerializeProperty": "V_最終更新ラベル"
+                  }
+                },
+                {
+                  "ResultPropertyName": "R_外部ユーザーフラグ"
+                },
+                {
+                  "ResultPropertyName": "R_ユーザー名"
+                },
+                {
+                  "ResultPropertyName": "R_所属会社名"
+                },
+                {
+                  "ResultPropertyName": "R_メールアドレス"
+                }
+              ],
+              "RefreshAfterFinish": true,
+              "CheckDataValidation": true
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "V_送付期限日",
+              "ID": "d2ab4a91de004e229dda64278e17344e"
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_予定日"
+                      }
+                    },
+                    "value": "%Null%",
+                    "compareType": 1
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+                      "ServerCommandName": "営業日取得",
+                      "Parameters": [
+                        {
+                          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                          "ParamName": "P_指定日",
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_予定日"
+                          }
+                        },
+                        {
+                          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                          "ParamName": "P_日数",
+                          "Value": "-4"
+                        }
+                      ],
+                      "ReturnPropertiesTo": [
+                        {
+                          "ResultPropertyName": "R_営業日",
+                          "ResultTo": {
+                            "SerializeProperty": "V_送付期限日"
+                          },
+                          "Remark": "営業日計算後の日付が返却される"
+                        }
+                      ],
+                      "RefreshAfterFinish": true,
+                      "CheckDataValidation": true
+                    }
+                  ],
+                  "ID": "a329d58b-6664-4879-ab3f-d5f06dc00d94"
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object_wait_documents",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                "SubConditions": [
+                  {
+                    "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                    "CompareType": 8,
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_wait_documents",
+                      "ColumnName": "post_type_id",
+                      "GUID": "2afd0c63-81e3-4490-9085-f5ddb7d6fca4"
+                    },
+                    "Value": "2,3"
+                  },
+                  {
+                    "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                    "CompareType": 8,
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_wait_documents",
+                      "ColumnName": "file_attribute_id",
+                      "GUID": "a1e20696-c2a4-4d82-9d2d-7360d6c287a5"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=ファイル属性サマリ.ファイル属性IDs"
+                    }
+                  },
+                  {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_wait_documents",
+                      "ColumnName": "receipt_flg",
+                      "GUID": "27a28c63-63c8-4981-87e4-ef50cb1cd4e7"
+                    },
+                    "Value": "0"
+                  },
+                  {
+                    "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                    "CompareType": 8,
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_wait_documents",
+                      "ColumnName": "object_order_id",
+                      "GUID": "955fb90d-2749-4c71-9f6f-3859e180c2c9"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_申込IDs"
+                    }
+                  }
+                ]
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_wait_documents",
+                    "ColumnName": "scheduled_sending_date",
+                    "GUID": "a23b77af-4ca1-41e5-b5dd-eae58dc61019"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_wait_documents",
+                    "ColumnName": "send_limite_date",
+                    "GUID": "aa74aca9-f539-4056-8deb-f2dbd55818d3"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=V_送付期限日"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_wait_documents",
+                    "ColumnName": "last_updated_label",
+                    "GUID": "e33b8d6a-cd79-418b-9fed-782d8436d9d9"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=V_最終更新ラベル"
+                  }
+                }
+              ]
+            }
+          ],
+          "ID": "4e250a69-6e3b-46d2-b5bf-9a9827173742"
+        }
+      ]
+    }
+  ]
+}

@@ -450,7 +450,7 @@
                       "UpdateRowType": 3
                     }
                   ],
-                  "ID": "8ff3c370-3a23-4dde-928a-438e7301b1d2"
+                  "ID": "d11037d8-c3af-4293-9539-afd80d45a1f6"
                 },
                 {
                   "CommandList": [
@@ -466,7 +466,7 @@
                       "UpdateRowType": 3
                     }
                   ],
-                  "ID": "b335c8e3-1bf7-48f2-9fec-df540a1451ad"
+                  "ID": "d3cb89e6-d9a3-4b83-bb96-21f69dfcb67a"
                 }
               ]
             }
@@ -524,7 +524,7 @@
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "6734207c-066f-46e3-b354-739ed51339cc"
+                "ID": "55c0e253-0f02-4965-952a-92170d0e5564"
               }
             ]
           },
@@ -553,7 +553,96 @@
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "937ff7a6-06b2-4cb5-8a1b-962d07e2b23d"
+                "ID": "19af2207-b60a-45be-a0a8-00a174a010c9"
+              }
+            ]
+          },
+          {
+            "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+            "ParameterName": "V_資料待ち不要終了戻しフラグ",
+            "ParameterValue": "0",
+            "ID": "c7faab31791247b3b0fb46c0019555c8"
+          },
+          {
+            "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+            "ParameterName": "V_資料待ち不要終了件数",
+            "TableValue": {
+              "TableName": "t_object_wait_documents",
+              "TableValueType": 3,
+              "SqlCondition": {
+                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                "SubConditions": [
+                  {
+                    "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                    "CompareType": 8,
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_wait_documents",
+                      "ColumnName": "object_order_id",
+                      "GUID": "d00239b0-bcd6-46af-a3fc-f29fd99c1726"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=処理終了解除!AL9"
+                    }
+                  },
+                  {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_wait_documents",
+                      "ColumnName": "receipt_flg",
+                      "GUID": "6e4a8314-c3ca-4d9a-90f3-f0b563420bac"
+                    },
+                    "Value": "2"
+                  }
+                ]
+              },
+              "NullFormulaValueQueryPolicy": 0
+            },
+            "ID": "d815e40e31834674b4698a9e2a9c205c"
+          },
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=V_資料待ち不要終了件数"
+                      }
+                    ]
+                  },
+                  "value": "0",
+                  "compareType": 2
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                    "ConditionAndCommandPairList": [
+                      {
+                        "ConfirmDialogSettings": {
+                          "Title": "確認",
+                          "FormulaText": "「不要終了」となっている資料が存在します。\r\n解除と同時に受領待ちに戻します。よろしいですか？\r\n※不明な場合は、中断し資料待ちをご確認ください。",
+                          "YesButtonText": "はい",
+                          "NoButtonText": "いいえ",
+                          "ConfirmIcon": 4
+                        },
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                            "ParameterName": "V_資料待ち不要終了戻しフラグ",
+                            "ParameterValue": "1",
+                            "ID": "040468705e584d4fbae1ffdd57e7aa88"
+                          }
+                        ],
+                        "ID": "59e75da9-5677-429f-856a-10ea6dc2b718"
+                      }
+                    ]
+                  }
+                ],
+                "ID": "182a2dac-10b7-4e35-819d-1e55141908c1"
               }
             ]
           },
@@ -592,6 +681,14 @@
                         "Value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                           "SerializeProperty": "=処理終了解除!C2"
+                        }
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "ParamName": "P_資料待ち不要終了戻しフラグ",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=処理終了解除!V_資料待ち不要終了戻しフラグ"
                         }
                       }
                     ],
@@ -638,7 +735,7 @@
                             "ReloadData": true
                           }
                         ],
-                        "ID": "ab9f9d3d-424d-4ac4-99ec-4e8ad1cfa341"
+                        "ID": "71fe6239-6d95-4e6e-89f2-6c68e2c0dd96"
                       },
                       {
                         "CommandList": [
@@ -653,12 +750,12 @@
                             "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
                           }
                         ],
-                        "ID": "0ad2a92e-7f1b-4cac-aa55-2286488e463c"
+                        "ID": "05e8ddb4-8698-4536-8f79-9f177ab3ba31"
                       }
                     ]
                   }
                 ],
-                "ID": "90931180-82d8-4aaa-bf89-041915091d70"
+                "ID": "a9dc75ae-0319-4839-aa79-a8a560dc5a6e"
               }
             ]
           }
@@ -1117,4 +1214,4 @@
       "Formula": "処理終了解除!$AD$19"
     }
   ]
-}//qNvP/zBbGLjBhBl1tfOJekPljW2mwD1p6Y4fEg2RmETP+pTd57YVR6JmW/tP5istTCdcgoSQTq/z4sNnTsbeYS3srxsGN1xmb7QNcAzr9FyvGDjjM6FLDsp9zRa2swlrWOr022zJG4OBPQvpc04l+7tIDhRSFMqVnaWvZ8uzJRvO20X+r41zAgyldDeK9Cy2jlqDM4Tc9xChv1G3x08TKghbPsN1sKIAIWXi9dvPzGQQzkmFV0sCFyPWJ8QBxlvi1sxJm2wiqvAb/ykHWoGKsOiAi6Ff5j4dtPmsX7T3EzSgyWLcxoDQm6jpI7ntlqnlFo1FaEe04c3ibxesIbIvbp9n8wU55MRG1oj2wvkpu8iaQKdkgAUNvBqfqjbJRp22kRijl1NTmIlNUGIz5coCX+ZeTCdKMjvGsFwZszs/rAd80pB927cp4uyYsNx0dDAhICHQ459VmsHA/Pk7ZqBsWnz45RiRG7EKBWylKVRbM9+fmS1do+EcxkvrmAvVTgWPVELd1MQuzZOEzppUQwMiWn5BjVKUJtQF7+o1STOWC3YH5nHMSDttoiB3CxSOGCmYu6hyxSlYAVXTeKcig91J8okzAXJ7VXVntaVbi5bIZvQRlV1tOl3TH1piOT6ZYKSwgl5G2CMpHwZHcrD/YizFz3tQ36tzb5GXXfPDukEadzR5KrwgY/OF7tc7B0S25LeIfbnnBdN8f81+ww4yr8xNI+Xrz7E5zS/aEPp2NYXSBauaL1J2GHcWT/RROg2l+PnWO/CBIHUcE0Y9RTEihQS/yRGkAeo7b7Pc/0Wo2hzAJB1YCBUEHJfHuV761MMMNuDmcDd6XCuRrlAzPf+rc3nXBlzMFbGf8+vN77ivnt7gAKraHJ4KgwYQzkINegWOKsTSCg0+yXcgdhEiQtN9g2cKPA==|920
+}//jzaAOIGkeaee1r+uB1d8klIW9wYt+p2Zj8gMDu+oXfW6/Gx6HrWIllETLH4M8eVfDBk08NTmDq5yb8ehWxUt+P9v9GsfndQq8prVI04GHrtX1GlxuJmj07ePZuFsUiAwlZiqSRdlogMx4u/X3a5oKPRWJFhHmD1PziJ6qOylx+qm4eL/VdnmK8xG3tiEdyIrzVdCDn+brZ/d4jFO5BMH0fPznfYu5kd5vPHeuvdVuSb+iuFvSywEdtwUGWF1X28gglwZ5i00hzs3l8VH5v4RRmNFgNyEoN54UUaljvzY36lZ/u6rGGiPcG5/jZS3uHQyl8AAgbEMSRF71xg6Hud4A6wHE9mMCl+H0BRPlyLdqXEXFs81ote63SvDfVvN3gApLW73UBZ+C6QhFg+FCoujS/pSRoey4EeWqBhnZX3rmqER4rUB/MOl9D2EV1lyNwcHEOsAHWVjuHV60FAQJMK/kAk6H/AvtE+RcVzBGAiLLso1FCWoEz7LcmrU7dU5lWoU8eNQsafL9dkbfd5aCkB/FknL5G9cS+JFtbepXSwiVW6lddSJBo34R15kp7xeUt77RtJPr5o4EZ3baDi6UN1LqXmUr0L42BT6GKZC03ZBxg/Uieg90FKg8Tbv86xrSZ2pEyVraam5oVkpwuUSS9DZIMTZWI8nEcyrfiXHSYPMinq/tkf29DKP3qxECHIxEIJU0+5KxVCNxNPz/B8r327qhFt5Xqd+1/JXdKmlq4ivB3oVq3BefGArljJADB8o4BvRuZwfJOuyfWOK3EPzGKxy1Ck6qGxjSKtQVtDjXqQrKe0m5AXxuxeUvk/PTzOQI0Km5ZBiX5qPCsAtrhfgHwumSJf2KJ6bAGwVzVIdUZ30N+X2EygHzq2S9TeaYbZQ5Yu4dxlaX1QWA1rvZ9KgQiN3ZA==|920

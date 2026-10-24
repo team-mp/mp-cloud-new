@@ -1,18 +1,22 @@
 {
   "PageType": 0,
-  "ColumnCount": 139,
-  "RowCount": 29,
+  "ColumnCount": 141,
+  "RowCount": 30,
   "Formulas": {
-    "26,4": "\"全ファイル数：\"&TEXT(EC13,\"#,##0\")"
+    "27,4": "\"全ファイル数：\"&TEXT(ED14,\"#,##0\")"
   },
   "CustomNames": [
     {
-      "Name": "アップロード完了フラグ",
-      "Formula": "添付ファイルリスト!$EC$16"
+      "Name": "ファイルアップロードフラグ",
+      "Formula": "添付ファイルリスト!$ED$20"
+    },
+    {
+      "Name": "更新フラグ",
+      "Formula": "添付ファイルリスト!$ED$17"
     },
     {
       "Name": "物件ID",
-      "Formula": "添付ファイルリスト!$EC$7"
+      "Formula": "添付ファイルリスト!$ED$8"
     }
   ]
 }

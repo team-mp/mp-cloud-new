@@ -22,14 +22,18 @@
       },
       "Parameters": [
         {
+          "Name": "P_資料待ちIDs",
+          "DataValidationInfo": {}
+        },
+        {
           "Type": 1,
           "ArrayParamItems": [
             {
-              "Name": "P_選択フラグ",
+              "Name": "P_対象顧客ID",
               "DataValidationInfo": {}
             },
             {
-              "Name": "P_資料待ちID",
+              "Name": "P_資料名",
               "DataValidationInfo": {}
             },
             {
@@ -37,7 +41,7 @@
               "DataValidationInfo": {}
             },
             {
-              "Name": "P_送付期日",
+              "Name": "P_送付期限日",
               "DataValidationInfo": {}
             }
           ],
@@ -110,23 +114,53 @@
               "ShowConfirm": false,
               "RowsToUpdate": 1,
               "RowsToUpdateCondition": {
-                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                "ColumnBindingInfo": {
-                  "TableName": "t_object_wait_documents",
-                  "ColumnName": "wait_document_id",
-                  "GUID": "b6deaf1a-3baf-4cff-b005-5a6dd2931430"
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=Item_資料待ち.P_資料待ちID"
-                }
+                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                "SubConditions": [
+                  {
+                    "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                    "CompareType": 8,
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_wait_documents",
+                      "ColumnName": "wait_document_id",
+                      "GUID": "b6deaf1a-3baf-4cff-b005-5a6dd2931430"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_資料待ちIDs"
+                    }
+                  },
+                  {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_wait_documents",
+                      "ColumnName": "target_customer_id",
+                      "GUID": "3a2d63fe-956a-474a-982a-c3f381bbfc3c"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=Item_資料待ち.P_対象顧客ID"
+                    }
+                  },
+                  {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_wait_documents",
+                      "ColumnName": "document_name",
+                      "GUID": "77dff9f7-5f74-4830-aba4-4d5da84741b4"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=Item_資料待ち.P_資料名"
+                    }
+                  }
+                ]
               },
               "UpdateBindingValues": [
                 {
                   "BindingInfo": {
                     "TableName": "t_object_wait_documents",
                     "ColumnName": "scheduled_sending_date",
-                    "GUID": "165eca45-7fb6-458e-86fe-cd2253ee05f7"
+                    "GUID": "63ea4cff-bff9-4e39-b4ea-22c86217515a"
                   },
                   "Value": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -137,18 +171,18 @@
                   "BindingInfo": {
                     "TableName": "t_object_wait_documents",
                     "ColumnName": "send_limite_date",
-                    "GUID": "3b4b50f9-9100-4160-af7d-c30aec0b7e5d"
+                    "GUID": "d1e9e457-7e80-475f-9819-bace321ffcaf"
                   },
                   "Value": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=Item_資料待ち.P_送付期日"
+                    "SerializeProperty": "=Item_資料待ち.P_送付期限日"
                   }
                 },
                 {
                   "BindingInfo": {
                     "TableName": "t_object_wait_documents",
                     "ColumnName": "last_updated_label",
-                    "GUID": "323e8352-fbc3-46ee-a688-c736bede447c"
+                    "GUID": "8da46e33-19ed-4ecf-ab84-6733d9ddea9d"
                   },
                   "Value": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",

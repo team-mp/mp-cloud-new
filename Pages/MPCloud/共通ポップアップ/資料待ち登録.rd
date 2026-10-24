@@ -1,21 +1,22 @@
 {
   "PageType": 0,
-  "ColumnCount": 74,
-  "RowCount": 26,
+  "ColumnCount": 94,
+  "RowCount": 28,
   "Formulas": {
-    "1,68": "BC2",
-    "7,68": "BC18",
-    "8,68": "BC21",
-    "5,68": "BC12",
-    "6,68": "BD14",
-    "4,68": "BC9",
-    "3,68": "BC6",
-    "1,61": "IFERROR(VLOOKUP(Y1,BP2:BQ9,2,FALSE),0)"
+    "1,69": "IFERROR(VLOOKUP(Y11,CJ7:CK14,2,FALSE),0)",
+    "6,88": "BC2",
+    "11,88": "BC18",
+    "8,88": "BC9",
+    "10,88": "BD14",
+    "12,88": "BC21",
+    "9,88": "BC12",
+    "7,88": "BC6",
+    "11,78": "TEXTJOINIF(\",\",TRUE,BR7,1,BV7)"
   },
   "CustomNames": [
     {
       "Name": "登録ボタン",
-      "Formula": "資料待ち登録!$AW$24"
+      "Formula": "資料待ち登録!$AW$25"
     }
   ]
 }

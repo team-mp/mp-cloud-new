@@ -8,11 +8,11 @@
   "CustomNames": [
     {
       "Name": "更新フラグ",
-      "Formula": "連棟物件選択!$AL$16"
+      "Formula": "連棟物件選択（調査手配用）!$AL$16"
     },
     {
       "Name": "調査手配IDs",
-      "Formula": "連棟物件選択!$AL$13"
+      "Formula": "連棟物件選択（調査手配用）!$AL$13"
     }
   ]
 }
